@@ -1,8 +1,10 @@
-#include "ModuleData.h"
+#include "Marking.h"
+///--------------------------------------------------------------------------------------
 
-#include "DSRandomGenerator.h"
-#include "DSManualControl.h"
-#include "DSComPort.h"
+
+
+///--------------------------------------------------------------------------------------
+using namespace Marking;
 ///--------------------------------------------------------------------------------------
 
 
@@ -10,23 +12,18 @@
 
 
 
-   
  ///=====================================================================================
 ///
-/// constructor
+/// Constructor
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-AModuleData :: AModuleData(QWidget *parent)
-	: 
-		QMainWindow(parent)
+AMarking :: AMarking ()
+	:
+	mValue(0)
 {
-	ui.setupUi(this);
 
-	mMarkings = Marking::PMarkingContainer::create();
-	
-	mData = DataSource::PDataSourceContainer::create();
-	connect(mData.data(), &DataSource::ADataSourceContainer::signal_change, this, &AModuleData::slot_refreshDataSource);
+
 }
 ///--------------------------------------------------------------------------------------
 
@@ -35,39 +32,38 @@ AModuleData :: AModuleData(QWidget *parent)
 
 
 
-   
+ ///=====================================================================================
+///
+/// Constructor 2
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+AMarking :: AMarking(const int value, const QString &description)
+	:
+	mValue(value),
+	mDescription(description)
+{
+
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
  ///=====================================================================================
 ///
 /// Destructor
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-AModuleData :: ~AModuleData()
+AMarking :: ~AMarking ()
 {
+
+
 }
 ///--------------------------------------------------------------------------------------
 
 
-
-
-
-
-   
- ///=====================================================================================
-///
-/// редактирование справочника закладок событий
-/// 
-/// 
-///--------------------------------------------------------------------------------------
-void AModuleData :: on_actionMarking_triggered()
-{
-	if (mMarkingEditor.isNull())
-	{
-		mMarkingEditor = Marking::PMarkingEditorDialog::create();
-	}
-	mMarkingEditor->show(mMarkings);
-}
-///--------------------------------------------------------------------------------------
 
 
 
@@ -76,36 +72,30 @@ void AModuleData :: on_actionMarking_triggered()
 
  ///=====================================================================================
 ///
-/// обновление источника данных
+/// значение метки
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void AModuleData :: slot_refreshDataSource()
+int AMarking :: value() const
 {
-	auto mn = new QMenu();
-	const int count = mData->count();
-	for (int i = 0; i < count; i++)
-	{
-		auto item = mData->item(i);
-		mn->addAction(item->title(), item.data(), SLOT(slot_show()));
-	}
-	ui.actionDataView->setMenu(mn);
+	return mValue;
 }
 ///--------------------------------------------------------------------------------------
 
 
 
 
-   
+
+
+
 
  ///=====================================================================================
 ///
-/// добавление генератора случайных чисел
+/// пояснение метки
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void AModuleData :: on_actionRandomGenerator_triggered()
+QString AMarking :: description() const
 {
-	mData->append(DataSource::PRandomGenerator::create());
+	return mDescription;
 }
-	

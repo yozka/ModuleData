@@ -1,8 +1,10 @@
-#include "ModuleData.h"
+#include "DataSourceContainer.h"
+///--------------------------------------------------------------------------------------
 
-#include "DSRandomGenerator.h"
-#include "DSManualControl.h"
-#include "DSComPort.h"
+
+
+///--------------------------------------------------------------------------------------
+using namespace DataSource;
 ///--------------------------------------------------------------------------------------
 
 
@@ -10,23 +12,16 @@
 
 
 
-   
  ///=====================================================================================
 ///
-/// constructor
+/// Constructor
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-AModuleData :: AModuleData(QWidget *parent)
-	: 
-		QMainWindow(parent)
+ADataSourceContainer :: ADataSourceContainer ()
 {
-	ui.setupUi(this);
 
-	mMarkings = Marking::PMarkingContainer::create();
-	
-	mData = DataSource::PDataSourceContainer::create();
-	connect(mData.data(), &DataSource::ADataSourceContainer::signal_change, this, &AModuleData::slot_refreshDataSource);
+
 }
 ///--------------------------------------------------------------------------------------
 
@@ -35,15 +30,18 @@ AModuleData :: AModuleData(QWidget *parent)
 
 
 
-   
+
+
  ///=====================================================================================
 ///
 /// Destructor
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-AModuleData :: ~AModuleData()
+ADataSourceContainer :: ~ADataSourceContainer ()
 {
+
+
 }
 ///--------------------------------------------------------------------------------------
 
@@ -52,20 +50,37 @@ AModuleData :: ~AModuleData()
 
 
 
-   
  ///=====================================================================================
 ///
-/// редактирование справочника закладок событий
+/// количество элементов в контейнере
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void AModuleData :: on_actionMarking_triggered()
+int ADataSourceContainer :: count() const
 {
-	if (mMarkingEditor.isNull())
+	return mDatas.count();
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+ ///=====================================================================================
+///
+/// возвратим данные в контейнере
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+PDataSource ADataSourceContainer :: item(const int index)
+{
+	if (index < 0 || index >= mDatas.count())
 	{
-		mMarkingEditor = Marking::PMarkingEditorDialog::create();
+		return PDataSource();
 	}
-	mMarkingEditor->show(mMarkings);
+	return mDatas[index];
 }
 ///--------------------------------------------------------------------------------------
 
@@ -76,36 +91,33 @@ void AModuleData :: on_actionMarking_triggered()
 
  ///=====================================================================================
 ///
-/// обновление источника данных
+/// добовляем данныех
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void AModuleData :: slot_refreshDataSource()
+void ADataSourceContainer :: append(const PDataSource &data)
 {
-	auto mn = new QMenu();
-	const int count = mData->count();
-	for (int i = 0; i < count; i++)
+	if (data.isNull())
 	{
-		auto item = mData->item(i);
-		mn->addAction(item->title(), item.data(), SLOT(slot_show()));
+		return;
 	}
-	ui.actionDataView->setMenu(mn);
+
+	mDatas.append(data);
+	emit signal_change();
 }
 ///--------------------------------------------------------------------------------------
 
 
 
 
-   
 
  ///=====================================================================================
 ///
-/// добавление генератора случайных чисел
+/// изменение данных
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void AModuleData :: on_actionRandomGenerator_triggered()
+void ADataSourceContainer :: slot_change(const ADataSource* data)
 {
-	mData->append(DataSource::PRandomGenerator::create());
+	emit signal_change();
 }
-	

@@ -1,8 +1,18 @@
-#include "ModuleData.h"
-
 #include "DSRandomGenerator.h"
-#include "DSManualControl.h"
-#include "DSComPort.h"
+///--------------------------------------------------------------------------------------
+
+
+
+///--------------------------------------------------------------------------------------
+using namespace DataSource;
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+///--------------------------------------------------------------------------------------
+int gNumber = 0;
 ///--------------------------------------------------------------------------------------
 
 
@@ -10,23 +20,17 @@
 
 
 
-   
+
  ///=====================================================================================
 ///
-/// constructor
+/// Constructor
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-AModuleData :: AModuleData(QWidget *parent)
-	: 
-		QMainWindow(parent)
+ARandomGenerator :: ARandomGenerator ()
 {
-	ui.setupUi(this);
-
-	mMarkings = Marking::PMarkingContainer::create();
-	
-	mData = DataSource::PDataSourceContainer::create();
-	connect(mData.data(), &DataSource::ADataSourceContainer::signal_change, this, &AModuleData::slot_refreshDataSource);
+	gNumber++;
+	mNumber = gNumber;
 }
 ///--------------------------------------------------------------------------------------
 
@@ -35,39 +39,23 @@ AModuleData :: AModuleData(QWidget *parent)
 
 
 
-   
+
  ///=====================================================================================
 ///
 /// Destructor
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-AModuleData :: ~AModuleData()
+ARandomGenerator :: ~ARandomGenerator ()
 {
+
+
 }
 ///--------------------------------------------------------------------------------------
 
 
 
 
-
-
-   
- ///=====================================================================================
-///
-/// редактирование справочника закладок событий
-/// 
-/// 
-///--------------------------------------------------------------------------------------
-void AModuleData :: on_actionMarking_triggered()
-{
-	if (mMarkingEditor.isNull())
-	{
-		mMarkingEditor = Marking::PMarkingEditorDialog::create();
-	}
-	mMarkingEditor->show(mMarkings);
-}
-///--------------------------------------------------------------------------------------
 
 
 
@@ -76,36 +64,30 @@ void AModuleData :: on_actionMarking_triggered()
 
  ///=====================================================================================
 ///
-/// обновление источника данных
+/// возвратим имя источника данных
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void AModuleData :: slot_refreshDataSource()
+QString ARandomGenerator :: title() const
 {
-	auto mn = new QMenu();
-	const int count = mData->count();
-	for (int i = 0; i < count; i++)
-	{
-		auto item = mData->item(i);
-		mn->addAction(item->title(), item.data(), SLOT(slot_show()));
-	}
-	ui.actionDataView->setMenu(mn);
+	return "Random generator - " + QString::number(mNumber);
 }
 ///--------------------------------------------------------------------------------------
 
 
 
 
-   
+
+
+
 
  ///=====================================================================================
 ///
-/// добавление генератора случайных чисел
+/// покажем диалог информации по источнику данных
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void AModuleData :: on_actionRandomGenerator_triggered()
+void ARandomGenerator :: show()
 {
-	mData->append(DataSource::PRandomGenerator::create());
+
 }
-	

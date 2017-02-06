@@ -13,35 +13,71 @@
   <property name="windowTitle">
    <string>AModuleData</string>
   </property>
-  <widget class="QWidget" name="centralWidget"/>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+   </layout>
+  </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
      <width>1058</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>File</string>
+     <string>FILE</string>
     </property>
     <addaction name="actionExit"/>
    </widget>
-   <widget class="QMenu" name="menuEdit">
+   <widget class="QMenu" name="menuChart">
     <property name="title">
-     <string>Edit</string>
+     <string>CHART</string>
     </property>
     <addaction name="actionMarking"/>
+    <addaction name="separator"/>
+    <addaction name="actionNew"/>
    </widget>
    <widget class="QMenu" name="menuWindows">
     <property name="title">
-     <string>Windows</string>
+     <string>WINDOWS</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuData">
+    <property name="title">
+     <string>DATA</string>
+    </property>
+    <widget class="QMenu" name="menuCreate">
+     <property name="title">
+      <string>Create</string>
+     </property>
+     <addaction name="actionRandomGenerator"/>
+     <addaction name="actionManualControl"/>
+     <addaction name="actionComPort"/>
+    </widget>
+    <addaction name="menuCreate"/>
+    <addaction name="actionDataView"/>
+   </widget>
    <addaction name="menuFile"/>
-   <addaction name="menuEdit"/>
+   <addaction name="menuChart"/>
+   <addaction name="menuData"/>
    <addaction name="menuWindows"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -60,7 +96,37 @@
   </action>
   <action name="actionMarking">
    <property name="text">
-    <string>&amp;Marking...</string>
+    <string>&amp;Marking…</string>
+   </property>
+  </action>
+  <action name="actionRandomGenerator">
+   <property name="text">
+    <string>Random generator…</string>
+   </property>
+  </action>
+  <action name="actionManualControl">
+   <property name="text">
+    <string>Manual control…</string>
+   </property>
+  </action>
+  <action name="actionComPort">
+   <property name="text">
+    <string>Com port…</string>
+   </property>
+  </action>
+  <action name="actionDataView">
+   <property name="text">
+    <string>View</string>
+   </property>
+  </action>
+  <action name="actionNew">
+   <property name="text">
+    <string>New</string>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="text">
+    <string>Delete</string>
    </property>
   </action>
  </widget>
