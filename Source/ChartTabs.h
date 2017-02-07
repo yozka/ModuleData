@@ -1,8 +1,9 @@
 #pragma once
-#include <QObject>
-#include <QSharedPointer>
 #include <QString>
-#include <QWidget>
+#include <QTabWidget>
+
+#include "Chart.h"
+#include "ChartContainer.h"
 ///--------------------------------------------------------------------------------------
 
 namespace Chart
@@ -19,46 +20,37 @@ namespace Chart
 
 	 ///=====================================================================================
 	///
-	/// ОДин график
+	/// Утилита для синхронизации с табами
 	/// 
 	/// 
 	///--------------------------------------------------------------------------------------
-	class AChart
-			: 
-				public QObject
+	class AChartTabs
 	{
-		Q_OBJECT
+
 
 	public:
-		AChart();
+		AChartTabs(const PChartContainer &chart);
 
 
-		virtual ~AChart();
+		virtual ~AChartTabs();
 
-		QString title() const; //возвратим название диаграмы
+		void syncWidget(QTabWidget *tabs); //синхронизация диаграм с табами
 
-		QWidget* createWidget(); //создание представление данных
-
+		bool isContaint(const PChart &chartCheck, const QTabWidget *tabs) const; //проверка, есть данный диаграма в вкладках таба
 
 	private:
 
-		int mNumber; //тестовый номер диаграмы
+		PChartContainer mChart; //список диаграм
 
-	private slots:
 
-		//void slot_change(const AMarking* marking); //изменение данных
+
 	};
 	///--------------------------------------------------------------------------------------
 
 
 
 
-		
-	///--------------------------------------------------------------------------------------
-	typedef QSharedPointer<AChart> PChart;
-	///--------------------------------------------------------------------------------------
-
-
+	
 
 //-------------------------------------------------------------------------------------------
 }//namespace

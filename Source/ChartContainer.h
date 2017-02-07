@@ -38,7 +38,7 @@ namespace Chart
 		PChart item(const int index); //возвратим данные в контейнере
 		void append(const PChart &chart); //добовляем данные
 
-		bool isContains(const PChart
+		bool isContains(const PChart &chart); //проверка, есть даныне или нет в контейнере
 
 	signals:
 	

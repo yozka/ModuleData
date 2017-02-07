@@ -97,8 +97,6 @@ PChart AChartContainer :: item(const int index)
 ///--------------------------------------------------------------------------------------
 void AChartContainer :: append(const PChart &chart)
 {
-	mCharts.contains
-	
 	if (chart.isNull())
 	{
 		return;
@@ -122,4 +120,20 @@ void AChartContainer :: append(const PChart &chart)
 void AChartContainer :: slot_change(const AChart* chart)
 {
 	emit signal_change();
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+ ///=====================================================================================
+///
+/// проверка, есть даныне или нет в контейнере
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+bool AChartContainer :: isContains(const PChart &chart)
+{
+	return mCharts.contains(chart);
 }

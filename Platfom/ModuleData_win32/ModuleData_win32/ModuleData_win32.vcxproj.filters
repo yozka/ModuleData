@@ -55,6 +55,12 @@
     <Filter Include="Source\Chart\Items">
       <UniqueIdentifier>{fad4a39a-8696-4ed7-befc-6b5aed4004b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Utils">
+      <UniqueIdentifier>{339e3c34-f9b7-47df-8af4-6d171cd365eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Chart\ChartTabs">
+      <UniqueIdentifier>{097b1f24-41da-4e39-9ac5-7e4bba186323}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -144,6 +150,9 @@
     <ClCompile Include="GeneratedFiles\Release\moc_ChartContainer.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\ChartTabs.cpp">
+      <Filter>Source\Chart\ChartTabs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\..\Source\ModuleData.h">
@@ -194,6 +203,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Source\DSComPort.h">
       <Filter>Source\DataSource\Items\ComPort</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\ChartTabs.h">
+      <Filter>Source\Chart\ChartTabs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

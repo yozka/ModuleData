@@ -5,6 +5,8 @@
 #include "DSRandomGenerator.h"
 #include "DSManualControl.h"
 #include "DSComPort.h"
+
+#include "ChartTabs.h"
 ///--------------------------------------------------------------------------------------
 
 
@@ -118,27 +120,8 @@ void AModuleData :: on_actionChartNew_triggered()
 ///--------------------------------------------------------------------------------------
 void AModuleData :: slot_refreshChart()
 {
-	auto tabs = ui.tabWidget;
-
-	//удалить табы, которые непривязаны к диаграмам
-	//указатель на диаграмах находится в свойствах под именем "chart"
-	for (int i = 0; i < tabs->count(); i++)
-	{
-		const auto tab = tabs->widget(i);
-		const auto prop = tab->property("chart");
-		const auto chart = prop.value<Chart::PChart>();
-		if (mChart->isContains(chart))
-		{
-			continue;
-		}
-		tabs->removeTab(i);
-		i = 0;
-	}
-
-
-	
-	QWidget *frame = new QWidget();
-	ui.tabWidget->addTab(frame, "test");
+	Chart::AChartTabs chartTabs(mChart);
+	chartTabs.syncWidget(ui.tabWidget);
 }
 ///--------------------------------------------------------------------------------------
 
