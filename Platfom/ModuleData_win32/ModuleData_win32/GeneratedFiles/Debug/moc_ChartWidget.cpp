@@ -1,16 +1,16 @@
 /****************************************************************************
-** Meta object code from reading C++ file 'Marking.h'
+** Meta object code from reading C++ file 'ChartWidget.h'
 **
 ** Created by: The Qt Meta Object Compiler version 67 (Qt 5.5.1)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../../../../../Source/Marking.h"
+#include "../../../../../Source/ChartWidget.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
-#error "The header file 'Marking.h' doesn't include <QObject>."
+#error "The header file 'ChartWidget.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
 #error "This file was generated using the moc from 5.5.1. It"
 #error "cannot be used with the include files from this version of Qt."
@@ -18,25 +18,25 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-struct qt_meta_stringdata_Marking__AMarking_t {
+struct qt_meta_stringdata_Chart__AChartWidget_t {
     QByteArrayData data[1];
-    char stringdata0[18];
+    char stringdata0[20];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    qptrdiff(offsetof(qt_meta_stringdata_Marking__AMarking_t, stringdata0) + ofs \
+    qptrdiff(offsetof(qt_meta_stringdata_Chart__AChartWidget_t, stringdata0) + ofs \
         - idx * sizeof(QByteArrayData)) \
     )
-static const qt_meta_stringdata_Marking__AMarking_t qt_meta_stringdata_Marking__AMarking = {
+static const qt_meta_stringdata_Chart__AChartWidget_t qt_meta_stringdata_Chart__AChartWidget = {
     {
-QT_MOC_LITERAL(0, 0, 17) // "Marking::AMarking"
+QT_MOC_LITERAL(0, 0, 19) // "Chart::AChartWidget"
 
     },
-    "Marking::AMarking"
+    "Chart::AChartWidget"
 };
 #undef QT_MOC_LITERAL
 
-static const uint qt_meta_data_Marking__AMarking[] = {
+static const uint qt_meta_data_Chart__AChartWidget[] = {
 
  // content:
        7,       // revision
@@ -52,7 +52,7 @@ static const uint qt_meta_data_Marking__AMarking[] = {
        0        // eod
 };
 
-void Marking::AMarking::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void Chart::AChartWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     Q_UNUSED(_o);
     Q_UNUSED(_id);
@@ -60,28 +60,28 @@ void Marking::AMarking::qt_static_metacall(QObject *_o, QMetaObject::Call _c, in
     Q_UNUSED(_a);
 }
 
-const QMetaObject Marking::AMarking::staticMetaObject = {
-    { &QObject::staticMetaObject, qt_meta_stringdata_Marking__AMarking.data,
-      qt_meta_data_Marking__AMarking,  qt_static_metacall, Q_NULLPTR, Q_NULLPTR}
+const QMetaObject Chart::AChartWidget::staticMetaObject = {
+    { &QWidget::staticMetaObject, qt_meta_stringdata_Chart__AChartWidget.data,
+      qt_meta_data_Chart__AChartWidget,  qt_static_metacall, Q_NULLPTR, Q_NULLPTR}
 };
 
 
-const QMetaObject *Marking::AMarking::metaObject() const
+const QMetaObject *Chart::AChartWidget::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
 }
 
-void *Marking::AMarking::qt_metacast(const char *_clname)
+void *Chart::AChartWidget::qt_metacast(const char *_clname)
 {
     if (!_clname) return Q_NULLPTR;
-    if (!strcmp(_clname, qt_meta_stringdata_Marking__AMarking.stringdata0))
-        return static_cast<void*>(const_cast< AMarking*>(this));
-    return QObject::qt_metacast(_clname);
+    if (!strcmp(_clname, qt_meta_stringdata_Chart__AChartWidget.stringdata0))
+        return static_cast<void*>(const_cast< AChartWidget*>(this));
+    return QWidget::qt_metacast(_clname);
 }
 
-int Marking::AMarking::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int Chart::AChartWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = QObject::qt_metacall(_c, _id, _a);
+    _id = QWidget::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     return _id;

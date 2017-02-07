@@ -97,15 +97,43 @@ void AModuleData :: on_actionChartNew_triggered()
 	//диаграма
 	auto chart = Chart::PChart::create();
 
-	
+	chart->setMarking(mMarkings);	//маркировачные закладки
+
+
 	/*
 	chart->setDataSource(data);		//источник данных
-	chart->setMarking(mMarkings);	//маркировачные закладки
 	*/
 
 	mChart->append(chart);
+
+	Chart::AChartTabs chartTabs(mChart, ui.tabWidget);
+	chartTabs.setCurrentChart(chart);
 }
 ///--------------------------------------------------------------------------------------
+
+
+
+
+
+
+ ///=====================================================================================
+///
+/// закрытие диаграммы
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AModuleData :: on_actionChartClose_triggered()
+{
+	Chart::AChartTabs chartTabs(mChart, ui.tabWidget);
+	auto chart = chartTabs.currentChart();
+	if (!chart.isNull())
+	{
+		mChart->remove(chart);
+		chart->clear();
+	}
+}
+///--------------------------------------------------------------------------------------
+
 
 
 
@@ -120,8 +148,8 @@ void AModuleData :: on_actionChartNew_triggered()
 ///--------------------------------------------------------------------------------------
 void AModuleData :: slot_refreshChart()
 {
-	Chart::AChartTabs chartTabs(mChart);
-	chartTabs.syncWidget(ui.tabWidget);
+	Chart::AChartTabs chartTabs(mChart, ui.tabWidget);
+	chartTabs.syncWidget();
 }
 ///--------------------------------------------------------------------------------------
 

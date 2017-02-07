@@ -61,6 +61,7 @@
     <addaction name="actionMarking"/>
     <addaction name="separator"/>
     <addaction name="actionChartNew"/>
+    <addaction name="actionChartClose"/>
    </widget>
    <widget class="QMenu" name="menuWindows">
     <property name="title">
@@ -134,6 +135,11 @@
   <action name="actionDelete">
    <property name="text">
     <string>Delete</string>
+   </property>
+  </action>
+  <action name="actionChartClose">
+   <property name="text">
+    <string>Close</string>
    </property>
   </action>
  </widget>

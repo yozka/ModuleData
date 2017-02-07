@@ -37,6 +37,7 @@ namespace Chart
 		int count() const; //количество элементов в контейнере
 		PChart item(const int index); //возвратим данные в контейнере
 		void append(const PChart &chart); //добовляем данные
+		void remove(const PChart &chart); //удаляем данные
 
 		bool isContains(const PChart &chart); //проверка, есть даныне или нет в контейнере
 

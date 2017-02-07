@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'ModuleData.ui'
 **
-** Created by: Qt User Interface Compiler version 5.5.0
+** Created by: Qt User Interface Compiler version 5.5.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -36,6 +36,7 @@ public:
     QAction *actionDataView;
     QAction *actionChartNew;
     QAction *actionDelete;
+    QAction *actionChartClose;
     QWidget *centralWidget;
     QVBoxLayout *verticalLayout;
     QTabWidget *tabWidget;
@@ -69,6 +70,8 @@ public:
         actionChartNew->setObjectName(QStringLiteral("actionChartNew"));
         actionDelete = new QAction(AModuleDataClass);
         actionDelete->setObjectName(QStringLiteral("actionDelete"));
+        actionChartClose = new QAction(AModuleDataClass);
+        actionChartClose->setObjectName(QStringLiteral("actionChartClose"));
         centralWidget = new QWidget(AModuleDataClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         verticalLayout = new QVBoxLayout(centralWidget);
@@ -111,6 +114,7 @@ public:
         menuChart->addAction(actionMarking);
         menuChart->addSeparator();
         menuChart->addAction(actionChartNew);
+        menuChart->addAction(actionChartClose);
         menuData->addAction(menuCreate->menuAction());
         menuData->addAction(actionDataView);
         menuCreate->addAction(actionRandomGenerator);
@@ -137,6 +141,7 @@ public:
         actionDataView->setText(QApplication::translate("AModuleDataClass", "View", 0));
         actionChartNew->setText(QApplication::translate("AModuleDataClass", "New", 0));
         actionDelete->setText(QApplication::translate("AModuleDataClass", "Delete", 0));
+        actionChartClose->setText(QApplication::translate("AModuleDataClass", "Close", 0));
         menuFile->setTitle(QApplication::translate("AModuleDataClass", "FILE", 0));
         menuChart->setTitle(QApplication::translate("AModuleDataClass", "CHART", 0));
         menuWindows->setTitle(QApplication::translate("AModuleDataClass", "WINDOWS", 0));

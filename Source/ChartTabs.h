@@ -29,19 +29,18 @@ namespace Chart
 
 
 	public:
-		AChartTabs(const PChartContainer &chart);
-
-
+		AChartTabs(const PChartContainer &charts, QTabWidget *tabs);
 		virtual ~AChartTabs();
 
-		void syncWidget(QTabWidget *tabs); //синхронизация диаграм с табами
-
-		bool isContaint(const PChart &chartCheck, const QTabWidget *tabs) const; //проверка, есть данный диаграма в вкладках таба
+		void syncWidget(); //синхронизация диаграм с табами
+		bool isContaintTabs(const PChart &chartCheck) const; //проверка, есть данный диаграма в вкладках таба
+		PChart currentChart() const; //возвратим текущию выбранную диаграму
+		void setCurrentChart(const PChart &chart); //поставим текущий диаграмму
 
 	private:
 
-		PChartContainer mChart; //список диаграм
-
+		PChartContainer mCharts;	//список диаграм
+		QTabWidget*		mTabs;		//табулятор
 
 
 	};

@@ -45,9 +45,10 @@ private:
 private slots:
 
 	//CHART
-	void on_actionMarking_triggered();	//редактирование справочника закладок событий
-	void on_actionChartNew_triggered(); //добавление новой диаграмы
-	void slot_refreshChart();			//обновление диаграм, появилась удалилась диаграма
+	void on_actionMarking_triggered();		//редактирование справочника закладок событий
+	void on_actionChartNew_triggered();		//добавление новой диаграмы
+	void on_actionChartClose_triggered();	//закрытие диаграммы
+	void slot_refreshChart();				//обновление диаграм, появилась удалилась диаграма
 
 	//DATA
 	void on_actionRandomGenerator_triggered(); //добавление генератора случайных чисел

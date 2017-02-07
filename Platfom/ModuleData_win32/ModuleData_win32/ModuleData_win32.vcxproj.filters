@@ -61,6 +61,9 @@
     <Filter Include="Source\Chart\ChartTabs">
       <UniqueIdentifier>{097b1f24-41da-4e39-9ac5-7e4bba186323}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Chart\ChartWidget">
+      <UniqueIdentifier>{4a8fce1a-5535-47be-b939-51a1a434b482}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -153,6 +156,15 @@
     <ClCompile Include="..\..\..\Source\ChartTabs.cpp">
       <Filter>Source\Chart\ChartTabs</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\ChartWidget.cpp">
+      <Filter>Source\Chart\ChartWidget</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ChartWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ChartWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\..\Source\ModuleData.h">
@@ -184,6 +196,9 @@
     </CustomBuild>
     <CustomBuild Include="..\..\..\Source\ChartContainer.h">
       <Filter>Source\Chart</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\Source\ChartWidget.h">
+      <Filter>Source\Chart\ChartWidget</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
