@@ -18,6 +18,7 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTabWidget>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
@@ -33,10 +34,11 @@ public:
     QAction *actionManualControl;
     QAction *actionComPort;
     QAction *actionDataView;
-    QAction *actionNew;
+    QAction *actionChartNew;
     QAction *actionDelete;
     QWidget *centralWidget;
     QVBoxLayout *verticalLayout;
+    QTabWidget *tabWidget;
     QMenuBar *menuBar;
     QMenu *menuFile;
     QMenu *menuChart;
@@ -63,8 +65,8 @@ public:
         actionComPort->setObjectName(QStringLiteral("actionComPort"));
         actionDataView = new QAction(AModuleDataClass);
         actionDataView->setObjectName(QStringLiteral("actionDataView"));
-        actionNew = new QAction(AModuleDataClass);
-        actionNew->setObjectName(QStringLiteral("actionNew"));
+        actionChartNew = new QAction(AModuleDataClass);
+        actionChartNew->setObjectName(QStringLiteral("actionChartNew"));
         actionDelete = new QAction(AModuleDataClass);
         actionDelete->setObjectName(QStringLiteral("actionDelete"));
         centralWidget = new QWidget(AModuleDataClass);
@@ -74,6 +76,11 @@ public:
         verticalLayout->setContentsMargins(11, 11, 11, 11);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         verticalLayout->setContentsMargins(0, 0, 0, 0);
+        tabWidget = new QTabWidget(centralWidget);
+        tabWidget->setObjectName(QStringLiteral("tabWidget"));
+
+        verticalLayout->addWidget(tabWidget);
+
         AModuleDataClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(AModuleDataClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -103,7 +110,7 @@ public:
         menuFile->addAction(actionExit);
         menuChart->addAction(actionMarking);
         menuChart->addSeparator();
-        menuChart->addAction(actionNew);
+        menuChart->addAction(actionChartNew);
         menuData->addAction(menuCreate->menuAction());
         menuData->addAction(actionDataView);
         menuCreate->addAction(actionRandomGenerator);
@@ -112,6 +119,9 @@ public:
 
         retranslateUi(AModuleDataClass);
         QObject::connect(actionExit, SIGNAL(triggered()), AModuleDataClass, SLOT(close()));
+
+        tabWidget->setCurrentIndex(-1);
+
 
         QMetaObject::connectSlotsByName(AModuleDataClass);
     } // setupUi
@@ -125,7 +135,7 @@ public:
         actionManualControl->setText(QApplication::translate("AModuleDataClass", "Manual control\342\200\246", 0));
         actionComPort->setText(QApplication::translate("AModuleDataClass", "Com port\342\200\246", 0));
         actionDataView->setText(QApplication::translate("AModuleDataClass", "View", 0));
-        actionNew->setText(QApplication::translate("AModuleDataClass", "New", 0));
+        actionChartNew->setText(QApplication::translate("AModuleDataClass", "New", 0));
         actionDelete->setText(QApplication::translate("AModuleDataClass", "Delete", 0));
         menuFile->setTitle(QApplication::translate("AModuleDataClass", "FILE", 0));
         menuChart->setTitle(QApplication::translate("AModuleDataClass", "CHART", 0));

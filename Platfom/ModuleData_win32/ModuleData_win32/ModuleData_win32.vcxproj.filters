@@ -22,9 +22,6 @@
     <Filter Include="Resources">
       <UniqueIdentifier>{fc147a7b-5449-4682-a9e6-a3491a4aaecc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Main">
-      <UniqueIdentifier>{44db30e7-0609-46e7-b1b9-d6642e997054}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Marking">
       <UniqueIdentifier>{159e730b-3303-475c-938b-21e811b534c7}</UniqueIdentifier>
     </Filter>
@@ -49,13 +46,22 @@
     <Filter Include="Source\DataSource\Items\ComPort">
       <UniqueIdentifier>{cbbcc01c-a853-4855-8717-be43ca0e5e11}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\_Main">
+      <UniqueIdentifier>{44db30e7-0609-46e7-b1b9-d6642e997054}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Chart">
+      <UniqueIdentifier>{af8753a6-d90c-49d8-82b5-7ed687ed1af2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Chart\Items">
+      <UniqueIdentifier>{fad4a39a-8696-4ed7-befc-6b5aed4004b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Source\ModuleData.cpp">
-      <Filter>Source\Main</Filter>
+      <Filter>Source\_Main</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_ModuleData.cpp">
       <Filter>Generated Files\Debug</Filter>
@@ -120,13 +126,31 @@
     <ClCompile Include="GeneratedFiles\Release\moc_DataSourceContainer.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\ChartContainer.cpp">
+      <Filter>Source\Chart</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Chart.cpp">
+      <Filter>Source\Chart\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_Chart.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_Chart.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ChartContainer.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ChartContainer.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\..\Source\ModuleData.h">
-      <Filter>Source\Main</Filter>
+      <Filter>Source\_Main</Filter>
     </CustomBuild>
     <CustomBuild Include="..\..\..\Source\ModuleData.ui">
-      <Filter>Source\Main</Filter>
+      <Filter>Source\_Main</Filter>
     </CustomBuild>
     <CustomBuild Include="..\..\..\Source\ModuleData.qrc">
       <Filter>Resources</Filter>
@@ -145,6 +169,12 @@
     </CustomBuild>
     <CustomBuild Include="..\..\..\Source\DataSourceContainer.h">
       <Filter>Source\DataSource</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\Source\Chart.h">
+      <Filter>Source\Chart\Items</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\Source\ChartContainer.h">
+      <Filter>Source\Chart</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

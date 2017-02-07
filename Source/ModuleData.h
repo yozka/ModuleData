@@ -7,6 +7,7 @@
 #include "MarkingContainer.h"
 #include "MarkingEditorDialog.h"
 #include "DataSourceContainer.h"
+#include "ChartContainer.h"
 ///--------------------------------------------------------------------------------------
 
 
@@ -39,11 +40,14 @@ private:
 	Marking::PMarkingEditorDialog		mMarkingEditor; //редактор меток
 
 	DataSource::PDataSourceContainer	mData;			//данны которые приходят извне
+	Chart::PChartContainer				mChart;			//диаграмы
 
 private slots:
 
-	//EDIT
-	void on_actionMarking_triggered(); //редактирование справочника закладок событий
+	//CHART
+	void on_actionMarking_triggered();	//редактирование справочника закладок событий
+	void on_actionChartNew_triggered(); //добавление новой диаграмы
+	void slot_refreshChart();			//обновление диаграм, появилась удалилась диаграма
 
 	//DATA
 	void on_actionRandomGenerator_triggered(); //добавление генератора случайных чисел

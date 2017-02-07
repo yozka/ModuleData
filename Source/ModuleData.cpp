@@ -1,5 +1,7 @@
 #include "ModuleData.h"
 
+#include <QVariant>
+
 #include "DSRandomGenerator.h"
 #include "DSManualControl.h"
 #include "DSComPort.h"
@@ -27,6 +29,9 @@ AModuleData :: AModuleData(QWidget *parent)
 	
 	mData = DataSource::PDataSourceContainer::create();
 	connect(mData.data(), &DataSource::ADataSourceContainer::signal_change, this, &AModuleData::slot_refreshDataSource);
+
+	mChart = Chart::PChartContainer::create();
+	connect(mChart.data(), &Chart::AChartContainer::signal_change, this, &AModuleData::slot_refreshChart);
 }
 ///--------------------------------------------------------------------------------------
 
@@ -66,6 +71,74 @@ void AModuleData :: on_actionMarking_triggered()
 		mMarkingEditor = Marking::PMarkingEditorDialog::create();
 	}
 	mMarkingEditor->show(mMarkings);
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+   
+ ///=====================================================================================
+///
+/// добавление новой диаграмы
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AModuleData :: on_actionChartNew_triggered()
+{
+	//источник данных
+	auto data = DataSource::PRandomGenerator::create();
+	mData->append(data);
+
+	
+	//диаграма
+	auto chart = Chart::PChart::create();
+
+	
+	/*
+	chart->setDataSource(data);		//источник данных
+	chart->setMarking(mMarkings);	//маркировачные закладки
+	*/
+
+	mChart->append(chart);
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+
+ ///=====================================================================================
+///
+/// обновление диаграм, появилась удалилась диаграма
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AModuleData :: slot_refreshChart()
+{
+	auto tabs = ui.tabWidget;
+
+	//удалить табы, которые непривязаны к диаграмам
+	//указатель на диаграмах находится в свойствах под именем "chart"
+	for (int i = 0; i < tabs->count(); i++)
+	{
+		const auto tab = tabs->widget(i);
+		const auto prop = tab->property("chart");
+		const auto chart = prop.value<Chart::PChart>();
+		if (mChart->isContains(chart))
+		{
+			continue;
+		}
+		tabs->removeTab(i);
+		i = 0;
+	}
+
+
+	
+	QWidget *frame = new QWidget();
+	ui.tabWidget->addTab(frame, "test");
 }
 ///--------------------------------------------------------------------------------------
 
