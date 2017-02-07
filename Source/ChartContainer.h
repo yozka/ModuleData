@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include <QObject>
 #include <QSharedPointer>
 #include <QList>
@@ -19,7 +19,7 @@ namespace Chart
 
 	 ///=====================================================================================
 	///
-	/// Контейнер диаграм
+	/// РљРѕРЅС‚РµР№РЅРµСЂ РґРёР°РіСЂР°Рј
 	/// 
 	/// 
 	///--------------------------------------------------------------------------------------
@@ -34,26 +34,26 @@ namespace Chart
 		virtual ~AChartContainer();
 
 
-		int count() const; //количество элементов в контейнере
-		PChart item(const int index); //возвратим данные в контейнере
-		void append(const PChart &chart); //добовляем данные
+		int count() const; //РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РІ РєРѕРЅС‚РµР№РЅРµСЂРµ
+		PChart item(const int index); //РІРѕР·РІСЂР°С‚РёРј РґР°РЅРЅС‹Рµ РІ РєРѕРЅС‚РµР№РЅРµСЂРµ
+		void append(const PChart &chart); //РґРѕР±РѕРІР»СЏРµРј РґР°РЅРЅС‹Рµ
 
-		bool isContains(const PChart &chart); //проверка, есть даныне или нет в контейнере
+		bool isContains(const PChart &chart); //РїСЂРѕРІРµСЂРєР°, РµСЃС‚СЊ РґР°РЅС‹РЅРµ РёР»Рё РЅРµС‚ РІ РєРѕРЅС‚РµР№РЅРµСЂРµ
 
 	signals:
 	
-		void signal_change(); //данные поменялись, сигнал
+		void signal_change(); //РґР°РЅРЅС‹Рµ РїРѕРјРµРЅСЏР»РёСЃСЊ, СЃРёРіРЅР°Р»
 
 
 	private:
 
 
-		QList<PChart> mCharts; //данные
+		QList<PChart> mCharts; //РґР°РЅРЅС‹Рµ
 
 
 	private slots:
 
-		void slot_change(const AChart* chart); //изменение данных
+		void slot_change(const AChart* chart); //РёР·РјРµРЅРµРЅРёРµ РґР°РЅРЅС‹С…
 	};
 	///--------------------------------------------------------------------------------------
 

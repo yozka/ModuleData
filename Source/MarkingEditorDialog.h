@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include <QObject>
 #include <QSharedPointer>
 #include <QDialog>
@@ -23,7 +23,7 @@ namespace Marking
 
 	 ///=====================================================================================
 	///
-	/// Контейнер меток
+	/// РљРѕРЅС‚РµР№РЅРµСЂ РјРµС‚РѕРє
 	/// 
 	/// 
 	///--------------------------------------------------------------------------------------
@@ -39,21 +39,21 @@ namespace Marking
 
 
 
-		void show(PMarkingContainer markings); //показать диалог редактирования
-		void refresh(); //обновить данные
+		void show(PMarkingContainer markings); //РїРѕРєР°Р·Р°С‚СЊ РґРёР°Р»РѕРі СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ
+		void refresh(); //РѕР±РЅРѕРІРёС‚СЊ РґР°РЅРЅС‹Рµ
 
 	private:
 
-		PMarkingContainer	mMarkings; //данные, с метками
+		PMarkingContainer	mMarkings; //РґР°РЅРЅС‹Рµ, СЃ РјРµС‚РєР°РјРё
 		QTableWidget*		mViews;
 
 
 
-		void createUI(QWidget *form);//создание диалога
+		void createUI(QWidget *form);//СЃРѕР·РґР°РЅРёРµ РґРёР°Р»РѕРіР°
 
 	private slots:
 
-		void slot_add(); //нажали кнопку добавить
+		void slot_add(); //РЅР°Р¶Р°Р»Рё РєРЅРѕРїРєСѓ РґРѕР±Р°РІРёС‚СЊ
 	};
 	///--------------------------------------------------------------------------------------
 

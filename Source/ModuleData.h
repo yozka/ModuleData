@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include <QMainWindow>
 #include "ui_ModuleData.h"
 ///--------------------------------------------------------------------------------------
@@ -17,7 +17,7 @@
 
  ///=====================================================================================
 ///
-/// основное окно
+/// РѕСЃРЅРѕРІРЅРѕРµ РѕРєРЅРѕ
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
@@ -36,22 +36,22 @@ public:
 private:
 	Ui::AModuleDataClass				ui;
 
-	Marking::PMarkingContainer			mMarkings;		//метки
-	Marking::PMarkingEditorDialog		mMarkingEditor; //редактор меток
+	Marking::PMarkingContainer			mMarkings;		//РјРµС‚РєРё
+	Marking::PMarkingEditorDialog		mMarkingEditor; //СЂРµРґР°РєС‚РѕСЂ РјРµС‚РѕРє
 
-	DataSource::PDataSourceContainer	mData;			//данны которые приходят извне
-	Chart::PChartContainer				mChart;			//диаграмы
+	DataSource::PDataSourceContainer	mData;			//РґР°РЅРЅС‹ РєРѕС‚РѕСЂС‹Рµ РїСЂРёС…РѕРґСЏС‚ РёР·РІРЅРµ
+	Chart::PChartContainer				mChart;			//РґРёР°РіСЂР°РјС‹
 
 private slots:
 
 	//CHART
-	void on_actionMarking_triggered();	//редактирование справочника закладок событий
-	void on_actionChartNew_triggered(); //добавление новой диаграмы
-	void slot_refreshChart();			//обновление диаграм, появилась удалилась диаграма
+	void on_actionMarking_triggered();	//СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ СЃРїСЂР°РІРѕС‡РЅРёРєР° Р·Р°РєР»Р°РґРѕРє СЃРѕР±С‹С‚РёР№
+	void on_actionChartNew_triggered(); //РґРѕР±Р°РІР»РµРЅРёРµ РЅРѕРІРѕР№ РґРёР°РіСЂР°РјС‹
+	void slot_refreshChart();			//РѕР±РЅРѕРІР»РµРЅРёРµ РґРёР°РіСЂР°Рј, РїРѕСЏРІРёР»Р°СЃСЊ СѓРґР°Р»РёР»Р°СЃСЊ РґРёР°РіСЂР°РјР°
 
 	//DATA
-	void on_actionRandomGenerator_triggered(); //добавление генератора случайных чисел
-	void slot_refreshDataSource(); //обновление источника данных
+	void on_actionRandomGenerator_triggered(); //РґРѕР±Р°РІР»РµРЅРёРµ РіРµРЅРµСЂР°С‚РѕСЂР° СЃР»СѓС‡Р°Р№РЅС‹С… С‡РёСЃРµР»
+	void slot_refreshDataSource(); //РѕР±РЅРѕРІР»РµРЅРёРµ РёСЃС‚РѕС‡РЅРёРєР° РґР°РЅРЅС‹С…
 };
 
 

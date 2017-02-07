@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include <QObject>
 #include <QSharedPointer>
 #include <QList>
@@ -19,7 +19,7 @@ namespace DataSource
 
 	 ///=====================================================================================
 	///
-	/// Контейнер источников данных
+	/// РљРѕРЅС‚РµР№РЅРµСЂ РёСЃС‚РѕС‡РЅРёРєРѕРІ РґР°РЅРЅС‹С…
 	/// 
 	/// 
 	///--------------------------------------------------------------------------------------
@@ -34,25 +34,25 @@ namespace DataSource
 		virtual ~ADataSourceContainer();
 
 
-		int count() const; //количество элементов в контейнере
-		PDataSource item(const int index); //возвратим данные в контейнере
-		void append(const PDataSource &data); //добовляем данные
+		int count() const; //РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РІ РєРѕРЅС‚РµР№РЅРµСЂРµ
+		PDataSource item(const int index); //РІРѕР·РІСЂР°С‚РёРј РґР°РЅРЅС‹Рµ РІ РєРѕРЅС‚РµР№РЅРµСЂРµ
+		void append(const PDataSource &data); //РґРѕР±РѕРІР»СЏРµРј РґР°РЅРЅС‹Рµ
 
 
 	signals:
 	
-		void signal_change(); //данные поменялись, сигнал
+		void signal_change(); //РґР°РЅРЅС‹Рµ РїРѕРјРµРЅСЏР»РёСЃСЊ, СЃРёРіРЅР°Р»
 
 
 	private:
 
 
-		QList<PDataSource> mDatas; //данные
+		QList<PDataSource> mDatas; //РґР°РЅРЅС‹Рµ
 
 
 	private slots:
 
-		void slot_change(const ADataSource* data); //изменение данных
+		void slot_change(const ADataSource* data); //РёР·РјРµРЅРµРЅРёРµ РґР°РЅРЅС‹С…
 	};
 	///--------------------------------------------------------------------------------------
 

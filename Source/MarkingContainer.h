@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include <QObject>
 #include <QSharedPointer>
 #include <QList>
@@ -19,7 +19,7 @@ namespace Marking
 
 	 ///=====================================================================================
 	///
-	/// Контейнер меток
+	/// РљРѕРЅС‚РµР№РЅРµСЂ РјРµС‚РѕРє
 	/// 
 	/// 
 	///--------------------------------------------------------------------------------------
@@ -34,25 +34,25 @@ namespace Marking
 		virtual ~AMarkingContainer();
 
 
-		int count() const; //количество элементов в контейнере
-		PMarking item(const int index); //возвратим данные в контейнере
-		void append(const PMarking &marking); //добовляем данные
+		int count() const; //РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РІ РєРѕРЅС‚РµР№РЅРµСЂРµ
+		PMarking item(const int index); //РІРѕР·РІСЂР°С‚РёРј РґР°РЅРЅС‹Рµ РІ РєРѕРЅС‚РµР№РЅРµСЂРµ
+		void append(const PMarking &marking); //РґРѕР±РѕРІР»СЏРµРј РґР°РЅРЅС‹Рµ
 
 
 	signals:
 	
-		void signal_change(); //данные поменялись, сигнал
+		void signal_change(); //РґР°РЅРЅС‹Рµ РїРѕРјРµРЅСЏР»РёСЃСЊ, СЃРёРіРЅР°Р»
 
 
 	private:
 
 
-		QList<PMarking> mMarkings; //данные
+		QList<PMarking> mMarkings; //РґР°РЅРЅС‹Рµ
 
 
 	private slots:
 
-		void slot_change(const AMarking* marking); //изменение данных
+		void slot_change(const AMarking* marking); //РёР·РјРµРЅРµРЅРёРµ РґР°РЅРЅС‹С…
 	};
 	///--------------------------------------------------------------------------------------
 

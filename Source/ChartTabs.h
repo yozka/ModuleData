@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include <QString>
 #include <QTabWidget>
 
@@ -20,7 +20,7 @@ namespace Chart
 
 	 ///=====================================================================================
 	///
-	/// Утилита для синхронизации с табами
+	/// РЈС‚РёР»РёС‚Р° РґР»СЏ СЃРёРЅС…СЂРѕРЅРёР·Р°С†РёРё СЃ С‚Р°Р±Р°РјРё
 	/// 
 	/// 
 	///--------------------------------------------------------------------------------------
@@ -34,13 +34,13 @@ namespace Chart
 
 		virtual ~AChartTabs();
 
-		void syncWidget(QTabWidget *tabs); //синхронизация диаграм с табами
+		void syncWidget(QTabWidget *tabs); //СЃРёРЅС…СЂРѕРЅРёР·Р°С†РёСЏ РґРёР°РіСЂР°Рј СЃ С‚Р°Р±Р°РјРё
 
-		bool isContaint(const PChart &chartCheck, const QTabWidget *tabs) const; //проверка, есть данный диаграма в вкладках таба
+		bool isContaint(const PChart &chartCheck, const QTabWidget *tabs) const; //РїСЂРѕРІРµСЂРєР°, РµСЃС‚СЊ РґР°РЅРЅС‹Р№ РґРёР°РіСЂР°РјР° РІ РІРєР»Р°РґРєР°С… С‚Р°Р±Р°
 
 	private:
 
-		PChartContainer mChart; //список диаграм
+		PChartContainer mChart; //СЃРїРёСЃРѕРє РґРёР°РіСЂР°Рј
 
 
 

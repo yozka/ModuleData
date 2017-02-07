@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include <QObject>
 #include <QSharedPointer>
 #include <QString>
@@ -18,7 +18,7 @@ namespace Marking
 
 	 ///=====================================================================================
 	///
-	/// Одна метка
+	/// РћРґРЅР° РјРµС‚РєР°
 	/// 
 	/// 
 	///--------------------------------------------------------------------------------------
@@ -35,8 +35,8 @@ namespace Marking
 		virtual ~AMarking();
 
 
-		int value() const;				//значение метки
-		QString description() const;	//пояснение метки
+		int value() const;				//Р·РЅР°С‡РµРЅРёРµ РјРµС‚РєРё
+		QString description() const;	//РїРѕСЏСЃРЅРµРЅРёРµ РјРµС‚РєРё
 
 
 	private:
@@ -47,7 +47,7 @@ namespace Marking
 
 	private slots:
 
-		//void slot_change(const AMarking* marking); //изменение данных
+		//void slot_change(const AMarking* marking); //РёР·РјРµРЅРµРЅРёРµ РґР°РЅРЅС‹С…
 	};
 	///--------------------------------------------------------------------------------------
 

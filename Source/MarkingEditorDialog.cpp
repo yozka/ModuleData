@@ -1,4 +1,4 @@
-#include "MarkingEditorDialog.h"
+п»ї#include "MarkingEditorDialog.h"
 #include <QApplication>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -64,7 +64,7 @@ AMarkingEditorDialog :: ~AMarkingEditorDialog ()
 
  ///=====================================================================================
 ///
-/// показать диалог редактирования
+/// РїРѕРєР°Р·Р°С‚СЊ РґРёР°Р»РѕРі СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
@@ -95,7 +95,7 @@ void AMarkingEditorDialog :: show(PMarkingContainer markings)
 
  ///=====================================================================================
 ///
-/// создание диалога
+/// СЃРѕР·РґР°РЅРёРµ РґРёР°Р»РѕРіР°
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
@@ -130,7 +130,7 @@ void AMarkingEditorDialog :: createUI(QWidget *form)
 
 
 
-		//перевод строк
+		//РїРµСЂРµРІРѕРґ СЃС‚СЂРѕРє
 		form		->setWindowTitle(QApplication::translate("markingEditor", "Marking editor", 0));
         butAdd		->setText(QApplication::translate("markingEditor", "ADD", 0));
 		butDelete	->setText(QApplication::translate("markingEditor", "DELETE", 0));
@@ -154,7 +154,7 @@ void AMarkingEditorDialog :: createUI(QWidget *form)
 
  ///=====================================================================================
 ///
-/// обновить данные
+/// РѕР±РЅРѕРІРёС‚СЊ РґР°РЅРЅС‹Рµ
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
@@ -165,7 +165,7 @@ void AMarkingEditorDialog :: refresh()
 	mViews->setHorizontalHeaderLabels(QString("Value;Description").split(";"));	
 	mViews->horizontalHeader()->setVisible(true);
 
-	//устанваливем данные
+	//СѓСЃС‚Р°РЅРІР°Р»РёРІРµРј РґР°РЅРЅС‹Рµ
 	if (mMarkings.isNull())
 	{
 		return;
@@ -191,7 +191,7 @@ void AMarkingEditorDialog :: refresh()
 
  ///=====================================================================================
 ///
-/// нажали кнопку добавить
+/// РЅР°Р¶Р°Р»Рё РєРЅРѕРїРєСѓ РґРѕР±Р°РІРёС‚СЊ
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
