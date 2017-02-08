@@ -91,6 +91,8 @@ void *DataSource::ADataSource::qt_metacast(const char *_clname)
         return static_cast<void*>(const_cast< ADataSource*>(this));
     if (!strcmp(_clname, "QEnableSharedFromThis<ADataSource>"))
         return static_cast< QEnableSharedFromThis<ADataSource>*>(const_cast< ADataSource*>(this));
+    if (!strcmp(_clname, "DataProxy::IInterface_receiv"))
+        return static_cast< DataProxy::IInterface_receiv*>(const_cast< ADataSource*>(this));
     return QObject::qt_metacast(_clname);
 }
 

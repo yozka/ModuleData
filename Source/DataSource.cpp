@@ -1,5 +1,5 @@
 ﻿#include "DataSource.h"
-#include "Adapter.h"
+#include <QVariant>
 ///--------------------------------------------------------------------------------------
 
 
@@ -20,6 +20,8 @@ using namespace DataSource;
 /// 
 ///--------------------------------------------------------------------------------------
 ADataSource :: ADataSource ()
+	:
+	streamData(DataProxy::PCollectionProxy(new DataProxy::ACollectionProxy(this)))
 {
 
 
@@ -40,10 +42,6 @@ ADataSource :: ADataSource ()
 ///--------------------------------------------------------------------------------------
 ADataSource :: ~ADataSource ()
 {
-	while (!mAdapters.isEmpty())
-	{
-		disconnectAdapter(mAdapters.back());
-	}
 
 }
 ///--------------------------------------------------------------------------------------
@@ -76,27 +74,32 @@ void ADataSource :: slot_show()
 
  ///=====================================================================================
 ///
-/// подключаем адаптер для передачи данных
+/// команда начало сбора данных
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void ADataSource :: connectAdapter(const QSharedPointer<AAdapter> &adapter)
+void ADataSource :: command_dataBegin()
 {
-	if (adapter.isNull())
-	{
-		return;
-	}
-
-	if (!mAdapters.contains(adapter))
-	{
-		mAdapters.append(adapter);
-	}
-	adapter->connectDataSource(sharedFromThis());
+	streamData->command_dataSend(title());
 }
 ///--------------------------------------------------------------------------------------
 
 
 
+
+
+
+ ///=====================================================================================
+///
+/// команда конца сбора данных
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void ADataSource :: command_dataEnd()
+{
+
+}
+///--------------------------------------------------------------------------------------
 
 
 
@@ -108,6 +111,7 @@ void ADataSource :: connectAdapter(const QSharedPointer<AAdapter> &adapter)
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
+/*
 void ADataSource :: disconnectAdapter(const QSharedPointer<AAdapter> &adapter)
 {
 	if (mAdapters.contains(adapter))
@@ -117,4 +121,5 @@ void ADataSource :: disconnectAdapter(const QSharedPointer<AAdapter> &adapter)
 		old->disconnectDataSource();
 	}
 }
+*/
 

@@ -4,7 +4,7 @@
 #include <QEnableSharedFromThis>
 ///--------------------------------------------------------------------------------------
 
-namespace DataSource
+namespace DataProxy
 {
 	///--------------------------------------------------------------------------------------
 
@@ -12,7 +12,7 @@ namespace DataSource
 
 
 	///--------------------------------------------------------------------------------------
-	class ADataSource;
+	class ACollectionProxy;
 	///--------------------------------------------------------------------------------------
 
 
@@ -21,30 +21,36 @@ namespace DataSource
 
 	 ///=====================================================================================
 	///
-	/// Интерфес для передачи данных между источником и клиентом
+	/// Проксирование данных между источниками
 	/// 
 	/// 
 	///--------------------------------------------------------------------------------------
-	class AAdapter
+	class ADataProxy
 		: 
-			public QEnableSharedFromThis<AAdapter>
+			public QEnableSharedFromThis<ADataProxy>
 	{
 
 
 	public:
-		AAdapter();
+		ADataProxy();
 		
 
-		virtual ~AAdapter();
+		virtual ~ADataProxy();
 
 
-		void connectDataSource(const QSharedPointer<ADataSource> &dataSource);
-		void disconnectDataSource(); //отключаем источник данных
+		bool connect(const QSharedPointer<ACollectionProxy> &source);
+		void disconnect(); //отключаем источник данных
+
+
+		//команды
+		void command_dataBegin(); //команда начало сбора данных
+		void command_dataEnd();   //команда конец сбора данных
+		void command_dataSend(const QVariant &value);  //передача данных
 
 	private:
 
-		QWeakPointer<ADataSource> mDataSource;
-
+		QWeakPointer<ACollectionProxy> mSourceFirst;
+		QWeakPointer<ACollectionProxy> mSourceSecond;
 
 	};
 	///--------------------------------------------------------------------------------------
@@ -54,7 +60,7 @@ namespace DataSource
 
 		
 	///--------------------------------------------------------------------------------------
-	typedef QSharedPointer<AAdapter> PAdapter;
+	typedef QSharedPointer<ADataProxy> PDataProxy;
 	///--------------------------------------------------------------------------------------
 
 

@@ -7,8 +7,7 @@
 #include "DSComPort.h"
 
 #include "ChartTabs.h"
-#include "Adapter.h"
-#include "Adapter_chart.h"
+#include "DataProxy.h"
 ///--------------------------------------------------------------------------------------
 
 
@@ -104,12 +103,13 @@ void AModuleData :: on_actionChartNew_triggered()
 
 	chart->setMarking(mMarkings);	//маркировачные закладки
 
-//	auto data = DataSource::PAdapter_chart::create();
-//	data->connect(chart, dataConcret);
-	
-	auto proxyAdapter = DataSource::PAdapter_chart::create();
-	data->connectAdapter(proxyAdapter);
-	//chart->connectAdapter(
+
+
+	//свяжем источник данных с приемником
+	auto proxy = DataProxy::PDataProxy::create();
+	bool b1 = data	->streamData->connect(proxy);
+	bool b2 = chart	->streamData->connect(proxy);
+
 
 	mChart->append(chart);
 
@@ -133,14 +133,38 @@ void AModuleData :: on_actionChartClose_triggered()
 {
 	Chart::AChartTabs chartTabs(mChart, ui.tabWidget);
 	auto chart = chartTabs.currentChart();
-	if (!chart.isNull())
+	if (chart.isNull())
 	{
-		mChart->remove(chart);
-		chart->clear();
+		return;
 	}
+	mChart->remove(chart);
+	chart->clear();
 }
 ///--------------------------------------------------------------------------------------
 
+
+
+
+
+
+ ///=====================================================================================
+///
+/// запуск сбор данных
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AModuleData :: on_actionChartPlay_triggered()
+{
+	Chart::AChartTabs chartTabs(mChart, ui.tabWidget);
+	auto chart = chartTabs.currentChart();
+	if (chart.isNull())
+	{
+		return;
+	}
+
+	chart->play();
+}
+///--------------------------------------------------------------------------------------
 
 
 

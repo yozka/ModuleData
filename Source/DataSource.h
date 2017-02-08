@@ -4,6 +4,8 @@
 #include <QString>
 #include <QList>
 #include <QEnableSharedFromThis>
+
+#include "CollectionProxy.h"
 ///--------------------------------------------------------------------------------------
 
 
@@ -17,10 +19,6 @@ namespace DataSource
 
 
 
-	///--------------------------------------------------------------------------------------
-	class AAdapter;
-	typedef QList<QSharedPointer<AAdapter>> AListAdapters;
-	///--------------------------------------------------------------------------------------
 
 
 
@@ -36,27 +34,31 @@ namespace DataSource
 	class ADataSource
 			: 
 				public QObject,
-				public QEnableSharedFromThis<ADataSource>
+				public QEnableSharedFromThis<ADataSource>,
+				public DataProxy::IInterface_receiv
 	{
 		Q_OBJECT
 
 	public:
 		ADataSource();
-		
-
 		virtual ~ADataSource();
+
+
+		const DataProxy::PCollectionProxy streamData;
 
 
 		virtual QString title() const	= 0; //возвратим имя источника данных
 		virtual void	show()			= 0; //покажем диалог информации по источнику данных
 
 
-		void connectAdapter		(const QSharedPointer<AAdapter> &adapter); //подключаем адаптер для передачи данных
-		void disconnectAdapter	(const QSharedPointer<AAdapter> &adapter); //отключаем адаптер для передачи данных
+	protected:
 
+		//команды
+		void command_dataBegin() override;	//команда начало сбора данных
+		void command_dataEnd() override;	//команда конца сбора данных
+		void command_dataReceive(const QVariant &value) override{};  //прием данных
 	private:
 
-		AListAdapters mAdapters;
 		
 
 	public slots:

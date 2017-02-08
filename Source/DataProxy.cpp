@@ -1,19 +1,17 @@
-Ôªø#include "Chart.h"
-#include "ChartWidget.h"
+#include "DataProxy.h"
+#include "CollectionProxy.h"
 ///--------------------------------------------------------------------------------------
 
 
 
 ///--------------------------------------------------------------------------------------
-using namespace Chart;
+using namespace DataProxy;
 ///--------------------------------------------------------------------------------------
 
 
 
 
-///--------------------------------------------------------------------------------------
-int gNumberChart = 0;
-///--------------------------------------------------------------------------------------
+
 
 
 
@@ -25,16 +23,13 @@ int gNumberChart = 0;
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-AChart :: AChart ()
-		:
-	streamData(DataProxy::PCollectionProxy(new DataProxy::ACollectionProxy(this)))
-	
+ADataProxy :: ADataProxy ()
 {
-	gNumberChart++;
-	mNumber = gNumberChart;
 
 }
 ///--------------------------------------------------------------------------------------
+
+
 
 
 
@@ -46,9 +41,9 @@ AChart :: AChart ()
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-AChart :: ~AChart ()
+ADataProxy :: ~ADataProxy ()
 {
-	clear();
+	disconnect();
 }
 ///--------------------------------------------------------------------------------------
 
@@ -58,59 +53,71 @@ AChart :: ~AChart ()
 
 
 
- ///=====================================================================================
-///
-/// –≤–æ–∑–≤—Ä–∞—Ç–∏–º –Ω–∞–∑–≤–∞–Ω–∏–µ –¥–∏–∞–≥—Ä–∞–º—ã
-/// 
-/// 
-///--------------------------------------------------------------------------------------
-QString AChart :: title() const
-{
-	return "Chart mn - " + QString::number(mNumber);
-}
-///--------------------------------------------------------------------------------------
-
-
 
 
 
  ///=====================================================================================
 ///
-/// —Å–æ–∑–¥–∞–Ω–∏–µ –ø—Ä–µ–¥—Å—Ç–∞–≤–ª–µ–Ω–∏–µ –¥–∞–Ω–Ω—ã—Ö
+/// 
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-QWidget* AChart :: createWidget()
+bool ADataProxy :: connect(const QSharedPointer<ACollectionProxy> &source)
 {
-	auto *frame = new AChartWidget();
-	connect(frame, &QObject::destroyed, this, &AChart::slot_destroyedWidget);
-
-	frame->setMarking(mMarking);
-
-
-	mWidgets.append(frame);
-	return frame;
-}
-///--------------------------------------------------------------------------------------
-
-
-
-
-
-
- ///=====================================================================================
-///
-/// –¥–∞–ª–µ–Ω–∏–µ –≤–∏–¥–∂–µ—Ç–∞
-/// 
-/// 
-///--------------------------------------------------------------------------------------
-void AChart :: slot_destroyedWidget(QObject *obj)
-{
-	auto frame = static_cast<AChartWidget*>(obj);
-	if (frame != nullptr)
+	if (source.isNull())
 	{
-		frame->clear();
-		mWidgets.removeAll(frame);
+		return false;
+	}
+
+	if (mSourceFirst == source || mSourceSecond == source)
+	{
+		//ËÌˆË‡ÎËÁ‡ˆËˇ ÛÊÂ ·˚Î‡
+		return true;
+	}
+
+	if (mSourceFirst.isNull())
+	{
+		mSourceFirst = source;
+	}
+	else
+		if (mSourceSecond.isNull())
+		{
+			mSourceSecond = source;
+		}
+		else
+		{
+			//ÛÊÂ ÂÒÚ¸ ‚ÒÂ ÍÓÌÌÂÍˆËË
+			return false;
+		}
+
+	return source->connect(sharedFromThis());
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+ ///=====================================================================================
+///
+/// ÓÚÍÎ˛˜‡ÂÏ ËÒÚÓ˜ÌËÍ ‰‡ÌÌ˚ı
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void ADataProxy :: disconnect()
+{
+	if (!mSourceFirst.isNull())
+	{
+		mSourceFirst.data()->disconnect(sharedFromThis());
+		mSourceFirst = PCollectionProxy();
+	}
+
+	if (!mSourceSecond.isNull())
+	{
+		mSourceSecond.data()->disconnect(sharedFromThis());
+		mSourceSecond = PCollectionProxy();
 	}
 }
 ///--------------------------------------------------------------------------------------
@@ -120,22 +127,28 @@ void AChart :: slot_destroyedWidget(QObject *obj)
 
 
 
+
  ///=====================================================================================
 ///
-/// –æ—á–∏—Å—Ç–∫–∞ –≤—Å–µ–π –¥–∏–∞–≥—Ä–∞–º–º—ã, —É–±–µ—Ä–∞–Ω–∏–µ –≤—Å–µ—Ö –∑–∞–≤–∏—Å–µ–º–æ—Å—Ç–µ–π
+/// ÍÓÏ‡Ì‰‡ Ì‡˜‡ÎÓ Ò·Ó‡ ‰‡ÌÌ˚ı
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void AChart :: clear()
+void ADataProxy :: command_dataBegin()
 {
-	mMarking = Marking::PMarkingContainer();
-	for(auto item = mWidgets.constBegin(); item != mWidgets.constEnd(); ++item)
+	if (!mSourceFirst.isNull())
 	{
-		(*item)->clear();
+		mSourceFirst.data()->parent()->command_dataBegin();
 	}
-	mWidgets.clear();
+
+	if (!mSourceSecond.isNull())
+	{
+		mSourceSecond.data()->parent()->command_dataBegin();
+	}
 }
 ///--------------------------------------------------------------------------------------
+
+
 
 
 
@@ -143,15 +156,25 @@ void AChart :: clear()
 
  ///=====================================================================================
 ///
-/// —É—Å—Ç–∞–Ω–æ–≤–∫–∞ –¥–µ–π—Å—Ç–≤—É—é—â–∏—Ö –∑–∞–∫–ª–∞–¥–æ–∫
+/// ÍÓÏ‡Ì‰‡ ÍÓÌÂˆ Ò·Ó‡ ‰‡ÌÌ˚ı
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void AChart :: setMarking(const Marking::PMarkingContainer &marking)
+void ADataProxy :: command_dataEnd()
 {
-	mMarking = marking;
+	if (!mSourceFirst.isNull())
+	{
+		mSourceFirst.data()->parent()->command_dataEnd();
+	}
+
+	if (!mSourceSecond.isNull())
+	{
+		mSourceSecond.data()->parent()->command_dataEnd();
+	}
 }
 ///--------------------------------------------------------------------------------------
+
+
 
 
 
@@ -159,27 +182,21 @@ void AChart :: setMarking(const Marking::PMarkingContainer &marking)
 
  ///=====================================================================================
 ///
-/// –∑–∞–ø—É—Å–∫ —Å–±–æ—Ä–∞ –¥–∞–Ω–Ω—ã—Ö
+/// ÔÂÂ‰‡˜‡ ‰‡ÌÌ˚ı
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void AChart :: play()
+void ADataProxy :: command_dataSend(const QVariant &value)
 {
-	streamData->command_dataBegin();
+	if (!mSourceFirst.isNull())
+	{
+		mSourceFirst.data()->parent()->command_dataReceive(value);
+	}
+
+	if (!mSourceSecond.isNull())
+	{
+		mSourceSecond.data()->parent()->command_dataReceive(value);
+	}
 }
-///--------------------------------------------------------------------------------------
 
 
-
-
-
- ///=====================================================================================
-///
-/// –ø—Ä–∏–µ–º –¥–∞–Ω–Ω—ã—Ö
-/// 
-/// 
-///--------------------------------------------------------------------------------------
-void AChart :: command_dataReceive(const QVariant &value)
-{
-
-}

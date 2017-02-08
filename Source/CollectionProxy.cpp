@@ -1,19 +1,17 @@
-Ôªø#include "Chart.h"
-#include "ChartWidget.h"
+#include "CollectionProxy.h"
+#include "DataProxy.h"
 ///--------------------------------------------------------------------------------------
 
 
 
 ///--------------------------------------------------------------------------------------
-using namespace Chart;
+using namespace DataProxy;
 ///--------------------------------------------------------------------------------------
 
 
 
 
-///--------------------------------------------------------------------------------------
-int gNumberChart = 0;
-///--------------------------------------------------------------------------------------
+
 
 
 
@@ -25,16 +23,15 @@ int gNumberChart = 0;
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-AChart :: AChart ()
-		:
-	streamData(DataProxy::PCollectionProxy(new DataProxy::ACollectionProxy(this)))
-	
+ACollectionProxy :: ACollectionProxy (IInterface_receiv *parent)
+	:
+	mParent(parent)
 {
-	gNumberChart++;
-	mNumber = gNumberChart;
 
 }
 ///--------------------------------------------------------------------------------------
+
+
 
 
 
@@ -46,9 +43,9 @@ AChart :: AChart ()
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-AChart :: ~AChart ()
+ACollectionProxy :: ~ACollectionProxy ()
 {
-	clear();
+	disconnectAll();
 }
 ///--------------------------------------------------------------------------------------
 
@@ -58,59 +55,75 @@ AChart :: ~AChart ()
 
 
 
- ///=====================================================================================
-///
-/// –≤–æ–∑–≤—Ä–∞—Ç–∏–º –Ω–∞–∑–≤–∞–Ω–∏–µ –¥–∏–∞–≥—Ä–∞–º—ã
-/// 
-/// 
-///--------------------------------------------------------------------------------------
-QString AChart :: title() const
-{
-	return "Chart mn - " + QString::number(mNumber);
-}
-///--------------------------------------------------------------------------------------
-
-
 
 
 
  ///=====================================================================================
 ///
-/// —Å–æ–∑–¥–∞–Ω–∏–µ –ø—Ä–µ–¥—Å—Ç–∞–≤–ª–µ–Ω–∏–µ –¥–∞–Ω–Ω—ã—Ö
+/// 
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-QWidget* AChart :: createWidget()
+bool ACollectionProxy :: connect(const QSharedPointer<ADataProxy> &dataProxy)
 {
-	auto *frame = new AChartWidget();
-	connect(frame, &QObject::destroyed, this, &AChart::slot_destroyedWidget);
-
-	frame->setMarking(mMarking);
-
-
-	mWidgets.append(frame);
-	return frame;
-}
-///--------------------------------------------------------------------------------------
-
-
-
-
-
-
- ///=====================================================================================
-///
-/// –¥–∞–ª–µ–Ω–∏–µ –≤–∏–¥–∂–µ—Ç–∞
-/// 
-/// 
-///--------------------------------------------------------------------------------------
-void AChart :: slot_destroyedWidget(QObject *obj)
-{
-	auto frame = static_cast<AChartWidget*>(obj);
-	if (frame != nullptr)
+	if (dataProxy.isNull())
 	{
-		frame->clear();
-		mWidgets.removeAll(frame);
+		return false;
+	}
+
+	if (mDataProxy.contains(dataProxy))
+	{
+		return true;
+	}
+
+	mDataProxy.append(dataProxy);
+	return dataProxy->connect(sharedFromThis());
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+ ///=====================================================================================
+///
+/// ÓÚÍÎ˛˜‡ÂÏ ËÒÚÓ˜ÌËÍ ‰‡ÌÌ˚ı
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+bool ACollectionProxy :: disconnect(const QSharedPointer<ADataProxy> &dataProxy)
+{
+	if (!mDataProxy.contains(dataProxy))
+	{
+		return false;
+	}
+		
+	auto old = PDataProxy(dataProxy);
+	mDataProxy.removeAll(dataProxy);
+	old->disconnect();
+	return true;
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+ ///=====================================================================================
+///
+/// ÓÚÍÎ˛˜ËÏ ‚ÒÂ ÒÓÂ‰ÂÌÂÌËˇ
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void ACollectionProxy :: disconnectAll()
+{
+	while (!mDataProxy.isEmpty())
+	{
+		disconnect(mDataProxy.last());
 	}
 }
 ///--------------------------------------------------------------------------------------
@@ -120,22 +133,28 @@ void AChart :: slot_destroyedWidget(QObject *obj)
 
 
 
+
  ///=====================================================================================
 ///
-/// –æ—á–∏—Å—Ç–∫–∞ –≤—Å–µ–π –¥–∏–∞–≥—Ä–∞–º–º—ã, —É–±–µ—Ä–∞–Ω–∏–µ –≤—Å–µ—Ö –∑–∞–≤–∏—Å–µ–º–æ—Å—Ç–µ–π
+/// ÍÓÏ‡Ì‰‡ Ì‡˜‡ÎÓ Ò·Ó‡ ‰‡ÌÌ˚ı
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void AChart :: clear()
+void ACollectionProxy :: command_dataBegin()
 {
-	mMarking = Marking::PMarkingContainer();
-	for(auto item = mWidgets.constBegin(); item != mWidgets.constEnd(); ++item)
+	for (auto item = mDataProxy.cbegin(); item != mDataProxy.cend(); ++item)
 	{
-		(*item)->clear();
+		auto dataProxy = *item;
+		if (dataProxy.isNull())
+		{
+			continue;
+		}
+		dataProxy->command_dataBegin();
 	}
-	mWidgets.clear();
 }
 ///--------------------------------------------------------------------------------------
+
+
 
 
 
@@ -143,15 +162,25 @@ void AChart :: clear()
 
  ///=====================================================================================
 ///
-/// —É—Å—Ç–∞–Ω–æ–≤–∫–∞ –¥–µ–π—Å—Ç–≤—É—é—â–∏—Ö –∑–∞–∫–ª–∞–¥–æ–∫
+/// ÍÓÏ‡Ì‰‡ ÍÓÌÂˆ Ò·Ó‡ ‰‡ÌÌ˚ı
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void AChart :: setMarking(const Marking::PMarkingContainer &marking)
+void ACollectionProxy :: command_dataEnd()
 {
-	mMarking = marking;
+	for (auto item = mDataProxy.cbegin(); item != mDataProxy.cend(); ++item)
+	{
+		auto dataProxy = *item;
+		if (dataProxy.isNull())
+		{
+			continue;
+		}
+		dataProxy->command_dataEnd();
+	}
 }
 ///--------------------------------------------------------------------------------------
+
+
 
 
 
@@ -159,27 +188,21 @@ void AChart :: setMarking(const Marking::PMarkingContainer &marking)
 
  ///=====================================================================================
 ///
-/// –∑–∞–ø—É—Å–∫ —Å–±–æ—Ä–∞ –¥–∞–Ω–Ω—ã—Ö
+/// ÔÂÂ‰‡˜‡ ‰‡ÌÌ˚ı
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void AChart :: play()
+void ACollectionProxy :: command_dataSend(const QVariant &value)
 {
-	streamData->command_dataBegin();
+	for (auto item = mDataProxy.cbegin(); item != mDataProxy.cend(); ++item)
+	{
+		auto dataProxy = *item;
+		if (dataProxy.isNull())
+		{
+			continue;
+		}
+		dataProxy->command_dataSend(value);
+	}
 }
-///--------------------------------------------------------------------------------------
 
 
-
-
-
- ///=====================================================================================
-///
-/// –ø—Ä–∏–µ–º –¥–∞–Ω–Ω—ã—Ö
-/// 
-/// 
-///--------------------------------------------------------------------------------------
-void AChart :: command_dataReceive(const QVariant &value)
-{
-
-}

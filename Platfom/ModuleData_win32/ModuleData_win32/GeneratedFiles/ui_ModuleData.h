@@ -37,6 +37,9 @@ public:
     QAction *actionChartNew;
     QAction *actionDelete;
     QAction *actionChartClose;
+    QAction *actionChartPlay;
+    QAction *actionChartPause;
+    QAction *actionChartStop;
     QWidget *centralWidget;
     QVBoxLayout *verticalLayout;
     QTabWidget *tabWidget;
@@ -72,6 +75,12 @@ public:
         actionDelete->setObjectName(QStringLiteral("actionDelete"));
         actionChartClose = new QAction(AModuleDataClass);
         actionChartClose->setObjectName(QStringLiteral("actionChartClose"));
+        actionChartPlay = new QAction(AModuleDataClass);
+        actionChartPlay->setObjectName(QStringLiteral("actionChartPlay"));
+        actionChartPause = new QAction(AModuleDataClass);
+        actionChartPause->setObjectName(QStringLiteral("actionChartPause"));
+        actionChartStop = new QAction(AModuleDataClass);
+        actionChartStop->setObjectName(QStringLiteral("actionChartStop"));
         centralWidget = new QWidget(AModuleDataClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         verticalLayout = new QVBoxLayout(centralWidget);
@@ -115,6 +124,10 @@ public:
         menuChart->addSeparator();
         menuChart->addAction(actionChartNew);
         menuChart->addAction(actionChartClose);
+        menuChart->addSeparator();
+        menuChart->addAction(actionChartPlay);
+        menuChart->addAction(actionChartPause);
+        menuChart->addAction(actionChartStop);
         menuData->addAction(menuCreate->menuAction());
         menuData->addAction(actionDataView);
         menuCreate->addAction(actionRandomGenerator);
@@ -142,6 +155,9 @@ public:
         actionChartNew->setText(QApplication::translate("AModuleDataClass", "New", 0));
         actionDelete->setText(QApplication::translate("AModuleDataClass", "Delete", 0));
         actionChartClose->setText(QApplication::translate("AModuleDataClass", "Close", 0));
+        actionChartPlay->setText(QApplication::translate("AModuleDataClass", "Play", 0));
+        actionChartPause->setText(QApplication::translate("AModuleDataClass", "Pause", 0));
+        actionChartStop->setText(QApplication::translate("AModuleDataClass", "Stop", 0));
         menuFile->setTitle(QApplication::translate("AModuleDataClass", "FILE", 0));
         menuChart->setTitle(QApplication::translate("AModuleDataClass", "CHART", 0));
         menuWindows->setTitle(QApplication::translate("AModuleDataClass", "WINDOWS", 0));

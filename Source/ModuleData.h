@@ -50,6 +50,8 @@ private slots:
 	void on_actionChartClose_triggered();	//закрытие диаграммы
 	void slot_refreshChart();				//обновление диаграм, появилась удалилась диаграма
 
+	void on_actionChartPlay_triggered();	//запуск сбор данных
+
 	//DATA
 	void on_actionRandomGenerator_triggered(); //добавление генератора случайных чисел
 	void slot_refreshDataSource(); //обновление источника данных
