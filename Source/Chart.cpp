@@ -46,8 +46,7 @@ AChart :: AChart ()
 ///--------------------------------------------------------------------------------------
 AChart :: ~AChart ()
 {
-
-
+	clear();
 }
 ///--------------------------------------------------------------------------------------
 
@@ -84,8 +83,10 @@ QWidget* AChart :: createWidget()
 	auto *frame = new AChartWidget();
 	connect(frame, &QObject::destroyed, this, &AChart::slot_destroyedWidget);
 
-	
+	frame->setMarking(mMarking);
 
+
+	mWidgets.append(frame);
 	return frame;
 }
 ///--------------------------------------------------------------------------------------
@@ -103,7 +104,12 @@ QWidget* AChart :: createWidget()
 ///--------------------------------------------------------------------------------------
 void AChart :: slot_destroyedWidget(QObject *obj)
 {
-
+	auto frame = static_cast<AChartWidget*>(obj);
+	if (frame != nullptr)
+	{
+		frame->clear();
+		mWidgets.removeAll(frame);
+	}
 }
 ///--------------------------------------------------------------------------------------
 
@@ -121,7 +127,11 @@ void AChart :: slot_destroyedWidget(QObject *obj)
 void AChart :: clear()
 {
 	mMarking = Marking::PMarkingContainer();
-
+	for(auto item = mWidgets.constBegin(); item != mWidgets.constEnd(); ++item)
+	{
+		(*item)->clear();
+	}
+	mWidgets.clear();
 }
 ///--------------------------------------------------------------------------------------
 

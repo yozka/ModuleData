@@ -7,6 +7,8 @@
 #include "DSComPort.h"
 
 #include "ChartTabs.h"
+#include "Adapter.h"
+#include "Adapter_chart.h"
 ///--------------------------------------------------------------------------------------
 
 
@@ -51,6 +53,9 @@ AModuleData :: AModuleData(QWidget *parent)
 ///--------------------------------------------------------------------------------------
 AModuleData :: ~AModuleData()
 {
+	mMarkings = Marking::PMarkingContainer();
+	mData = DataSource::PDataSourceContainer();
+	mChart = Chart::PChartContainer();
 }
 ///--------------------------------------------------------------------------------------
 
@@ -99,10 +104,12 @@ void AModuleData :: on_actionChartNew_triggered()
 
 	chart->setMarking(mMarkings);	//маркировачные закладки
 
-
-	/*
-	chart->setDataSource(data);		//источник данных
-	*/
+//	auto data = DataSource::PAdapter_chart::create();
+//	data->connect(chart, dataConcret);
+	
+	auto proxyAdapter = DataSource::PAdapter_chart::create();
+	data->connectAdapter(proxyAdapter);
+	//chart->connectAdapter(
 
 	mChart->append(chart);
 

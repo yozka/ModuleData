@@ -64,6 +64,15 @@
     <Filter Include="Source\Chart\ChartWidget">
       <UniqueIdentifier>{4a8fce1a-5535-47be-b939-51a1a434b482}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Chart\ChartWidget\CustomPlot">
+      <UniqueIdentifier>{5581fb4a-02e0-4f7f-bd8a-f0310b10a2fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\DataSource\Adapter">
+      <UniqueIdentifier>{c535e1b2-d290-442f-babc-82311cc10d95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\DataSource\Adapter\Adapter_chart">
+      <UniqueIdentifier>{6143e077-a794-4a41-8965-6db52ea7446d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -165,6 +174,21 @@
     <ClCompile Include="GeneratedFiles\Release\moc_ChartWidget.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\qcustomplot-source\qcustomplot.cpp">
+      <Filter>Source\Chart\ChartWidget\CustomPlot</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_qcustomplot.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_qcustomplot.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Adapter.cpp">
+      <Filter>Source\DataSource\Adapter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Adapter_chart.cpp">
+      <Filter>Source\DataSource\Adapter\Adapter_chart</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\..\Source\ModuleData.h">
@@ -200,6 +224,9 @@
     <CustomBuild Include="..\..\..\Source\ChartWidget.h">
       <Filter>Source\Chart\ChartWidget</Filter>
     </CustomBuild>
+    <CustomBuild Include="..\..\..\Source\qcustomplot-source\qcustomplot.h">
+      <Filter>Source\Chart\ChartWidget\CustomPlot</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ModuleData_win32.rc">
@@ -221,6 +248,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Source\ChartTabs.h">
       <Filter>Source\Chart\ChartTabs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Adapter.h">
+      <Filter>Source\DataSource\Adapter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Adapter_chart.h">
+      <Filter>Source\DataSource\Adapter\Adapter_chart</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

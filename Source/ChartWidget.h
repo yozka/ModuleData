@@ -1,7 +1,11 @@
 #pragma once
 #include <QWidget>
 #include <QString>
-#include <QPushButton>
+#include <QLabel>
+#include <QTreeWidget>
+
+#include "qcustomplot-source\qcustomplot.h"
+#include "MarkingContainer.h"
 ///--------------------------------------------------------------------------------------
 
 namespace Chart
@@ -32,12 +36,32 @@ namespace Chart
 		AChartWidget();
 		virtual ~AChartWidget();
 
+		void clear(); //очистка всех зависемостей
+		void setMarking(const Marking::PMarkingContainer &marking); //установка действующих закладок
 
 
 	private:
 
+		Marking::PMarkingContainer	mMarking; //закладки
 
 
+		//информационные значения
+		QLabel *mInfoTime;
+		QLabel *mInfoValue;
+		QLabel *mInfoDescription;
+
+		QTreeWidget *mTreeMarkings; //искользуемые метки
+
+		QCustomPlot *mPlot; //диаграмма
+		QCustomPlot *mPlotTimer; //временная шкала
+
+		void createUI(QWidget *parentWidget); //создание виджета 
+
+
+		QWidget* createHeader(); //создание заголовка
+		QWidget* createCharts(); //создание диаграмм
+
+		void test();
 
 	public slots:
 

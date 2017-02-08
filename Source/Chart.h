@@ -3,6 +3,7 @@
 #include <QSharedPointer>
 #include <QString>
 #include <QWidget>
+#include <QList>
 
 #include "MarkingContainer.h"
 ///--------------------------------------------------------------------------------------
@@ -13,6 +14,11 @@ namespace Chart
 
 
 
+
+
+	///--------------------------------------------------------------------------------------
+	class AChartWidget;
+	///--------------------------------------------------------------------------------------
 
 
 
@@ -48,11 +54,13 @@ namespace Chart
 
 		int mNumber; //тестовый номер диаграмы
 
-		Marking::PMarkingContainer mMarking; //закладки
+		Marking::PMarkingContainer	mMarking; //закладки
+
+		QList<AChartWidget*>		mWidgets; //список привязанных виджетов
 
 	private slots:
 
-		//void slot_change(const AMarking* marking); //изменение данных
+
 		void slot_destroyedWidget(QObject *obj); //удаление виджета
 	};
 	///--------------------------------------------------------------------------------------

@@ -89,6 +89,8 @@ void *DataSource::ADataSource::qt_metacast(const char *_clname)
     if (!_clname) return Q_NULLPTR;
     if (!strcmp(_clname, qt_meta_stringdata_DataSource__ADataSource.stringdata0))
         return static_cast<void*>(const_cast< ADataSource*>(this));
+    if (!strcmp(_clname, "QEnableSharedFromThis<ADataSource>"))
+        return static_cast< QEnableSharedFromThis<ADataSource>*>(const_cast< ADataSource*>(this));
     return QObject::qt_metacast(_clname);
 }
 

@@ -1,13 +1,8 @@
-﻿#pragma once
-#include <QObject>
+#pragma once
 #include <QSharedPointer>
-#include <QString>
-#include <QList>
+#include <QWeakPointer>
 #include <QEnableSharedFromThis>
 ///--------------------------------------------------------------------------------------
-
-
-
 
 namespace DataSource
 {
@@ -16,12 +11,9 @@ namespace DataSource
 
 
 
-
 	///--------------------------------------------------------------------------------------
-	class AAdapter;
-	typedef QList<QSharedPointer<AAdapter>> AListAdapters;
+	class ADataSource;
 	///--------------------------------------------------------------------------------------
-
 
 
 
@@ -29,39 +21,31 @@ namespace DataSource
 
 	 ///=====================================================================================
 	///
-	/// Источник данных
+	/// �������� ��� �������� ������ ����� ���������� � ��������
 	/// 
 	/// 
 	///--------------------------------------------------------------------------------------
-	class ADataSource
-			: 
-				public QObject,
-				public QEnableSharedFromThis<ADataSource>
+	class AAdapter
+		: 
+			public QEnableSharedFromThis<AAdapter>
 	{
-		Q_OBJECT
+
 
 	public:
-		ADataSource();
+		AAdapter();
 		
 
-		virtual ~ADataSource();
+		virtual ~AAdapter();
 
 
-		virtual QString title() const	= 0; //возвратим имя источника данных
-		virtual void	show()			= 0; //покажем диалог информации по источнику данных
-
-
-		void connectAdapter		(const QSharedPointer<AAdapter> &adapter); //подключаем адаптер для передачи данных
-		void disconnectAdapter	(const QSharedPointer<AAdapter> &adapter); //отключаем адаптер для передачи данных
+		void connectDataSource(const QSharedPointer<ADataSource> &dataSource);
+		void disconnectDataSource(); //��������� �������� ������
 
 	private:
 
-		AListAdapters mAdapters;
-		
+		QWeakPointer<ADataSource> mDataSource;
 
-	public slots:
 
-		void slot_show(); //покажем диалог информации по источнику данных
 	};
 	///--------------------------------------------------------------------------------------
 
@@ -70,7 +54,7 @@ namespace DataSource
 
 		
 	///--------------------------------------------------------------------------------------
-	typedef QSharedPointer<ADataSource> PDataSource;
+	typedef QSharedPointer<AAdapter> PAdapter;
 	///--------------------------------------------------------------------------------------
 
 

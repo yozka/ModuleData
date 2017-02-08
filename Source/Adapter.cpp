@@ -1,5 +1,5 @@
-﻿#include "DataSource.h"
 #include "Adapter.h"
+#include "DataSource.h"
 ///--------------------------------------------------------------------------------------
 
 
@@ -13,15 +13,18 @@ using namespace DataSource;
 
 
 
+
+
+
+
  ///=====================================================================================
 ///
 /// Constructor
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-ADataSource :: ADataSource ()
+AAdapter :: AAdapter ()
 {
-
 
 }
 ///--------------------------------------------------------------------------------------
@@ -38,13 +41,45 @@ ADataSource :: ADataSource ()
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-ADataSource :: ~ADataSource ()
+AAdapter :: ~AAdapter ()
 {
-	while (!mAdapters.isEmpty())
+	disconnectDataSource();
+
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+ ///=====================================================================================
+///
+/// 
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AAdapter :: connectDataSource(const QSharedPointer<ADataSource> &dataSource)
+{
+	if (dataSource.isNull())
 	{
-		disconnectAdapter(mAdapters.back());
+		disconnectDataSource();
+		return;
 	}
 
+	if (mDataSource == dataSource)
+	{
+		//������������ ��� ����
+		return;
+	}
+
+	disconnectDataSource();
+	mDataSource = dataSource;
+	dataSource->connectAdapter(sharedFromThis());
 }
 ///--------------------------------------------------------------------------------------
 
@@ -54,67 +89,19 @@ ADataSource :: ~ADataSource ()
 
 
 
-
  ///=====================================================================================
 ///
-/// покажем диалог информации по источнику данных
+/// ��������� �������� ������
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void ADataSource :: slot_show()
+void AAdapter :: disconnectDataSource()
 {
-	show();
-}
-///--------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
- ///=====================================================================================
-///
-/// подключаем адаптер для передачи данных
-/// 
-/// 
-///--------------------------------------------------------------------------------------
-void ADataSource :: connectAdapter(const QSharedPointer<AAdapter> &adapter)
-{
-	if (adapter.isNull())
+	if (mDataSource.isNull())
 	{
 		return;
 	}
 
-	if (!mAdapters.contains(adapter))
-	{
-		mAdapters.append(adapter);
-	}
-	adapter->connectDataSource(sharedFromThis());
+	mDataSource.data()->disconnectAdapter(sharedFromThis());
+	mDataSource = PDataSource();
 }
-///--------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
- ///=====================================================================================
-///
-/// отключаем адаптер для передачи данных
-/// 
-/// 
-///--------------------------------------------------------------------------------------
-void ADataSource :: disconnectAdapter(const QSharedPointer<AAdapter> &adapter)
-{
-	if (mAdapters.contains(adapter))
-	{
-		auto old = PAdapter(adapter);
-		mAdapters.removeAll(adapter);
-		old->disconnectDataSource();
-	}
-}
-
