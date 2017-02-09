@@ -13,8 +13,9 @@ namespace DataSource
 
 	namespace settings
 	{
-		const int min = -200;
-		const int max = 200;
+		const int min		= -200;
+		const int max		= 200;
+		const int interval	= 100;
 	}
 
 

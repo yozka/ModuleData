@@ -32,7 +32,7 @@ int gNumber = 0;
 ///--------------------------------------------------------------------------------------
 ARandomGenerator :: ARandomGenerator ()
 	:
-	mInterval(1000),
+	mInterval(settings::interval),
 	mTimer(nullptr),
 	mBeginMs(0)
 {

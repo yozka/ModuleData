@@ -41,7 +41,8 @@ namespace Chart
 
 
 
-		void refresh(const QVector<int> &data); //обнолвение виджета
+		//void refresh(const QVector<int> &data); //обнолвение виджета
+		void append(const double time, const double data); //добавить данные в виджеты
 
 	private:
 
@@ -58,13 +59,16 @@ namespace Chart
 		QCustomPlot *mPlot; //диаграмма
 		QCustomPlot *mPlotTimer; //временная шкала
 
+		QCPGraph *mPlotGraph; //основные данные
+
+
 		void createUI(QWidget *parentWidget); //создание виджета 
 
 
 		QWidget* createHeader(); //создание заголовка
 		QWidget* createCharts(); //создание диаграмм
 
-		void test();
+		void initPlot();
 
 	public slots:
 

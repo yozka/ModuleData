@@ -30,8 +30,10 @@ int gNumberChart = 0;
 AChart :: AChart ()
 		:
 	streamData(DataProxy::PCollectionProxy(new DataProxy::ACollectionProxy(this))),
-	mRun(false)
+	mRun(false),
+	mChartWidget(nullptr)
 	
+
 {
 	gNumberChart++;
 	mNumber = gNumberChart;
@@ -85,14 +87,17 @@ QString AChart :: title() const
 ///--------------------------------------------------------------------------------------
 QWidget* AChart :: createWidget()
 {
-	auto *frame = new AChartWidget();
-	connect(frame, &QObject::destroyed, this, &AChart::slot_destroyedWidget);
+	if (mChartWidget != nullptr)
+	{
+		delete mChartWidget;
+		mChartWidget = nullptr;
+	}
 
-	frame->setMarking(mMarking);
+	mChartWidget = new AChartWidget();
+	connect(mChartWidget, &QObject::destroyed, this, &AChart::slot_destroyedWidget);
 
-
-	mWidgets.append(frame);
-	return frame;
+	mChartWidget->setMarking(mMarking);
+	return mChartWidget;
 }
 ///--------------------------------------------------------------------------------------
 
@@ -110,10 +115,9 @@ QWidget* AChart :: createWidget()
 void AChart :: slot_destroyedWidget(QObject *obj)
 {
 	auto frame = static_cast<AChartWidget*>(obj);
-	if (frame != nullptr)
+	if (frame != nullptr && frame == mChartWidget)
 	{
-		frame->clear();
-		mWidgets.removeAll(frame);
+		mChartWidget = nullptr;
 	}
 }
 ///--------------------------------------------------------------------------------------
@@ -132,17 +136,11 @@ void AChart :: slot_destroyedWidget(QObject *obj)
 void AChart :: clear()
 {
 	mMarking = Marking::PMarkingContainer();
-	for(auto item = mWidgets.constBegin(); item != mWidgets.constEnd(); ++item)
+	if (mChartWidget != nullptr)
 	{
-		(*item)->clear();
+		mChartWidget->clear();
 	}
-	mWidgets.clear();
-
-	if (mRun)
-	{
-		streamData->command_dataClose();
-		mRun = false;
-	}
+	reset();
 }
 ///--------------------------------------------------------------------------------------
 
@@ -179,7 +177,11 @@ void AChart :: play()
 		return;
 	}
 	mRun = true;
-	mDatas.reserve(1000 * 60 * 60);
+
+	const int reservSize = 1000 * 60 * 60; 
+	mContentTime.reserve(reservSize);
+	mContentData.reserve(reservSize);
+
 	streamData->command_dataOpen();
 }
 ///--------------------------------------------------------------------------------------
@@ -224,7 +226,7 @@ void AChart :: stop()
 	}
 
 	//очистка всех буферов данных
-	mDatas.clear();
+	reset();
 }
 ///--------------------------------------------------------------------------------------
 
@@ -251,11 +253,14 @@ void AChart :: command_dataReceive(const QVariant &value)
 		return;
 	}
 
-	const int time = ds[0];
-	const int data = ds[1];
+	const double dTime = ds[0];
+	const double dData = ds[1];
 
 
-	mDatas.append(data);
+	mContentTime.append(dTime);
+	mContentData.append(dData);
+
+	append(dTime, dData);
 
 	//отошлем новую информацию всем виджетам
 	refreshWidgets();
@@ -312,18 +317,63 @@ void AChart :: command_disconnect ()
 
  ///=====================================================================================
 ///
+/// удаление сброс всех данных
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AChart :: reset()
+{
+	mContentTime.clear();
+	mContentData.clear();
+	if (mRun)
+	{
+		streamData->command_dataClose();
+		mRun = false;
+	}
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+ ///=====================================================================================
+///
 /// расконнектились
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
 void AChart :: refreshWidgets()
 {
+	/*
 	for(auto item = mWidgets.constBegin(); item != mWidgets.constEnd(); ++item)
 		{
 			(*item)->refresh(mDatas);
 		}
-
+		*/
 }
+///--------------------------------------------------------------------------------------
 
 
+
+
+
+
+
+ ///=====================================================================================
+///
+/// добавить данные в виджеты
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AChart :: append(const double time, const double data)
+{
+	if (mChartWidget != nullptr)
+	{
+		mChartWidget->append(time, data);
+	}
+}
+///--------------------------------------------------------------------------------------
 

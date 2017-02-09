@@ -31,13 +31,14 @@ AChartWidget :: AChartWidget ()
 	mInfoDescription(NULL),
 	mTreeMarkings(NULL),
 	mPlot(NULL),
-	mPlotTimer(NULL)
+	mPlotTimer(NULL),
+	mPlotGraph(NULL)
 {
 	createUI(this);
 
 
 	//тестовые значения
-	test();
+	initPlot();
 }
 ///--------------------------------------------------------------------------------------
 
@@ -206,17 +207,30 @@ QWidget*  AChartWidget :: createCharts()
 
 	return charts;*/
 }
+///--------------------------------------------------------------------------------------
 
 
-void AChartWidget ::  test()
+
+
+
+
+
+
+ ///=====================================================================================
+///
+/// создание диаграмм
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AChartWidget ::  initPlot()
 {
 	auto customPlot = mPlot;
 
 
 	customPlot->setInteraction(QCP::iRangeZoom,true);   // Включаем взаимодействие удаления/приближения
     customPlot->setInteraction(QCP::iRangeDrag, true);  // Включаем взаимодействие перетаскивания графика
-    customPlot->axisRect()->setRangeDrag(Qt::Horizontal);   // Включаем перетаскивание только по горизонтальной оси
-    customPlot->axisRect()->setRangeZoom(Qt::Horizontal);   // Включаем удаление/приближение только по горизонтальной оси
+   // customPlot->axisRect()->setRangeDrag(Qt::Horizontal);   // Включаем перетаскивание только по горизонтальной оси
+   // customPlot->axisRect()->setRangeZoom(Qt::Horizontal);   // Включаем удаление/приближение только по горизонтальной оси
     //customPlot->xAxis->setTickLabelType(QCPAxis::ltDateTime);   // Подпись координат по Оси X в качестве Даты и Времени
    // customPlot->xAxis->setDateTimeFormat("hh:mm");  // Устанавливаем формат даты и времени
  
@@ -227,9 +241,7 @@ void AChartWidget ::  test()
     // Автоматическое масштабирование тиков по Оси X
     //customPlot->xAxis->setAutoTickStep(true);
  
-    /* Делаем видимыми оси X и Y по верхней и правой границам графика,
-     * но отключаем на них тики и подписи координат
-     * */
+
     customPlot->xAxis2->setVisible(true);
     customPlot->yAxis2->setVisible(true);
     customPlot->xAxis2->setTicks(false);
@@ -243,38 +255,21 @@ void AChartWidget ::  test()
     customPlot->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft|Qt::AlignTop);
  
     // Инициализируем график и привязываем его к Осям
-    auto graphic = customPlot->addGraph(customPlot->xAxis, customPlot->yAxis);
-
-	graphic->setName("Доход, Р");       // Устанавливаем
-    graphic->setPen(QPen(QColor(Qt::red))); // Устанавливаем цвет графика
-    graphic->setAntialiased(false);         // Отключаем сглаживание, по умолчанию включено
-    graphic->setLineStyle(QCPGraph::lsImpulse); // График в виде импульсных тиков
+    mPlotGraph = customPlot->addGraph(customPlot->xAxis, customPlot->yAxis);
+	mPlotGraph->setName("Data");
+    mPlotGraph->setPen(QPen(QColor(Qt::red)));
+    mPlotGraph->setAntialiased(true);
+    mPlotGraph->setLineStyle(QCPGraph::lsImpulse); 
  
+
+
     /* Подключаем сигнал от Оси X об изменении видимого диапазона координат
      * к СЛОТу для переустановки формата времени оси.
      * */
     connect(customPlot->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(slotRangeChanged(QCPRange)));
  
-    // Будем строить график с сегодняшнего дни и текущей секунды в будущее
-    double now = QDateTime::currentDateTime().toTime_t();
-    // Объявляем вектора времени и доходов
-    QVector <double> time(400);
-	QVector <double> income(400);
- 
-    srand(15); // Инициализируем генератор псевдослучайных чисел
- 
-    // Заполняем график значениями
-	income[0] = 0;
-    for (int i= 1; i<400; ++i)
-      {
-        time[i] = now + 3600*i;
-        income[i] = qFabs(income[i-1]) + (i/50.0+1)*(rand()/(double)RAND_MAX-0.5);
-      }
- 
-    graphic->setData(time, income); // Устанавливаем данные
     customPlot->rescaleAxes();      // Масштабируем график по данным
     customPlot->replot();           // Отрисовываем график
-
 }
 
 
@@ -317,12 +312,13 @@ void AChartWidget :: setMarking(const Marking::PMarkingContainer &marking)
 
  ///=====================================================================================
 ///
-/// обнолвение виджета
+/// добавить данные в виджеты
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void AChartWidget :: refresh(const QVector<int> &data)
+void AChartWidget :: append(const double time, const double data)
 {
-
-
+	mPlotGraph->addData(time, data);
+	mPlot->rescaleAxes();
+	mPlot->replot();
 }

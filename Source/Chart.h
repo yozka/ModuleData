@@ -24,10 +24,6 @@ namespace Chart
 
 
 
-	///--------------------------------------------------------------------------------------
-	typedef QVector<int> TListData;
-	///--------------------------------------------------------------------------------------
-
 
 
 
@@ -62,6 +58,7 @@ namespace Chart
 		void		pause();	//пауза для сбора данных
 		void		stop();		//остановка для сбора данных
 
+		void		reset();	//удаление сброс всех данных
 		void		refreshWidgets(); //обновим информацию у виджетах
 
 	protected:
@@ -78,12 +75,17 @@ namespace Chart
 		int mNumber; //тестовый номер диаграмы
 
 		Marking::PMarkingContainer	mMarking; //закладки
-		QList<AChartWidget*>		mWidgets; //список привязанных виджетов
+		AChartWidget*				mChartWidget; //список привязанных виджетов
 
 		bool mRun; //режим, запуска
+		bool mInitTime; //нужно или нет инциализировать время
+		int  mZeroTime; //нулевая точка времени, для отчета
+
+		QVector<double> mContentTime; //время
+		QVector<double> mContentData; //данные
 
 
-		TListData mDatas; //данные
+		void append(const double time, const double data); //добавить данные в виджеты
 
 
 	private slots:
