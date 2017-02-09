@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <QObject>
 #include <QSharedPointer>
+#include <QWeakPointer>
 #include <QString>
 #include <QList>
 #include <QEnableSharedFromThis>
@@ -50,6 +51,9 @@ namespace DataSource
 		virtual QString title() const	= 0; //возвратим имя источника данных
 		virtual void	show()			= 0; //покажем диалог информации по источнику данных
 
+		void clear(); //очистка всего
+
+		bool isActive() const; //возвратим активность источника
 
 	protected:
 
@@ -57,13 +61,14 @@ namespace DataSource
 		void command_dataOpen		() override;	//команда начало сбора данных
 		void command_dataClose		() override;	//команда конца сбора данных
 		void command_dataReceive	(const QVariant &value) override{};  //прием данных
-		void command_connect		(IInterface_receiv *obj) override{}; //законнектился
-		void command_disconnect		() override{}; //расконнектились
+		void command_connect		(IInterface_receiv *obj) override; //законнектился
+		void command_disconnect		() override; //расконнектились
 
 
 		virtual void onOpen(){};	//открытие данных
 		virtual void onClose(){};	//закрытие данных
-
+		virtual void onConnect(){};	//ктоо подсоеденился
+		virtual void onDisconnect(){};//ктото отсоединлся
 
 		void close();//принудительно закрытие данных
 
@@ -86,6 +91,7 @@ namespace DataSource
 		
 	///--------------------------------------------------------------------------------------
 	typedef QSharedPointer<ADataSource> PDataSource;
+	typedef QWeakPointer<ADataSource>	PWDataSource;
 	///--------------------------------------------------------------------------------------
 
 

@@ -68,8 +68,6 @@ void AChartTabs :: syncWidget()
 	for (int i = 0; i < mTabs->count(); i++)
 	{
 		const auto tab = mTabs->widget(i);
-		//const auto chart = dynamic_cast<PChart>(tab->userData(0));
-		
 		const auto prop = tab->property("chart");
 		const auto chart = qSharedPointerFromVariant<AChart>(prop);
 		if (mCharts->isContains(chart))

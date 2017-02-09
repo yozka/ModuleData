@@ -54,6 +54,19 @@ ACollectionProxy :: ~ACollectionProxy ()
 
 
 
+ ///=====================================================================================
+///
+/// количество подключений
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+int ACollectionProxy :: count() const
+{
+	return mDataProxy.count();
+}
+///--------------------------------------------------------------------------------------
+
+
 
 
 
@@ -99,9 +112,9 @@ bool ACollectionProxy :: disconnect(const QSharedPointer<ADataProxy> &dataProxy)
 	{
 		return false;
 	}
-	mParent->command_disconnect();	
 	auto old = PDataProxy(dataProxy);
 	mDataProxy.removeAll(dataProxy);
+	mParent->command_disconnect();	
 	old->disconnect();
 	return true;
 }

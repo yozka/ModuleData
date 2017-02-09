@@ -1,18 +1,19 @@
-п»ї#pragma once
+#pragma once
 #include <QObject>
-#include <QSharedPointer>
+#include <QWeakPointer>
 #include <QDialog>
-#include <QTableWidget>
+#include <QLabel>
+#include <QLineEdit>
 
 
 
 
 ///--------------------------------------------------------------------------------------
-#include "MarkingContainer.h"
+#include "DSRandomGenerator.h"
 ///--------------------------------------------------------------------------------------
 
 
-namespace Marking
+namespace DataSource
 {
 	///--------------------------------------------------------------------------------------
 
@@ -23,37 +24,39 @@ namespace Marking
 
 	 ///=====================================================================================
 	///
-	/// РљРѕРЅС‚РµР№РЅРµСЂ РјРµС‚РѕРє
+	/// Контейнер меток
 	/// 
 	/// 
 	///--------------------------------------------------------------------------------------
-	class AMarkingEditorDialog
+	class ARandomGeneratorDialog
 			: 
 			public QDialog
 	{
 		Q_OBJECT
 
 	public:
-		AMarkingEditorDialog();
-		virtual ~AMarkingEditorDialog();
+		ARandomGeneratorDialog();
+		virtual ~ARandomGeneratorDialog();
 
 
 
-		void show(const PMarkingContainer &markings); //РїРѕРєР°Р·Р°С‚СЊ РґРёР°Р»РѕРі СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ
-		void refresh(); //РѕР±РЅРѕРІРёС‚СЊ РґР°РЅРЅС‹Рµ
+		void show(const QWeakPointer<ARandomGenerator> &dataSource); //показать диалог
+		void refresh(); //обновить данные
+
+
 
 	private:
 
-		PMarkingContainer	mMarkings; //РґР°РЅРЅС‹Рµ, СЃ РјРµС‚РєР°РјРё
-		QTableWidget*		mViews;
+		QWeakPointer<ARandomGenerator>	mDataSource;	//данные
+		QLabel*				mStatus;		//статуст генератора
+		QLabel*				mCount;			//количество подцепленных приемников
+		QLineEdit*			mInterval;		//интервал
 
-
-
-		void createUI(QWidget *form);//СЃРѕР·РґР°РЅРёРµ РґРёР°Р»РѕРіР°
+		void createUI(QWidget *form);//создание диалога
 
 	private slots:
 
-		void slot_add(); //РЅР°Р¶Р°Р»Рё РєРЅРѕРїРєСѓ РґРѕР±Р°РІРёС‚СЊ
+		void slot_editInterval(const QString &text); //завершили редактировать интервал данных
 	};
 	///--------------------------------------------------------------------------------------
 
@@ -64,7 +67,7 @@ namespace Marking
 	
 	
 	///--------------------------------------------------------------------------------------
-	typedef QSharedPointer<AMarkingEditorDialog> PMarkingEditorDialog;
+	typedef QSharedPointer<ARandomGeneratorDialog> PRandomGeneratorDialog;
 	///--------------------------------------------------------------------------------------
 
 

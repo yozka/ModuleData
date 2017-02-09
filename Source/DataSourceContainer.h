@@ -37,7 +37,7 @@ namespace DataSource
 		int count() const; //количество элементов в контейнере
 		PDataSource item(const int index); //возвратим данные в контейнере
 		void append(const PDataSource &data); //добовляем данные
-
+		void remove(const PDataSource &data); //удаляем данные
 
 	signals:
 	

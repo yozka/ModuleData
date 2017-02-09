@@ -76,16 +76,6 @@
     <property name="title">
      <string>DATA</string>
     </property>
-    <widget class="QMenu" name="menuCreate">
-     <property name="title">
-      <string>Create</string>
-     </property>
-     <addaction name="actionRandomGenerator"/>
-     <addaction name="actionManualControl"/>
-     <addaction name="actionComPort"/>
-    </widget>
-    <addaction name="menuCreate"/>
-    <addaction name="actionDataView"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuChart"/>
@@ -143,7 +133,7 @@
   </action>
   <action name="actionChartClose">
    <property name="text">
-    <string>Close</string>
+    <string>Close…</string>
    </property>
   </action>
   <action name="actionChartPlay">
@@ -159,6 +149,16 @@
   <action name="actionChartStop">
    <property name="text">
     <string>Stop</string>
+   </property>
+  </action>
+  <action name="actionDataDelete">
+   <property name="text">
+    <string>Delete</string>
+   </property>
+  </action>
+  <action name="actionDataSelect">
+   <property name="text">
+    <string>Select</string>
    </property>
   </action>
  </widget>

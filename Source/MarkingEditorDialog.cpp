@@ -68,7 +68,7 @@ AMarkingEditorDialog :: ~AMarkingEditorDialog ()
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void AMarkingEditorDialog :: show(PMarkingContainer markings)
+void AMarkingEditorDialog :: show(const PMarkingContainer &markings)
 {
 	mMarkings = markings;
 	

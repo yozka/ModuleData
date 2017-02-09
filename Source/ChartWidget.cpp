@@ -287,6 +287,7 @@ void AChartWidget ::  initPlot()
 void AChartWidget :: clear()
 {
 	mMarking = Marking::PMarkingContainer();
+	reset();
 }
 ///--------------------------------------------------------------------------------------
 
@@ -319,6 +320,24 @@ void AChartWidget :: setMarking(const Marking::PMarkingContainer &marking)
 void AChartWidget :: append(const double time, const double data)
 {
 	mPlotGraph->addData(time, data);
+	mPlot->rescaleAxes();
+	mPlot->replot();
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+ ///=====================================================================================
+///
+/// удалить все данные
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AChartWidget :: reset()
+{
+	mPlotGraph->setData(QVector<qreal>(), QVector<qreal>());
 	mPlot->rescaleAxes();
 	mPlot->replot();
 }

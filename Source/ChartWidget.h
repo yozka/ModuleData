@@ -43,7 +43,7 @@ namespace Chart
 
 		//void refresh(const QVector<int> &data); //обнолвение виджета
 		void append(const double time, const double data); //добавить данные в виджеты
-
+		void reset(); //удалить все данные
 	private:
 
 		Marking::PMarkingContainer	mMarking; //закладки

@@ -85,6 +85,7 @@
     <ClCompile Include="..\..\..\Source\DSComPort.cpp" />
     <ClCompile Include="..\..\..\Source\DSManualControl.cpp" />
     <ClCompile Include="..\..\..\Source\DSRandomGenerator.cpp" />
+    <ClCompile Include="..\..\..\Source\DSRandomGeneratorDialog.cpp" />
     <ClCompile Include="..\..\..\Source\Marking.cpp" />
     <ClCompile Include="..\..\..\Source\MarkingContainer.cpp" />
     <ClCompile Include="..\..\..\Source\MarkingEditorDialog.cpp" />
@@ -105,6 +106,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_DataSourceContainer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_DSRandomGeneratorDialog.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_Marking.cpp">
@@ -141,6 +145,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_DataSourceContainer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_DSRandomGeneratorDialog.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_Marking.cpp">
@@ -284,6 +291,16 @@
     </CustomBuild>
     <ClInclude Include="..\..\..\Source\DataProxy.h" />
     <ClInclude Include="..\..\..\Source\CollectionProxy.h" />
+    <CustomBuild Include="..\..\..\Source\DSRandomGeneratorDialog.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing DSRandomGeneratorDialog.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_CRT_SECURE_NO_WARNINGS -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_CORE_LIB -DQT_GUI_LIB -DQT_SQL_LIB -DQT_WIDGETS_LIB -DQT_PRINTSUPPORT_LIB -DQT_SERIALPORT_LIB "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtSerialPort"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing DSRandomGeneratorDialog.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_SQL_LIB -DQT_WIDGETS_LIB -DQT_PRINTSUPPORT_LIB -DQT_SERIALPORT_LIB "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtPrintSupport" "-I$(QTDIR)\include\QtSerialPort"</Command>
+    </CustomBuild>
     <ClInclude Include="GeneratedFiles\ui_ModuleData.h" />
   </ItemGroup>
   <ItemGroup>

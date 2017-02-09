@@ -77,9 +77,9 @@ namespace Chart
 		Marking::PMarkingContainer	mMarking; //закладки
 		AChartWidget*				mChartWidget; //список привязанных виджетов
 
-		bool mRun; //режим, запуска
-		bool mInitTime; //нужно или нет инциализировать время
-		int  mZeroTime; //нулевая точка времени, для отчета
+		bool	mRun; //режим, запуска
+		bool	mInitTime; //нужно или нет инциализировать время
+		double	mZeroTime; //нулевая точка времени, для отчета
 
 		QVector<double> mContentTime; //время
 		QVector<double> mContentData; //данные

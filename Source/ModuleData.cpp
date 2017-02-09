@@ -1,7 +1,10 @@
 ﻿#include "ModuleData.h"
 
 #include <QVariant>
+#include <QMessageBox>
 
+
+#include "DataSource.h"
 #include "DSRandomGenerator.h"
 #include "DSManualControl.h"
 #include "DSComPort.h"
@@ -11,6 +14,20 @@
 ///--------------------------------------------------------------------------------------
 
 
+
+   
+ ///=====================================================================================
+///
+/// возвратим галвное окно
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+QWidget* gMain = nullptr;
+QWidget* AModuleData :: main()
+{
+	return gMain;
+}
+///--------------------------------------------------------------------------------------
 
 
 
@@ -26,6 +43,7 @@ AModuleData :: AModuleData(QWidget *parent)
 	: 
 		QMainWindow(parent)
 {
+	gMain = this;
 	ui.setupUi(this);
 
 	mMarkings = Marking::PMarkingContainer::create();
@@ -35,6 +53,9 @@ AModuleData :: AModuleData(QWidget *parent)
 
 	mChart = Chart::PChartContainer::create();
 	connect(mChart.data(), &Chart::AChartContainer::signal_change, this, &AModuleData::slot_refreshChart);
+
+	slot_refreshDataSource();
+	slot_refreshChart();
 }
 ///--------------------------------------------------------------------------------------
 
@@ -117,9 +138,8 @@ void AModuleData :: on_actionChartNew_triggered()
 
 
 
-	//диаграма
-
-
+	/*
+	тест с двумия диаграммами
 	auto chart2 = Chart::PChart::create();
 	chart2->setMarking(mMarkings);	//маркировачные закладки
 	
@@ -127,6 +147,7 @@ void AModuleData :: on_actionChartNew_triggered()
 	data	->streamData->connect(proxy2);
 	chart2	->streamData->connect(proxy2);
 	mChart	->append(chart2);
+	*/
 }
 ///--------------------------------------------------------------------------------------
 
@@ -149,8 +170,13 @@ void AModuleData :: on_actionChartClose_triggered()
 	{
 		return;
 	}
-	mChart->remove(chart);
-	chart->clear();
+	const auto ret = QMessageBox::question(this, "Warning!", "Confirm close chart", QMessageBox::Yes|QMessageBox::No);
+	if (ret == QMessageBox::Yes)
+	{
+		mChart->remove(chart);
+		chart->clear();
+
+	}
 }
 ///--------------------------------------------------------------------------------------
 
@@ -262,21 +288,114 @@ void AModuleData :: slot_refreshChart()
 ///--------------------------------------------------------------------------------------
 void AModuleData :: slot_refreshDataSource()
 {
-	auto mn = new QMenu();
+	ui.menuData->clear();
+	auto menu = ui.menuData;
+
+	//create
+	auto mnCreate = menu->addMenu("Create");
+	mnCreate->addAction("Random generator...", this, SLOT(on_actionRandomGenerator_triggered()));
+	mnCreate->addAction("Manual control...", this, SLOT(on_actionRandomGenerator_triggered()));
+	mnCreate->addAction("Com port...", this, SLOT(on_actionRandomGenerator_triggered()));
+	///
+	menu->addSeparator();
+
+
 	const int count = mData->count();
 	for (int i = 0; i < count; i++)
 	{
 		auto item = mData->item(i);
-		mn->addAction(item->title(), item.data(), SLOT(slot_show()));
+		auto mnData = menu->addMenu(item->title());
+		mnData->addAction("Show...",	item.data(), SLOT(slot_show()));
+		auto actSelect = mnData->addAction("Select...");
+		mnData->addSeparator();
+		auto actDelete = mnData->addAction("Delete...");
+		
+		actSelect->setProperty("ID",	i);
+		actSelect->setProperty("TYPE",	1);
+
+		actDelete->setProperty("ID",	i);
+		actDelete->setProperty("TYPE",	2);
+
+
+		connect(mnData, &QMenu::triggered, this, &AModuleData::slot_menuDataSource);
 	}
-	ui.actionDataView->setMenu(mn);
+
+
+
+
+
 }
 ///--------------------------------------------------------------------------------------
 
 
 
 
+
+
+ ///=====================================================================================
+///
+/// удаление одного источника
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AModuleData :: slot_menuDataSource(QAction *action)
+{
+	auto data = mData->item(action->property("ID").toInt());
+	if (data.isNull())
+	{
+		return;
+	}
+	int type = action->property("TYPE").toInt();
+	
+	//delete
+	if (type == 2)
+	{
+	
+		const auto ret = QMessageBox::question(this, "Warning!", "Confirm delete data source", QMessageBox::Yes|QMessageBox::No);
+		if (ret == QMessageBox::Yes)
+		{
+			mData->remove(data);
+			data->clear();
+		}
+		return;
+	}
+	////
+
+
+	//select
+	if (type != 1)
+	{
+		return;
+	}
+	Chart::AChartTabs chartTabs(mChart, ui.tabWidget);
+	auto chart = chartTabs.currentChart();
+	if (chart.isNull())
+	{
+		return;
+	}
+
+	const auto ret = QMessageBox::question(this, "Warning!", "Confirm select to chart", QMessageBox::Yes|QMessageBox::No);
+	if (ret != QMessageBox::Yes)
+	{
+		return;
+	}
+
+	chart->streamData->disconnectAll();
+
+	auto proxy = DataProxy::PDataProxy::create();
+	data->streamData->connect(proxy);
+	chart->streamData->connect(proxy);
+}
+///--------------------------------------------------------------------------------------
+	
+
+
+
+
    
+
+
+
 
  ///=====================================================================================
 ///
@@ -286,6 +405,8 @@ void AModuleData :: slot_refreshDataSource()
 ///--------------------------------------------------------------------------------------
 void AModuleData :: on_actionRandomGenerator_triggered()
 {
-	mData->append(DataSource::PRandomGenerator::create());
+	auto data = DataSource::PRandomGenerator::create();
+	mData->append(data);
+	data->show();
 }
 	

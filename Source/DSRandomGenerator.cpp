@@ -2,6 +2,8 @@
 #include <QVariant>
 #include <QTime>
 #include <QDateTime>
+
+#include "DSRandomGeneratorDialog.h"
 ///--------------------------------------------------------------------------------------
 
 
@@ -34,7 +36,8 @@ ARandomGenerator :: ARandomGenerator ()
 	:
 	mInterval(settings::interval),
 	mTimer(nullptr),
-	mBeginMs(0)
+	mBeginMs(0),
+	mLastTime(0)
 {
 	gNumber++;
 	mNumber = gNumber;
@@ -55,8 +58,13 @@ ARandomGenerator :: ARandomGenerator ()
 ///--------------------------------------------------------------------------------------
 ARandomGenerator :: ~ARandomGenerator ()
 {
-	close();
+	clear();
 	delete mTimer;
+
+	if (!mWidget.isNull())
+	{
+		mWidget->close();
+	}
 }
 ///--------------------------------------------------------------------------------------
 
@@ -96,7 +104,49 @@ QString ARandomGenerator :: title() const
 ///--------------------------------------------------------------------------------------
 void ARandomGenerator :: show()
 {
+	if (mWidget.isNull())
+	{
+		mWidget = PRandomGeneratorDialog::create();
+	}
 
+	auto _this = qSharedPointerCast<ARandomGenerator>(sharedFromThis());
+	mWidget->show(_this);
+	//mWidget->show(PRandomGenerator());
+
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+ ///=====================================================================================
+///
+/// ктоо подсоеденился
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void ARandomGenerator :: onConnect()
+{
+	refreshWidget();
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+ ///=====================================================================================
+///
+/// ктото отсоединлся
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void ARandomGenerator :: onDisconnect()
+{
+	refreshWidget();
 }
 ///--------------------------------------------------------------------------------------
 
@@ -124,7 +174,9 @@ void ARandomGenerator :: onOpen()
 	}
 
 	mBeginMs = QDateTime::currentMSecsSinceEpoch();
+	mLastTime = 0;
 	mTimer->start(mInterval);
+	refreshWidget();
 }
 ///--------------------------------------------------------------------------------------
 
@@ -143,11 +195,12 @@ void ARandomGenerator :: onOpen()
 ///--------------------------------------------------------------------------------------
 void ARandomGenerator :: onClose()
 {
-	if (mTimer == nullptr)
+	if (mTimer != nullptr)
 	{
-		return;
+		mTimer->stop();
 	}
-	mTimer->stop();
+	mLastTime = 0;
+	refreshWidget();
 }
 ///--------------------------------------------------------------------------------------
 
@@ -170,12 +223,87 @@ void ARandomGenerator :: update()
 	const int val = (qrand() % range) + settings::min;
 
 	const int timeMs = QDateTime::currentMSecsSinceEpoch() - mBeginMs;
+	mLastTime = timeMs;
 
 	QList<int> data;
 	data.append(timeMs);
 	data.append(val);
 	streamData->command_dataSend(QVariant::fromValue<QList<int>>(data));
-}
-
-
 	
+	refreshWidget();
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+ ///=====================================================================================
+///
+/// возвратим интервал таймера
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+int ARandomGenerator :: interval() const
+{
+	return mInterval;
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+ ///=====================================================================================
+///
+/// установим интервал таймера
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void ARandomGenerator :: setInterval(const int value)
+{
+	if (value >= settings::intervalMin && value <= settings::intervalMax)
+	{
+		mInterval = value;
+	}
+	
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+ ///=====================================================================================
+///
+/// возвратим последнее время
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+int ARandomGenerator :: lastTimeMS() const
+{
+	return mLastTime;
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+ ///=====================================================================================
+///
+/// обновим виджет
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void ARandomGenerator :: refreshWidget()
+{
+	if (!mWidget.isNull())
+	{
+		mWidget->refresh();
+	}
+}

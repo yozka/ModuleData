@@ -31,7 +31,10 @@ AChart :: AChart ()
 		:
 	streamData(DataProxy::PCollectionProxy(new DataProxy::ACollectionProxy(this))),
 	mRun(false),
-	mChartWidget(nullptr)
+	mChartWidget(nullptr),
+	mZeroTime(0),
+	mInitTime(false)
+	
 	
 
 {
@@ -182,6 +185,7 @@ void AChart :: play()
 	mContentTime.reserve(reservSize);
 	mContentData.reserve(reservSize);
 
+	mInitTime = true;
 	streamData->command_dataOpen();
 }
 ///--------------------------------------------------------------------------------------
@@ -256,14 +260,18 @@ void AChart :: command_dataReceive(const QVariant &value)
 	const double dTime = ds[0];
 	const double dData = ds[1];
 
+	if (mInitTime)
+	{
+		mZeroTime = dTime;
+		if (!mContentTime.isEmpty())
+		{
+			mZeroTime -= mContentTime.last();
+		}
+		mInitTime = false;
+	}
 
-	mContentTime.append(dTime);
-	mContentData.append(dData);
 
-	append(dTime, dData);
-
-	//отошлем новую информацию всем виджетам
-	refreshWidgets();
+	append(dTime - mZeroTime, dData);
 }
 ///--------------------------------------------------------------------------------------
 
@@ -301,13 +309,9 @@ void AChart :: command_connect(IInterface_receiv *obj)
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void AChart :: command_disconnect ()
+void AChart :: command_disconnect()
 {
-	if (mRun)
-	{
-		streamData->command_dataClose();
-		mRun = false;
-	}
+	pause();
 }
 ///--------------------------------------------------------------------------------------
 
@@ -329,6 +333,11 @@ void AChart :: reset()
 	{
 		streamData->command_dataClose();
 		mRun = false;
+	}
+
+	if (mChartWidget != nullptr)
+	{
+		mChartWidget->reset();
 	}
 }
 ///--------------------------------------------------------------------------------------
@@ -370,6 +379,10 @@ void AChart :: refreshWidgets()
 ///--------------------------------------------------------------------------------------
 void AChart :: append(const double time, const double data)
 {
+	mContentTime.append(time);
+	mContentData.append(data);
+
+	
 	if (mChartWidget != nullptr)
 	{
 		mChartWidget->append(time, data);

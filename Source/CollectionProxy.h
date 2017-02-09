@@ -67,6 +67,8 @@ namespace DataProxy
 		bool connect	(const QSharedPointer<ADataProxy> &dataProxy);
 		bool disconnect	(const QSharedPointer<ADataProxy> &dataProxy); //отключаем источник данных
 		void disconnectAll(); //отключим все соеденения
+		int count() const; //количество подключений
+
 
 		//команды
 		void command_dataOpen();	//команда начало сбора данных

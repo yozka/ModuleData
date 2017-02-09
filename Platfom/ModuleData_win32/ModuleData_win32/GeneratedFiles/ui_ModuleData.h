@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'ModuleData.ui'
 **
-** Created by: Qt User Interface Compiler version 5.5.0
+** Created by: Qt User Interface Compiler version 5.5.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -40,6 +40,8 @@ public:
     QAction *actionChartPlay;
     QAction *actionChartPause;
     QAction *actionChartStop;
+    QAction *actionDataDelete;
+    QAction *actionDataSelect;
     QWidget *centralWidget;
     QVBoxLayout *verticalLayout;
     QTabWidget *tabWidget;
@@ -48,7 +50,6 @@ public:
     QMenu *menuChart;
     QMenu *menuWindows;
     QMenu *menuData;
-    QMenu *menuCreate;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
 
@@ -81,6 +82,10 @@ public:
         actionChartPause->setObjectName(QStringLiteral("actionChartPause"));
         actionChartStop = new QAction(AModuleDataClass);
         actionChartStop->setObjectName(QStringLiteral("actionChartStop"));
+        actionDataDelete = new QAction(AModuleDataClass);
+        actionDataDelete->setObjectName(QStringLiteral("actionDataDelete"));
+        actionDataSelect = new QAction(AModuleDataClass);
+        actionDataSelect->setObjectName(QStringLiteral("actionDataSelect"));
         centralWidget = new QWidget(AModuleDataClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         verticalLayout = new QVBoxLayout(centralWidget);
@@ -105,8 +110,6 @@ public:
         menuWindows->setObjectName(QStringLiteral("menuWindows"));
         menuData = new QMenu(menuBar);
         menuData->setObjectName(QStringLiteral("menuData"));
-        menuCreate = new QMenu(menuData);
-        menuCreate->setObjectName(QStringLiteral("menuCreate"));
         AModuleDataClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(AModuleDataClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -128,11 +131,6 @@ public:
         menuChart->addAction(actionChartPlay);
         menuChart->addAction(actionChartPause);
         menuChart->addAction(actionChartStop);
-        menuData->addAction(menuCreate->menuAction());
-        menuData->addAction(actionDataView);
-        menuCreate->addAction(actionRandomGenerator);
-        menuCreate->addAction(actionManualControl);
-        menuCreate->addAction(actionComPort);
 
         retranslateUi(AModuleDataClass);
         QObject::connect(actionExit, SIGNAL(triggered()), AModuleDataClass, SLOT(close()));
@@ -154,15 +152,16 @@ public:
         actionDataView->setText(QApplication::translate("AModuleDataClass", "View", 0));
         actionChartNew->setText(QApplication::translate("AModuleDataClass", "New", 0));
         actionDelete->setText(QApplication::translate("AModuleDataClass", "Delete", 0));
-        actionChartClose->setText(QApplication::translate("AModuleDataClass", "Close", 0));
+        actionChartClose->setText(QApplication::translate("AModuleDataClass", "Close\342\200\246", 0));
         actionChartPlay->setText(QApplication::translate("AModuleDataClass", "Play", 0));
         actionChartPause->setText(QApplication::translate("AModuleDataClass", "Pause", 0));
         actionChartStop->setText(QApplication::translate("AModuleDataClass", "Stop", 0));
+        actionDataDelete->setText(QApplication::translate("AModuleDataClass", "Delete", 0));
+        actionDataSelect->setText(QApplication::translate("AModuleDataClass", "Select", 0));
         menuFile->setTitle(QApplication::translate("AModuleDataClass", "FILE", 0));
         menuChart->setTitle(QApplication::translate("AModuleDataClass", "CHART", 0));
         menuWindows->setTitle(QApplication::translate("AModuleDataClass", "WINDOWS", 0));
         menuData->setTitle(QApplication::translate("AModuleDataClass", "DATA", 0));
-        menuCreate->setTitle(QApplication::translate("AModuleDataClass", "Create", 0));
     } // retranslateUi
 
 };

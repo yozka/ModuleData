@@ -73,6 +73,9 @@
     <Filter Include="Source\DataProxy\CollectionProxy">
       <UniqueIdentifier>{357765d4-b1b9-477a-b232-f1fe1e008106}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\DataSource\Items\RandomGenerator\Widget">
+      <UniqueIdentifier>{81492199-75dd-403b-b3ea-cececf1d5274}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -189,6 +192,15 @@
     <ClCompile Include="..\..\..\Source\CollectionProxy.cpp">
       <Filter>Source\DataProxy\CollectionProxy</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\DSRandomGeneratorDialog.cpp">
+      <Filter>Source\DataSource\Items\RandomGenerator\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_DSRandomGeneratorDialog.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_DSRandomGeneratorDialog.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\..\Source\ModuleData.h">
@@ -226,6 +238,9 @@
     </CustomBuild>
     <CustomBuild Include="..\..\..\Source\qcustomplot-source\qcustomplot.h">
       <Filter>Source\Chart\ChartWidget\CustomPlot</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\Source\DSRandomGeneratorDialog.h">
+      <Filter>Source\DataSource\Items\RandomGenerator\Widget</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

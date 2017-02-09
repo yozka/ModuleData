@@ -31,6 +31,7 @@ public:
 	AModuleData(QWidget *parent = 0);
 	virtual ~AModuleData();
 
+static QWidget* main(); //возвратим галвное окно
 
 
 private:
@@ -57,6 +58,7 @@ private slots:
 	//DATA
 	void on_actionRandomGenerator_triggered(); //добавление генератора случайных чисел
 	void slot_refreshDataSource(); //обновление источника данных
+	void slot_menuDataSource(QAction *action); //обработка меню
 };
 
 
