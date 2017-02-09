@@ -99,7 +99,7 @@ bool ACollectionProxy :: disconnect(const QSharedPointer<ADataProxy> &dataProxy)
 	{
 		return false;
 	}
-		
+	mParent->command_disconnect();	
 	auto old = PDataProxy(dataProxy);
 	mDataProxy.removeAll(dataProxy);
 	old->disconnect();
@@ -140,7 +140,7 @@ void ACollectionProxy :: disconnectAll()
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void ACollectionProxy :: command_dataBegin()
+void ACollectionProxy :: command_dataOpen()
 {
 	for (auto item = mDataProxy.cbegin(); item != mDataProxy.cend(); ++item)
 	{
@@ -149,7 +149,7 @@ void ACollectionProxy :: command_dataBegin()
 		{
 			continue;
 		}
-		dataProxy->command_dataBegin();
+		dataProxy->command_dataOpen();
 	}
 }
 ///--------------------------------------------------------------------------------------
@@ -166,7 +166,7 @@ void ACollectionProxy :: command_dataBegin()
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void ACollectionProxy :: command_dataEnd()
+void ACollectionProxy :: command_dataClose()
 {
 	for (auto item = mDataProxy.cbegin(); item != mDataProxy.cend(); ++item)
 	{
@@ -175,7 +175,7 @@ void ACollectionProxy :: command_dataEnd()
 		{
 			continue;
 		}
-		dataProxy->command_dataEnd();
+		dataProxy->command_dataClose();
 	}
 }
 ///--------------------------------------------------------------------------------------

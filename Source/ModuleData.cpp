@@ -104,17 +104,29 @@ void AModuleData :: on_actionChartNew_triggered()
 	chart->setMarking(mMarkings);	//маркировачные закладки
 
 
-
 	//свяжем источник данных с приемником
 	auto proxy = DataProxy::PDataProxy::create();
-	bool b1 = data	->streamData->connect(proxy);
-	bool b2 = chart	->streamData->connect(proxy);
+	data	->streamData->connect(proxy);
+	chart	->streamData->connect(proxy);
 
 
 	mChart->append(chart);
 
 	Chart::AChartTabs chartTabs(mChart, ui.tabWidget);
 	chartTabs.setCurrentChart(chart);
+
+
+
+	//диаграма
+
+
+	auto chart2 = Chart::PChart::create();
+	chart2->setMarking(mMarkings);	//маркировачные закладки
+	
+	auto proxy2 = DataProxy::PDataProxy::create();
+	data	->streamData->connect(proxy2);
+	chart2	->streamData->connect(proxy2);
+	mChart	->append(chart2);
 }
 ///--------------------------------------------------------------------------------------
 
@@ -165,6 +177,59 @@ void AModuleData :: on_actionChartPlay_triggered()
 	chart->play();
 }
 ///--------------------------------------------------------------------------------------
+
+
+
+
+
+
+ ///=====================================================================================
+///
+/// приастановка сбора данных
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AModuleData :: on_actionChartPause_triggered()
+{
+	Chart::AChartTabs chartTabs(mChart, ui.tabWidget);
+	auto chart = chartTabs.currentChart();
+	if (chart.isNull())
+	{
+		return;
+	}
+
+	chart->pause();
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+
+ ///=====================================================================================
+///
+/// оастновка сбора данных
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AModuleData :: on_actionChartStop_triggered()
+{
+	Chart::AChartTabs chartTabs(mChart, ui.tabWidget);
+	auto chart = chartTabs.currentChart();
+	if (chart.isNull())
+	{
+		return;
+	}
+
+	chart->stop();
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+
 
 
 

@@ -54,12 +54,25 @@ namespace DataSource
 	protected:
 
 		//команды
-		void command_dataBegin() override;	//команда начало сбора данных
-		void command_dataEnd() override;	//команда конца сбора данных
-		void command_dataReceive(const QVariant &value) override{};  //прием данных
+		void command_dataOpen		() override;	//команда начало сбора данных
+		void command_dataClose		() override;	//команда конца сбора данных
+		void command_dataReceive	(const QVariant &value) override{};  //прием данных
+		void command_connect		(IInterface_receiv *obj) override{}; //законнектился
+		void command_disconnect		() override{}; //расконнектились
+
+
+		virtual void onOpen(){};	//открытие данных
+		virtual void onClose(){};	//закрытие данных
+
+
+		void close();//принудительно закрытие данных
+
 	private:
 
 		
+		bool	mActive;	//активность источника данных
+		int		mRefOpen;	//количество открытых сылок
+
 
 	public slots:
 

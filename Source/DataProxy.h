@@ -43,8 +43,8 @@ namespace DataProxy
 
 
 		//команды
-		void command_dataBegin(); //команда начало сбора данных
-		void command_dataEnd();   //команда конец сбора данных
+		void command_dataOpen();	//команда начало сбора данных
+		void command_dataClose();   //команда конец сбора данных
 		void command_dataSend(const QVariant &value);  //передача данных
 
 	private:

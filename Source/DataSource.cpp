@@ -21,7 +21,9 @@ using namespace DataSource;
 ///--------------------------------------------------------------------------------------
 ADataSource :: ADataSource ()
 	:
-	streamData(DataProxy::PCollectionProxy(new DataProxy::ACollectionProxy(this)))
+	streamData(DataProxy::PCollectionProxy(new DataProxy::ACollectionProxy(this))),
+	mActive(false),
+	mRefOpen(0)
 {
 
 
@@ -42,11 +44,31 @@ ADataSource :: ADataSource ()
 ///--------------------------------------------------------------------------------------
 ADataSource :: ~ADataSource ()
 {
-
+	close();
 }
 ///--------------------------------------------------------------------------------------
 
 
+
+
+
+
+ ///=====================================================================================
+///
+/// принудительно закрытие данных
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void ADataSource :: close()
+{
+	if (mActive)
+	{
+		onClose();
+		mActive = false;
+		mRefOpen = 0;
+	}
+}
+///--------------------------------------------------------------------------------------
 
 
 
@@ -78,9 +100,15 @@ void ADataSource :: slot_show()
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void ADataSource :: command_dataBegin()
+void ADataSource :: command_dataOpen()
 {
-	streamData->command_dataSend(title());
+	mRefOpen++;
+
+	if (!mActive)
+	{
+		mActive = true;
+		onOpen();
+	}
 }
 ///--------------------------------------------------------------------------------------
 
@@ -95,9 +123,18 @@ void ADataSource :: command_dataBegin()
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void ADataSource :: command_dataEnd()
+void ADataSource :: command_dataClose()
 {
+	mRefOpen--;
+	if (mRefOpen < 0)
+	{
+		mRefOpen = 0;
+	}
 
+	if (mRefOpen == 0)
+	{
+		close();
+	}
 }
 ///--------------------------------------------------------------------------------------
 

@@ -90,7 +90,20 @@ bool ADataProxy :: connect(const QSharedPointer<ACollectionProxy> &source)
 			return false;
 		}
 
-	return source->connect(sharedFromThis());
+	const bool ret = source->connect(sharedFromThis());
+
+	if (ret)
+	{
+		if (!mSourceSecond.isNull() && !mSourceFirst.isNull())
+		{
+			mSourceSecond.data()->parent()->command_connect(mSourceFirst.data()->parent());
+			mSourceFirst.data()->parent()->command_connect(mSourceSecond.data()->parent());
+		}
+		
+	}
+
+	return ret;
+
 }
 ///--------------------------------------------------------------------------------------
 
@@ -134,16 +147,16 @@ void ADataProxy :: disconnect()
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void ADataProxy :: command_dataBegin()
+void ADataProxy :: command_dataOpen()
 {
 	if (!mSourceFirst.isNull())
 	{
-		mSourceFirst.data()->parent()->command_dataBegin();
+		mSourceFirst.data()->parent()->command_dataOpen();
 	}
 
 	if (!mSourceSecond.isNull())
 	{
-		mSourceSecond.data()->parent()->command_dataBegin();
+		mSourceSecond.data()->parent()->command_dataOpen();
 	}
 }
 ///--------------------------------------------------------------------------------------
@@ -160,16 +173,16 @@ void ADataProxy :: command_dataBegin()
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void ADataProxy :: command_dataEnd()
+void ADataProxy :: command_dataClose()
 {
 	if (!mSourceFirst.isNull())
 	{
-		mSourceFirst.data()->parent()->command_dataEnd();
+		mSourceFirst.data()->parent()->command_dataClose();
 	}
 
 	if (!mSourceSecond.isNull())
 	{
-		mSourceSecond.data()->parent()->command_dataEnd();
+		mSourceSecond.data()->parent()->command_dataClose();
 	}
 }
 ///--------------------------------------------------------------------------------------
