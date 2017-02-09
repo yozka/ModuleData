@@ -4,6 +4,7 @@
 #include <QString>
 #include <QWidget>
 #include <QList>
+#include <QVector>
 
 #include "MarkingContainer.h"
 #include "CollectionProxy.h"
@@ -22,6 +23,10 @@ namespace Chart
 	///--------------------------------------------------------------------------------------
 
 
+
+	///--------------------------------------------------------------------------------------
+	typedef QVector<int> TListData;
+	///--------------------------------------------------------------------------------------
 
 
 
@@ -57,6 +62,8 @@ namespace Chart
 		void		pause();	//пауза для сбора данных
 		void		stop();		//остановка для сбора данных
 
+		void		refreshWidgets(); //обновим информацию у виджетах
+
 	protected:
 
 		//команды
@@ -74,6 +81,9 @@ namespace Chart
 		QList<AChartWidget*>		mWidgets; //список привязанных виджетов
 
 		bool mRun; //режим, запуска
+
+
+		TListData mDatas; //данные
 
 
 	private slots:

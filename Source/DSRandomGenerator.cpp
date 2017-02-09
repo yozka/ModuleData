@@ -1,6 +1,7 @@
 ﻿#include "DSRandomGenerator.h"
 #include <QVariant>
 #include <QTime>
+#include <QDateTime>
 ///--------------------------------------------------------------------------------------
 
 
@@ -32,7 +33,8 @@ int gNumber = 0;
 ARandomGenerator :: ARandomGenerator ()
 	:
 	mInterval(1000),
-	mTimer(nullptr)
+	mTimer(nullptr),
+	mBeginMs(0)
 {
 	gNumber++;
 	mNumber = gNumber;
@@ -121,6 +123,7 @@ void ARandomGenerator :: onOpen()
 		qsrand(static_cast<uint>(QTime::currentTime().msec()));
 	}
 
+	mBeginMs = QDateTime::currentMSecsSinceEpoch();
 	mTimer->start(mInterval);
 }
 ///--------------------------------------------------------------------------------------
@@ -163,11 +166,15 @@ void ARandomGenerator :: onClose()
 ///--------------------------------------------------------------------------------------
 void ARandomGenerator :: update()
 {
-	int range = settings::max - settings::min;
-	
-	int val = (qrand() % range) + settings::min;
+	const int range = settings::max - settings::min;
+	const int val = (qrand() % range) + settings::min;
 
-	streamData->command_dataSend(QVariant(val));
+	const int timeMs = QDateTime::currentMSecsSinceEpoch() - mBeginMs;
+
+	QList<int> data;
+	data.append(timeMs);
+	data.append(val);
+	streamData->command_dataSend(QVariant::fromValue<QList<int>>(data));
 }
 
 

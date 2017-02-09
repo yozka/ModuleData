@@ -1,6 +1,7 @@
 ﻿#include "Chart.h"
 #include "ChartWidget.h"
 #include "DataSource.h"
+#include <QVariant>
 ///--------------------------------------------------------------------------------------
 
 
@@ -178,6 +179,7 @@ void AChart :: play()
 		return;
 	}
 	mRun = true;
+	mDatas.reserve(1000 * 60 * 60);
 	streamData->command_dataOpen();
 }
 ///--------------------------------------------------------------------------------------
@@ -222,6 +224,7 @@ void AChart :: stop()
 	}
 
 	//очистка всех буферов данных
+	mDatas.clear();
 }
 ///--------------------------------------------------------------------------------------
 
@@ -237,7 +240,25 @@ void AChart :: stop()
 ///--------------------------------------------------------------------------------------
 void AChart :: command_dataReceive(const QVariant &value)
 {
+	if (!mRun)
+	{
+		return;
+	}
+	
+	const auto ds = qvariant_cast<QList<int>>(value);
+	if (ds.count() != 2)
+	{
+		return;
+	}
 
+	const int time = ds[0];
+	const int data = ds[1];
+
+
+	mDatas.append(data);
+
+	//отошлем новую информацию всем виджетам
+	refreshWidgets();
 }
 ///--------------------------------------------------------------------------------------
 
@@ -261,6 +282,7 @@ void AChart :: command_connect(IInterface_receiv *obj)
 
 	QString title = data->title();
 
+	refreshWidgets();
 }
 ///--------------------------------------------------------------------------------------
 
@@ -282,3 +304,26 @@ void AChart :: command_disconnect ()
 		mRun = false;
 	}
 }
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+ ///=====================================================================================
+///
+/// расконнектились
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AChart :: refreshWidgets()
+{
+	for(auto item = mWidgets.constBegin(); item != mWidgets.constEnd(); ++item)
+		{
+			(*item)->refresh(mDatas);
+		}
+
+}
+
+
+

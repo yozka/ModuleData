@@ -40,6 +40,9 @@ namespace Chart
 		void setMarking(const Marking::PMarkingContainer &marking); //установка действующих закладок
 
 
+
+		void refresh(const QVector<int> &data); //обнолвение виджета
+
 	private:
 
 		Marking::PMarkingContainer	mMarking; //закладки

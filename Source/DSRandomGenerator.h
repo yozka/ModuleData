@@ -59,6 +59,8 @@ namespace DataSource
 
 		QTimer*	mTimer;
 
+		qint64	mBeginMs; //время, начальный отчет
+
 		void	update(); //обновление таймера
 
 	};
