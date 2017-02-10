@@ -65,10 +65,12 @@ namespace Chart
 		void createUI(QWidget *parentWidget); //создание виджета 
 
 
-		QWidget* createHeader(); //создание заголовка
+		QWidget* createMarking(); //создание закладок виджета
 		QWidget* createCharts(); //создание диаграмм
 
 		void initPlot();
+
+		//void append
 
 	public slots:
 

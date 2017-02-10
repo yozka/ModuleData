@@ -76,35 +76,30 @@ AChartWidget :: ~AChartWidget ()
 ///--------------------------------------------------------------------------------------
 void AChartWidget :: createUI(QWidget *parentWidget)
 {
-
-	//основной контент
-	auto contentWidget = new QWidget();
-	auto contentLayout = new QHBoxLayout(contentWidget);
-	contentLayout->setContentsMargins(0, 0, 0, 0);
-
-	//слева распологается дерево
-	mTreeMarkings = new QTreeWidget();
-	contentLayout->addWidget(mTreeMarkings);
+	auto contentLayout = new QVBoxLayout(parentWidget);
+	contentLayout->setContentsMargins(6, 6, 6, 6);
 	
-	auto chartsWidget = createCharts();
+
+	//закладки
+	auto *markingWidget = createMarking();
+	contentLayout->addWidget(markingWidget);
+
+
+	//диаграма
+	auto *chartsWidget = createCharts();
 	contentLayout->addWidget(chartsWidget);
 
 
 	//разделитель
-	auto splitterContent = new QSplitter(Qt::Horizontal, contentWidget);
-	splitterContent->addWidget(mTreeMarkings);
-	splitterContent->addWidget(chartsWidget);
-	contentLayout->addWidget(splitterContent);
+	auto splitter = new QSplitter(Qt::Horizontal, parentWidget);
+	splitter->addWidget(markingWidget);
+	splitter->addWidget(chartsWidget);
+	contentLayout->addWidget(splitter);
 
-	
-
-	//формирование общего контента
-	//общий контент,
-	auto firstLayout = new QVBoxLayout(parentWidget);
-	firstLayout->setContentsMargins(6, 6, 6, 6);
-	firstLayout->addWidget(createHeader()); //заголовок
-	firstLayout->addWidget(contentWidget);
-
+	auto sz = splitter->sizes();
+	sz[0] = 100;
+	sz[1] = 500;
+	splitter->setSizes(sz);
 }
 ///--------------------------------------------------------------------------------------
 
@@ -121,19 +116,20 @@ void AChartWidget :: createUI(QWidget *parentWidget)
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-QWidget*  AChartWidget :: createHeader() 
+QWidget*  AChartWidget :: createMarking() 
 {
-	auto headerWidget = new QWidget();
-	headerWidget->setFixedHeight(120);
-	auto headerLayout = new QHBoxLayout(headerWidget);
-	headerLayout->setContentsMargins(0, 0, 0, 0);
+	auto *mainWidget = new QWidget();
+	//mainWidget->setFixedHeight(120);
+	auto mainLayout = new QVBoxLayout(mainWidget);
+	mainLayout->setContentsMargins(0, 0, 0, 0);
 
 	//создание информационного бокса
-	auto infoBox = new QGroupBox(headerWidget);
-	infoBox->setTitle(QApplication::translate("ChartWidget", "Information", 0));
-    infoBox->setFlat(false);
-	infoBox->setFixedSize(250, 100);
-    auto label = new QLabel(infoBox);
+	auto *infoBox = new QGroupBox(mainWidget);
+	infoBox->setTitle(QApplication::translate("ChartWidget", "Marking", 0));
+    infoBox->setFlat(true);
+	//infoBox->setFixedSize(250, 100);
+	infoBox->setFixedHeight(100);
+	auto *label = new QLabel(infoBox);
  	label->setText(QApplication::translate("ChartWidget", "Time:", 0));
 	label->setGeometry(QRect(0, 20, 70, 20));
     label->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
@@ -161,12 +157,15 @@ QWidget*  AChartWidget :: createHeader()
     mInfoDescription->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
 	//
 
-	headerLayout->addWidget(infoBox);
-	headerLayout->addSpacerItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
+	mainLayout->addWidget(infoBox);
 	//---------------------------------------------------------
 
 
-	return headerWidget;
+	mTreeMarkings = new QTreeWidget(mainWidget);
+	mainLayout->addWidget(mTreeMarkings);
+
+
+	return mainWidget;
 }
 ///--------------------------------------------------------------------------------------
 
@@ -271,6 +270,24 @@ void AChartWidget ::  initPlot()
     customPlot->rescaleAxes();      // Масштабируем график по данным
     customPlot->replot();           // Отрисовываем график
 }
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+
+ ///=====================================================================================
+///
+/// установка действующих закладок
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AChartWidget :: setMarking(const Marking::PMarkingContainer &marking)
+{
+	mMarking = marking;
+}
+///--------------------------------------------------------------------------------------
 
 
 
@@ -295,17 +312,21 @@ void AChartWidget :: clear()
 
 
 
+
  ///=====================================================================================
 ///
-/// установка действующих закладок
+/// удалить все данные
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void AChartWidget :: setMarking(const Marking::PMarkingContainer &marking)
+void AChartWidget :: reset()
 {
-	mMarking = marking;
+	mPlotGraph->setData(QVector<qreal>(), QVector<qreal>());
+	mPlot->rescaleAxes();
+	mPlot->replot();
 }
 ///--------------------------------------------------------------------------------------
+
 
 
 
@@ -322,22 +343,11 @@ void AChartWidget :: append(const double time, const double data)
 	mPlotGraph->addData(time, data);
 	mPlot->rescaleAxes();
 	mPlot->replot();
+
+	//добавим маркеты
 }
 ///--------------------------------------------------------------------------------------
 
 
 
 
-
- ///=====================================================================================
-///
-/// удалить все данные
-/// 
-/// 
-///--------------------------------------------------------------------------------------
-void AChartWidget :: reset()
-{
-	mPlotGraph->setData(QVector<qreal>(), QVector<qreal>());
-	mPlot->rescaleAxes();
-	mPlot->replot();
-}
