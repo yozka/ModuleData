@@ -52,8 +52,8 @@ namespace DataSource
 
 	protected:
 		
-		void onOpen() override;		//открытие данных
-		void onClose() override;	//закрытие данных
+		bool onOpen() override;		//открытие данных
+		bool onClose() override;	//закрытие данных
 		void onConnect() override;	//ктоо подсоеденился
 		void onDisconnect() override;//ктото отсоединлся
 		

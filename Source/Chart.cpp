@@ -100,6 +100,7 @@ QWidget* AChart :: createWidget()
 	connect(mChartWidget, &QObject::destroyed, this, &AChart::slot_destroyedWidget);
 
 	mChartWidget->setMarking(mMarking);
+	refreshWidgets();
 	return mChartWidget;
 }
 ///--------------------------------------------------------------------------------------
@@ -186,7 +187,9 @@ void AChart :: play()
 	mContentData.reserve(reservSize);
 
 	mInitTime = true;
-	streamData->command_dataOpen();
+
+	mRun = streamData->command_dataOpen();
+	refreshWidgets();
 }
 ///--------------------------------------------------------------------------------------
 
@@ -208,6 +211,7 @@ void AChart :: pause()
 	}
 	streamData->command_dataClose();
 	mRun = false;
+	refreshWidgets();
 }
 ///--------------------------------------------------------------------------------------
 
@@ -244,17 +248,17 @@ void AChart :: stop()
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void AChart :: command_dataReceive(const QVariant &value)
+bool AChart :: command_dataReceive(const QVariant &value)
 {
 	if (!mRun)
 	{
-		return;
+		return false;
 	}
 	
 	const auto ds = qvariant_cast<QList<int>>(value);
 	if (ds.count() != 2)
 	{
-		return;
+		return false;
 	}
 
 	const double dTime = ds[0];
@@ -272,6 +276,7 @@ void AChart :: command_dataReceive(const QVariant &value)
 
 
 	append(dTime - mZeroTime, dData);
+	return true;
 }
 ///--------------------------------------------------------------------------------------
 
@@ -312,6 +317,7 @@ void AChart :: command_connect(IInterface_receiv *obj)
 void AChart :: command_disconnect()
 {
 	pause();
+	refreshWidgets();
 }
 ///--------------------------------------------------------------------------------------
 
@@ -339,6 +345,7 @@ void AChart :: reset()
 	{
 		mChartWidget->reset();
 	}
+	refreshWidgets();
 }
 ///--------------------------------------------------------------------------------------
 
@@ -356,12 +363,14 @@ void AChart :: reset()
 ///--------------------------------------------------------------------------------------
 void AChart :: refreshWidgets()
 {
-	/*
-	for(auto item = mWidgets.constBegin(); item != mWidgets.constEnd(); ++item)
-		{
-			(*item)->refresh(mDatas);
-		}
-		*/
+	if (mChartWidget == nullptr)
+	{
+		return;
+	}
+
+	auto dataSource = currentDataSource();
+	mChartWidget->setNameDataSource(dataSource.isNull() ? "[none]" : dataSource->title());
+
 }
 ///--------------------------------------------------------------------------------------
 
@@ -390,3 +399,28 @@ void AChart :: append(const double time, const double data)
 }
 ///--------------------------------------------------------------------------------------
 
+
+
+
+
+ ///=====================================================================================
+///
+/// возвратим текущий подключенный источник
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+DataSource::PDataSource AChart :: currentDataSource() const
+{
+	auto childs = streamData->childs();
+	for (auto item = childs.constBegin(); item != childs.constEnd(); ++item)
+	{
+		auto *obj = *item;
+		auto *source = dynamic_cast<DataSource::ADataSource*>(obj);
+		if (source == nullptr)
+		{
+			continue;
+		}
+		return source->sharedFromThis();
+	}
+	return DataSource::PDataSource();
+}

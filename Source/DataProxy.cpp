@@ -147,17 +147,25 @@ void ADataProxy :: disconnect()
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void ADataProxy :: command_dataOpen()
+bool ADataProxy :: command_dataOpen()
 {
+	bool ret = false;
 	if (!mSourceFirst.isNull())
 	{
-		mSourceFirst.data()->parent()->command_dataOpen();
+		if (mSourceFirst.data()->parent()->command_dataOpen())
+		{
+			ret = true;
+		}
 	}
 
 	if (!mSourceSecond.isNull())
 	{
-		mSourceSecond.data()->parent()->command_dataOpen();
+		if (mSourceSecond.data()->parent()->command_dataOpen())
+		{
+			ret = true;
+		}
 	}
+	return ret;
 }
 ///--------------------------------------------------------------------------------------
 
@@ -173,17 +181,26 @@ void ADataProxy :: command_dataOpen()
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void ADataProxy :: command_dataClose()
+bool ADataProxy :: command_dataClose()
 {
+	bool ret = false;
 	if (!mSourceFirst.isNull())
 	{
-		mSourceFirst.data()->parent()->command_dataClose();
+		if (mSourceFirst.data()->parent()->command_dataClose())
+		{
+			ret = true;
+		}
 	}
 
 	if (!mSourceSecond.isNull())
 	{
-		mSourceSecond.data()->parent()->command_dataClose();
+		if (mSourceSecond.data()->parent()->command_dataClose())
+		{
+			ret = true;
+		}
 	}
+
+	return ret;
 }
 ///--------------------------------------------------------------------------------------
 
@@ -199,17 +216,59 @@ void ADataProxy :: command_dataClose()
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void ADataProxy :: command_dataSend(const QVariant &value)
+bool ADataProxy :: command_dataSend(const QVariant &value)
 {
+	bool ret = false;
 	if (!mSourceFirst.isNull())
 	{
-		mSourceFirst.data()->parent()->command_dataReceive(value);
+		if (mSourceFirst.data()->parent()->command_dataReceive(value))
+		{
+			ret = true;
+		}
 	}
 
 	if (!mSourceSecond.isNull())
 	{
-		mSourceSecond.data()->parent()->command_dataReceive(value);
+		if (mSourceSecond.data()->parent()->command_dataReceive(value))
+		{
+			ret = true;
+		}
 	}
+	return ret;
 }
+///--------------------------------------------------------------------------------------
 
 
+
+
+
+
+
+ ///=====================================================================================
+///
+/// первый источник данных
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+QWeakPointer<ACollectionProxy> ADataProxy :: first() const
+{
+	return mSourceFirst;
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+ ///=====================================================================================
+///
+/// второй источник данных
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+QWeakPointer<ACollectionProxy> ADataProxy :: second() const
+{
+	return mSourceSecond;
+}

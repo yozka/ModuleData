@@ -7,6 +7,7 @@
 
 #include "qcustomplot-source\qcustomplot.h"
 #include "MarkingContainer.h"
+#include "Mark.h"
 ///--------------------------------------------------------------------------------------
 
 namespace Chart
@@ -41,27 +42,23 @@ namespace Chart
 		void setMarking(const Marking::PWMarkingContainer &marking); //установка действующих закладок
 
 
-
-		//void refresh(const QVector<int> &data); //обнолвение виджета
 		void append(const double time, const double data); //добавить данные в виджеты
 		void reset(); //удалить все данные
+
+		void setNameDataSource(const QString &caption); //установим текущее название источника
+
 	private:
 
 		Marking::PWMarkingContainer	mMarking; //закладки
 
 
-		//информационные значения
-		QLabel *mInfoTime;
-		QLabel *mInfoValue;
-		QLabel *mInfoDescription;
-
 		QTreeWidget *mTreeMarkings; //искользуемые метки
 
-		QCustomPlot *mPlot; //диаграмма
-		QCustomPlot *mPlotTimer; //временная шкала
+		QCustomPlot *mPlot;			//диаграмма
+		QCustomPlot *mPlotTimer;	//временная шкала
 
-		QCPGraph *mPlotGraph; //основные данные
-
+		QCPGraph *mPlotGraph;	//основные данные
+		QCPGraph *mPlotGraphMark;	//закладки
 
 		void createUI(QWidget *parentWidget); //создание виджета 
 
@@ -71,9 +68,9 @@ namespace Chart
 
 		void initPlot();
 
-		void appendMark(const double time, const double data, const Marking::PWMarking &mark); //добавить закладки
 
-		QTreeWidgetItem* findItemMark(const Marking::PWMarking &mark) const; //поиск закладки  
+		void appendMark(const PMark &mark); //добавить закладки
+		QTreeWidgetItem* findItemMark(const Marking::PWMarking &marking) const; //поиск закладки  
 
 	public slots:
 

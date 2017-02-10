@@ -163,7 +163,7 @@ void ARandomGenerator :: onDisconnect()
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void ARandomGenerator :: onOpen()
+bool ARandomGenerator :: onOpen()
 {
 	if (mTimer == nullptr)
 	{
@@ -177,6 +177,8 @@ void ARandomGenerator :: onOpen()
 	mLastTime = 0;
 	mTimer->start(mInterval);
 	refreshWidget();
+
+	return true;
 }
 ///--------------------------------------------------------------------------------------
 
@@ -193,7 +195,7 @@ void ARandomGenerator :: onOpen()
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void ARandomGenerator :: onClose()
+bool ARandomGenerator :: onClose()
 {
 	if (mTimer != nullptr)
 	{
@@ -201,6 +203,7 @@ void ARandomGenerator :: onClose()
 	}
 	mLastTime = 0;
 	refreshWidget();
+	return true;
 }
 ///--------------------------------------------------------------------------------------
 

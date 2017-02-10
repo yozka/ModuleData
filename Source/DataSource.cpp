@@ -100,15 +100,18 @@ void ADataSource :: slot_show()
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void ADataSource :: command_dataOpen()
+bool ADataSource :: command_dataOpen()
 {
-	mRefOpen++;
-
 	if (!mActive)
 	{
-		mActive = true;
-		onOpen();
+		mActive = onOpen();
 	}
+
+	if (mActive)
+	{
+		mRefOpen++;
+	}
+	return mActive;
 }
 ///--------------------------------------------------------------------------------------
 
@@ -123,7 +126,7 @@ void ADataSource :: command_dataOpen()
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void ADataSource :: command_dataClose()
+bool ADataSource :: command_dataClose()
 {
 	mRefOpen--;
 	if (mRefOpen < 0)
@@ -135,6 +138,7 @@ void ADataSource :: command_dataClose()
 	{
 		close();
 	}
+	return true;
 }
 ///--------------------------------------------------------------------------------------
 

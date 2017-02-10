@@ -160,11 +160,12 @@ void AManualControl :: onDisconnect()
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void AManualControl :: onOpen()
+bool AManualControl :: onOpen()
 {
 	mLastTime = 0;
 	mData = 0;
 	refreshWidget();
+	return true;
 }
 ///--------------------------------------------------------------------------------------
 
@@ -181,11 +182,12 @@ void AManualControl :: onOpen()
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void AManualControl :: onClose()
+bool AManualControl :: onClose()
 {
 	mLastTime = 0;
 	mData = 0;
 	refreshWidget();
+	return true;
 }
 ///--------------------------------------------------------------------------------------
 

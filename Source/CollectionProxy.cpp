@@ -153,8 +153,9 @@ void ACollectionProxy :: disconnectAll()
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void ACollectionProxy :: command_dataOpen()
+bool ACollectionProxy :: command_dataOpen()
 {
+	bool ret = false;
 	for (auto item = mDataProxy.cbegin(); item != mDataProxy.cend(); ++item)
 	{
 		auto dataProxy = *item;
@@ -162,8 +163,12 @@ void ACollectionProxy :: command_dataOpen()
 		{
 			continue;
 		}
-		dataProxy->command_dataOpen();
+		if (dataProxy->command_dataOpen())
+		{
+			ret = true;
+		}
 	}
+	return ret;
 }
 ///--------------------------------------------------------------------------------------
 
@@ -179,8 +184,9 @@ void ACollectionProxy :: command_dataOpen()
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void ACollectionProxy :: command_dataClose()
+bool ACollectionProxy :: command_dataClose()
 {
+	bool ret = false;
 	for (auto item = mDataProxy.cbegin(); item != mDataProxy.cend(); ++item)
 	{
 		auto dataProxy = *item;
@@ -188,8 +194,12 @@ void ACollectionProxy :: command_dataClose()
 		{
 			continue;
 		}
-		dataProxy->command_dataClose();
+		if (dataProxy->command_dataClose())
+		{
+			ret = true;
+		}
 	}
+	return ret;
 }
 ///--------------------------------------------------------------------------------------
 
@@ -205,8 +215,9 @@ void ACollectionProxy :: command_dataClose()
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void ACollectionProxy :: command_dataSend(const QVariant &value)
+bool ACollectionProxy :: command_dataSend(const QVariant &value)
 {
+	bool ret = false;
 	for (auto item = mDataProxy.cbegin(); item != mDataProxy.cend(); ++item)
 	{
 		auto dataProxy = *item;
@@ -214,8 +225,52 @@ void ACollectionProxy :: command_dataSend(const QVariant &value)
 		{
 			continue;
 		}
-		dataProxy->command_dataSend(value);
+		if (dataProxy->command_dataSend(value))
+		{
+			ret = true;
+		}
 	}
+	return ret;
 }
+///--------------------------------------------------------------------------------------
 
+
+
+
+
+
+
+ ///=====================================================================================
+///
+/// возьмем всех потомков с интерфейсом
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+QList<IInterface_receiv*> ACollectionProxy :: childs() const
+{
+	QList<IInterface_receiv*> list;
+	list.append(mParent);
+	for (auto item = mDataProxy.constBegin(); item != mDataProxy.constEnd(); ++item)
+	{
+		auto dataProxy = *item;
+		if (dataProxy.isNull())
+		{
+			continue;
+		}
+
+		QWeakPointer<ACollectionProxy> first = dataProxy->first();
+		if (!first.isNull() && !list.contains(first.data()->mParent))
+		{
+			list.append(first.data()->mParent);
+		}
+
+		QWeakPointer<ACollectionProxy> second = dataProxy->second();
+		if (!second.isNull() && !list.contains(second.data()->mParent))
+		{
+			list.append(second.data()->mParent);
+		}
+
+	}
+	return list;
+}
 

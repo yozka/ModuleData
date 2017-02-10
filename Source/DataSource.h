@@ -73,17 +73,17 @@ namespace DataSource
 	protected:
 
 		//команды
-		void command_dataOpen		() override;	//команда начало сбора данных
-		void command_dataClose		() override;	//команда конца сбора данных
-		void command_dataReceive	(const QVariant &value) override{};  //прием данных
+		bool command_dataOpen		() override;	//команда начало сбора данных
+		bool command_dataClose		() override;	//команда конца сбора данных
+		bool command_dataReceive	(const QVariant &value) override{ return false;};  //прием данных
 		void command_connect		(IInterface_receiv *obj) override; //законнектился
 		void command_disconnect		() override; //расконнектились
 
 
-		virtual void onOpen(){};	//открытие данных
-		virtual void onClose(){};	//закрытие данных
-		virtual void onConnect(){};	//ктоо подсоеденился
-		virtual void onDisconnect(){};//ктото отсоединлся
+		virtual bool onOpen()		{return false;};	//открытие данных
+		virtual bool onClose()		{return false;};	//закрытие данных
+		virtual void onConnect()	{};					//ктоо подсоеденился
+		virtual void onDisconnect()	{};					//ктото отсоединлся
 
 		void close();//принудительно закрытие данных
 

@@ -32,9 +32,10 @@ namespace DataProxy
 	class IInterface_receiv
 	{
 	public:
-		virtual void command_dataOpen		() = 0; //команда начало сбора данных
-		virtual	void command_dataClose		() = 0;   //команда конец сбора данных
-		virtual void command_dataReceive	(const QVariant &value) = 0;  //прием данных
+		virtual bool command_dataOpen		() = 0; //команда начало сбора данных
+		virtual	bool command_dataClose		() = 0;   //команда конец сбора данных
+		virtual bool command_dataReceive	(const QVariant &value) = 0;  //прием данных
+		
 		virtual void command_connect		(IInterface_receiv *obj) = 0; //подключение к источнику данных
 		virtual void command_disconnect		() = 0; //отлкючение от источника данных
 	};
@@ -71,9 +72,11 @@ namespace DataProxy
 
 
 		//команды
-		void command_dataOpen();	//команда начало сбора данных
-		void command_dataClose();   //команда конец сбора данных
-		void command_dataSend(const QVariant &value);  //передача данных
+		bool command_dataOpen();	//команда начало сбора данных
+		bool command_dataClose();   //команда конец сбора данных
+		bool command_dataSend(const QVariant &value);  //передача данных
+
+		QList<IInterface_receiv*> childs() const;//возьмем всех потомков с интерфейсом
 
 	private:
 

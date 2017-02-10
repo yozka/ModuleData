@@ -8,6 +8,7 @@
 
 #include "MarkingContainer.h"
 #include "CollectionProxy.h"
+#include "DataSource.h"
 ///--------------------------------------------------------------------------------------
 
 namespace Chart
@@ -61,12 +62,14 @@ namespace Chart
 		void		reset();	//удаление сброс всех данных
 		void		refreshWidgets(); //обновим информацию у виджетах
 
+		DataSource::PDataSource currentDataSource() const; //возвратим текущий подключенный источник
+
 	protected:
 
 		//команды
-		void command_dataOpen		() override{}; //команда начало сбора данных
-		void command_dataClose		() override{}; //
-		void command_dataReceive	(const QVariant &value) override;  //прием данных
+		bool command_dataOpen		() override{ return false;}; //команда начало сбора данных
+		bool command_dataClose		() override{ return false;}; //
+		bool command_dataReceive	(const QVariant &value) override;  //прием данных
 		void command_connect		(IInterface_receiv *obj) override; //законнектился
 		void command_disconnect		() override; //расконнектились
 
