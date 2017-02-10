@@ -3,6 +3,7 @@
 #include <QString>
 #include <QLabel>
 #include <QTreeWidget>
+#include <QTreeWidgetItem>
 
 #include "qcustomplot-source\qcustomplot.h"
 #include "MarkingContainer.h"
@@ -37,7 +38,7 @@ namespace Chart
 		virtual ~AChartWidget();
 
 		void clear(); //очистка всех зависемостей
-		void setMarking(const Marking::PMarkingContainer &marking); //установка действующих закладок
+		void setMarking(const Marking::PWMarkingContainer &marking); //установка действующих закладок
 
 
 
@@ -46,7 +47,7 @@ namespace Chart
 		void reset(); //удалить все данные
 	private:
 
-		Marking::PMarkingContainer	mMarking; //закладки
+		Marking::PWMarkingContainer	mMarking; //закладки
 
 
 		//информационные значения
@@ -70,7 +71,9 @@ namespace Chart
 
 		void initPlot();
 
-		//void append
+		void appendMark(const double time, const double data, const Marking::PWMarking &mark); //добавить закладки
+
+		QTreeWidgetItem* findItemMark(const Marking::PWMarking &mark) const; //поиск закладки  
 
 	public slots:
 

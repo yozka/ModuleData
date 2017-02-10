@@ -131,3 +131,27 @@ void AMarkingContainer :: slot_change(const AMarking* marking)
 {
 	emit signal_change();
 }
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+ ///=====================================================================================
+///
+/// поиск меток, по данным
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+PMarking AMarkingContainer :: find(const int data) const
+{
+	for (auto item = mMarkings.constBegin(); item != mMarkings.constEnd(); ++item)
+	{
+		const auto mark = *item;
+		if (mark->isCheck(data))
+		{
+			return mark;
+		}
+	}
+	return PMarking();
+}

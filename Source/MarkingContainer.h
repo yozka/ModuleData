@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <QObject>
 #include <QSharedPointer>
+#include <QWeakPointer>
 #include <QList>
 #include "Marking.h"
 ///--------------------------------------------------------------------------------------
@@ -38,6 +39,7 @@ namespace Marking
 		PMarking item(const int index); //возвратим данные в контейнере
 		void append(const PMarking &marking); //добовляем данные
 
+		PMarking find(const int data) const; //поиск меток, по данным
 
 	signals:
 	
@@ -62,6 +64,7 @@ namespace Marking
 		
 	///--------------------------------------------------------------------------------------
 	typedef QSharedPointer<AMarkingContainer> PMarkingContainer;
+	typedef QWeakPointer<AMarkingContainer> PWMarkingContainer;
 	///--------------------------------------------------------------------------------------
 
 

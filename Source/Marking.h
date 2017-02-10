@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <QObject>
 #include <QSharedPointer>
+#include <QWeakPointer>
 #include <QString>
 ///--------------------------------------------------------------------------------------
 
@@ -38,6 +39,7 @@ namespace Marking
 		int value() const;				//значение метки
 		QString description() const;	//пояснение метки
 
+		bool isCheck(const int value) const; //проверка, данное число подходит к закладке илил нет
 
 	private:
 
@@ -57,6 +59,7 @@ namespace Marking
 		
 	///--------------------------------------------------------------------------------------
 	typedef QSharedPointer<AMarking> PMarking;
+	typedef QWeakPointer<AMarking> PWMarking;
 	///--------------------------------------------------------------------------------------
 
 

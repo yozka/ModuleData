@@ -283,7 +283,7 @@ void AChartWidget ::  initPlot()
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void AChartWidget :: setMarking(const Marking::PMarkingContainer &marking)
+void AChartWidget :: setMarking(const Marking::PWMarkingContainer &marking)
 {
 	mMarking = marking;
 }
@@ -303,7 +303,7 @@ void AChartWidget :: setMarking(const Marking::PMarkingContainer &marking)
 ///--------------------------------------------------------------------------------------
 void AChartWidget :: clear()
 {
-	mMarking = Marking::PMarkingContainer();
+	mMarking = Marking::PWMarkingContainer();
 	reset();
 }
 ///--------------------------------------------------------------------------------------
@@ -344,10 +344,73 @@ void AChartWidget :: append(const double time, const double data)
 	mPlot->rescaleAxes();
 	mPlot->replot();
 
+
 	//добавим маркеты
+	if (mMarking.isNull())
+	{
+		return;
+	}
+	Marking::PWMarking mark = mMarking.data()->find(data);
+	if (!mark.isNull())
+	{
+		appendMark(time, data, mark);
+	}
 }
 ///--------------------------------------------------------------------------------------
 
 
 
 
+
+ ///=====================================================================================
+///
+/// //добавить закладки
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AChartWidget :: appendMark(const double time, const double data, const Marking::PWMarking &mark)
+{
+	auto *top = findItemMark(mark);
+	if (top == nullptr)
+	{
+		//создадим закладку, ибо ее нет
+		top = new QTreeWidgetItem(mTreeMarkings);
+		top->setText(0, mark.data()->description());
+		top->setData(0, Qt::UserRole, qVariantFromValue<Marking::PMarking>(mark));
+		mTreeMarkings->insertTopLevelItem(0, top);
+	}
+			
+	//добавим  к закладке данные
+	QStringList captions;
+	captions << QString::number(time);
+	captions << QString::number(data);
+	auto *item = new QTreeWidgetItem(captions);
+	top->addChild(item);
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+ ///=====================================================================================
+///
+/// поиск закладок
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+QTreeWidgetItem* AChartWidget :: findItemMark(const Marking::PWMarking &mark) const
+{
+	const int count = mTreeMarkings->topLevelItemCount();
+	for (int i = 0; i < count; i++)
+	{
+		auto *item = mTreeMarkings->topLevelItem(i);
+		auto markVariant = item->data(0, Qt::UserRole);
+		auto md = qSharedPointerFromVariant<Marking::AMarking>(markVariant);
+		if (md == mark)
+		{
+			return item;
+		}
+	}
+	return nullptr;
+}
