@@ -57,6 +57,7 @@ private slots:
 
 	//DATA
 	void on_actionRandomGenerator_triggered(); //добавление генератора случайных чисел
+	void on_actionManualControl_triggered(); //добавление ручного источника данных
 	void slot_refreshDataSource(); //обновление источника данных
 	void slot_menuDataSource(QAction *action); //обработка меню
 };

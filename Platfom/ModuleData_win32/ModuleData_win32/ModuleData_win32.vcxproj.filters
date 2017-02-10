@@ -76,6 +76,9 @@
     <Filter Include="Source\DataSource\Items\RandomGenerator\Widget">
       <UniqueIdentifier>{81492199-75dd-403b-b3ea-cececf1d5274}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\DataSource\Items\ManualControl\Widget">
+      <UniqueIdentifier>{337af80e-8bf7-4580-a430-44ac9551a7c5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -201,6 +204,15 @@
     <ClCompile Include="GeneratedFiles\Release\moc_DSRandomGeneratorDialog.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\DSManualControlDialog.cpp">
+      <Filter>Source\DataSource\Items\ManualControl\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_DSManualControlDialog.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_DSManualControlDialog.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\..\Source\ModuleData.h">
@@ -241,6 +253,9 @@
     </CustomBuild>
     <CustomBuild Include="..\..\..\Source\DSRandomGeneratorDialog.h">
       <Filter>Source\DataSource\Items\RandomGenerator\Widget</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\Source\DSManualControlDialog.h">
+      <Filter>Source\DataSource\Items\ManualControl\Widget</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

@@ -294,7 +294,7 @@ void AModuleData :: slot_refreshDataSource()
 	//create
 	auto mnCreate = menu->addMenu("Create");
 	mnCreate->addAction("Random generator...", this, SLOT(on_actionRandomGenerator_triggered()));
-	mnCreate->addAction("Manual control...", this, SLOT(on_actionRandomGenerator_triggered()));
+	mnCreate->addAction("Manual control...", this, SLOT(on_actionManualControl_triggered()));
 	mnCreate->addAction("Com port...", this, SLOT(on_actionRandomGenerator_triggered()));
 	///
 	menu->addSeparator();
@@ -306,9 +306,9 @@ void AModuleData :: slot_refreshDataSource()
 		auto item = mData->item(i);
 		auto mnData = menu->addMenu(item->title());
 		mnData->addAction("Show...",	item.data(), SLOT(slot_show()));
-		auto actSelect = mnData->addAction("Select...");
+		auto actSelect = mnData->addAction("Install");
 		mnData->addSeparator();
-		auto actDelete = mnData->addAction("Delete...");
+		auto actDelete = mnData->addAction("Delete");
 		
 		actSelect->setProperty("ID",	i);
 		actSelect->setProperty("TYPE",	1);
@@ -409,4 +409,27 @@ void AModuleData :: on_actionRandomGenerator_triggered()
 	mData->append(data);
 	data->show();
 }
+///--------------------------------------------------------------------------------------
 	
+
+
+
+
+   
+
+
+
+
+ ///=====================================================================================
+///
+/// добавление ручного источника данных
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AModuleData :: on_actionManualControl_triggered()
+{
+	auto data = DataSource::PManualControl::create();
+	mData->append(data);
+	data->show();
+}
+

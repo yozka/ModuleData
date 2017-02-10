@@ -199,5 +199,9 @@ void ADataSource :: command_connect	(IInterface_receiv *obj)
 ///--------------------------------------------------------------------------------------
 void ADataSource :: command_disconnect	()
 {
+	if (mActive && streamData->count() == 0)
+	{
+		close();
+	}
 	onDisconnect();
 }
