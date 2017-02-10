@@ -1,4 +1,6 @@
 #include "ChartWidget.h"
+#include "TimeTicker.h"
+
 #include <QGroupBox>
 #include <QApplication>
 #include <QSplitter>
@@ -39,6 +41,7 @@ AChartWidget :: AChartWidget ()
 
 	//тестовые значения
 	initPlot();
+	reset();
 }
 ///--------------------------------------------------------------------------------------
 
@@ -158,27 +161,36 @@ QWidget*  AChartWidget :: createMarking()
 ///--------------------------------------------------------------------------------------
 QWidget*  AChartWidget :: createCharts()
 {
-	mPlot = new QCustomPlot();
-
-	return mPlot;
-	/*
 	//контент диаграммы
-	auto charts = new QWidget();
+	auto *content = new QWidget();
+	auto *layout = new QVBoxLayout(content);
 
-	mPlot = new QCustomPlot(charts);
-	mPlotTimer = new QCustomPlot(charts);
+	auto *label = new QLabel(content);
+	label->setText("test");
+	label->setFixedHeight(20);
+	layout->addWidget(label);
 
-	auto splitter = new QSplitter(Qt::Vertical, charts);
-	splitter->addWidget(mPlot);
-	splitter->addWidget(mPlotTimer);
+	mScrollTime = new QScrollBar(content);
+	mScrollTime->setOrientation(Qt::Horizontal);
+	mScrollTime->setFixedHeight(50);
+
+	mScrollTime->setMaximum(1000);
+    mScrollTime->setPageStep(300);
+    mScrollTime->setValue(100);
+
+	layout->addWidget(mScrollTime);
+
+
+	mPlot = new QCustomPlot(content);
+	layout->addWidget(mPlot);
+
+	connect(mPlot->xAxis, SIGNAL(rangeChanged(const QCPRange &)), this, SLOT(slot_rangeChanged(const QCPRange &)));
+
 	
 
-	auto layout = new QVBoxLayout(charts);
-	layout->addWidget(mPlot);
-	//layout->addWidget(splitter);
-	layout->addWidget(mPlotTimer);
 
-	return charts;*/
+
+	return content;
 }
 ///--------------------------------------------------------------------------------------
 
@@ -186,72 +198,34 @@ QWidget*  AChartWidget :: createCharts()
 
 
 
-
-
-
  ///=====================================================================================
 ///
-/// создание диаграмм
+/// изменение размеров
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void AChartWidget ::  initPlot()
+void AChartWidget :: slot_rangeChanged(const QCPRange &newRange)
 {
-	auto customPlot = mPlot;
+	int lower = newRange.lower;
+	int upper = newRange.upper;
+
+	if (lower < 0)
+	{
+		lower = 0;
+	}
+	if (upper > mMaxTime)
+	{
+		upper = mMaxTime;
+	}
 
 
-	customPlot->setInteraction(QCP::iRangeZoom,true);   // Включаем взаимодействие удаления/приближения
-    customPlot->setInteraction(QCP::iRangeDrag, true);  // Включаем взаимодействие перетаскивания графика
-   // customPlot->axisRect()->setRangeDrag(Qt::Horizontal);   // Включаем перетаскивание только по горизонтальной оси
-   // customPlot->axisRect()->setRangeZoom(Qt::Horizontal);   // Включаем удаление/приближение только по горизонтальной оси
-    //customPlot->xAxis->setTickLabelType(QCPAxis::ltDateTime);   // Подпись координат по Оси X в качестве Даты и Времени
-   // customPlot->xAxis->setDateTimeFormat("hh:mm");  // Устанавливаем формат даты и времени
- 
-    // Настраиваем шрифт по осям координат
-    customPlot->xAxis->setTickLabelFont(QFont(QFont().family(), 8));
-    customPlot->yAxis->setTickLabelFont(QFont(QFont().family(), 8));
- 
-    // Автоматическое масштабирование тиков по Оси X
-    //customPlot->xAxis->setAutoTickStep(true);
- 
+	int size = upper - lower;
+	int center = lower + size * 0.5f;
 
-    customPlot->xAxis2->setVisible(true);
-    customPlot->yAxis2->setVisible(true);
-    customPlot->xAxis2->setTicks(false);
-    customPlot->yAxis2->setTicks(false);
-    customPlot->xAxis2->setTickLabels(false);
-    customPlot->yAxis2->setTickLabels(false);
- 
-    customPlot->yAxis->setTickLabelColor(QColor(Qt::red)); // Красный цвет подписей тиков по Оси Y
-    customPlot->legend->setVisible(true);   //Включаем Легенду графика
-    // Устанавливаем Легенду в левый верхний угол графика
-    customPlot->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft|Qt::AlignTop);
- 
-
-
-    // Инициализируем график и привязываем его к Осям
-    mPlotGraph = customPlot->addGraph(customPlot->xAxis, customPlot->yAxis);
-	mPlotGraph->setName("Data");
-    mPlotGraph->setPen(QPen(QColor(Qt::red)));
-    mPlotGraph->setAntialiased(true);
-    mPlotGraph->setLineStyle(QCPGraph::lsImpulse); 
- 
-
-
-	mPlotGraphMark = customPlot->addGraph(customPlot->xAxis, customPlot->yAxis);
-	mPlotGraphMark->setName("Marking");
-	mPlotGraphMark->setPen(QPen(QColor(Qt::blue)));
-    mPlotGraphMark->setLineStyle(QCPGraph::lsNone); 
-	mPlotGraphMark->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 6));
-
-
-    /* Подключаем сигнал от Оси X об изменении видимого диапазона координат
-     * к СЛОТу для переустановки формата времени оси.
-     * */
-    connect(customPlot->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(slotRangeChanged(QCPRange)));
- 
-    customPlot->rescaleAxes();      // Масштабируем график по данным
-    customPlot->replot();           // Отрисовываем график
+	mScrollTime->setMaximum(mMaxTime);
+    //mScrollTime->setValue(center);
+	mScrollTime->setSliderPosition(center);
+	mScrollTime->setPageStep(size * 2);
 }
 ///--------------------------------------------------------------------------------------
 
@@ -304,11 +278,99 @@ void AChartWidget :: clear()
 ///--------------------------------------------------------------------------------------
 void AChartWidget :: reset()
 {
+	mMaxTime = 0;
+	mScrollTime->setMaximum(0);
+    mScrollTime->setValue(0);
+	mScrollTime->setSliderPosition(0);
+	mScrollTime->setPageStep(0);
+	
+	
 	mTreeMarkings->clear();
 	mPlotGraph->setData(QVector<qreal>(), QVector<qreal>());
 	mPlotGraphMark->setData(QVector<qreal>(), QVector<qreal>());
 	mPlot->rescaleAxes();
 	mPlot->replot();
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+
+ ///=====================================================================================
+///
+/// создание диаграмм
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AChartWidget ::  initPlot()
+{
+	auto customPlot = mPlot;
+
+
+	//интерактив
+	customPlot->setInteraction(QCP::iRangeZoom, true);
+    customPlot->setInteraction(QCP::iRangeDrag, true);
+    customPlot->axisRect()->setRangeDrag(Qt::Horizontal);
+    customPlot->axisRect()->setRangeZoom(Qt::Horizontal);
+   
+
+	QSharedPointer<ATimeTicker> timeTicker(new ATimeTicker);
+	customPlot->xAxis->setTicker(timeTicker);
+
+
+    //шрифт по осям
+    customPlot->xAxis->setTickLabelFont(QFont(QFont().family(), 8));
+    customPlot->yAxis->setTickLabelFont(QFont(QFont().family(), 8));
+ 
+
+    customPlot->xAxis2->setVisible(true);
+    customPlot->yAxis2->setVisible(true);
+    customPlot->xAxis2->setTicks(false);
+    customPlot->yAxis2->setTicks(false);
+    customPlot->xAxis2->setTickLabels(false);
+    customPlot->yAxis2->setTickLabels(false);
+ 
+
+
+	customPlot->yAxis->setTickLabelColor(QColor(Qt::darkGreen)); 
+    customPlot->legend->setVisible(true);   //Включаем Легенду графика
+    // Устанавливаем Легенду в левый верхний угол графика
+    customPlot->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft | Qt::AlignTop);
+ 
+
+
+    //график с данными
+    QPen penData;
+	penData.setColor(QColor(30, 40, 255, 150));
+	penData.setWidthF(10);
+	
+	mPlotGraph = customPlot->addGraph(customPlot->xAxis, customPlot->yAxis);
+	mPlotGraph->setName("Data");
+    mPlotGraph->setPen(penData);
+    mPlotGraph->setAntialiased(true);
+    mPlotGraph->setLineStyle(QCPGraph::lsImpulse); 
+	//
+
+
+	QPen penMark;
+	penMark.setColor(QColor(200, 0, 0, 255));
+	penMark.setWidthF(5);
+
+	mPlotGraphMark = customPlot->addGraph(customPlot->xAxis, customPlot->yAxis);
+	mPlotGraphMark->setName("Marking");
+	mPlotGraphMark->setPen(penMark);
+    mPlotGraphMark->setLineStyle(QCPGraph::lsNone); 
+	mPlotGraphMark->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 10));
+
+
+    connect(customPlot->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(slotRangeChanged(QCPRange)));
+
+
+
+	customPlot->rescaleAxes();      // Масштабируем график по данным
+    customPlot->replot();           // Отрисовываем график
 }
 ///--------------------------------------------------------------------------------------
 
@@ -325,6 +387,7 @@ void AChartWidget :: reset()
 ///--------------------------------------------------------------------------------------
 void AChartWidget :: append(const double time, const double data)
 {
+
 	mPlotGraph->addData(time, data);
 
 
@@ -343,7 +406,25 @@ void AChartWidget :: append(const double time, const double data)
 		mPlotGraphMark->addData(time, data);
 	}
 
-	mPlot->rescaleAxes();
+	int max = time;
+	if (max > mMaxTime)
+	{
+		mMaxTime = max;
+	}
+
+
+	//mPlot->rescaleAxes();
+	mPlot->yAxis->rescale();
+
+	const double size = 17000;
+	double start = time - size;
+	if (start < 0)
+	{
+		start = 0;
+	}
+
+	mPlot->xAxis->setRange(start, size * 1.1f, Qt::AlignLeft);
+
 	mPlot->replot();
 }
 ///--------------------------------------------------------------------------------------

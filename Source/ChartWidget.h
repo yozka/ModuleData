@@ -4,6 +4,7 @@
 #include <QLabel>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
+#include <QScrollBar>
 
 #include "qcustomplot-source\qcustomplot.h"
 #include "MarkingContainer.h"
@@ -51,7 +52,8 @@ namespace Chart
 
 		Marking::PWMarkingContainer	mMarking; //закладки
 
-
+		int mMaxTime; //время максимальное
+		QScrollBar	*mScrollTime; //время шкала
 		QTreeWidget *mTreeMarkings; //искользуемые метки
 
 		QCustomPlot *mPlot;			//диаграмма
@@ -74,6 +76,7 @@ namespace Chart
 
 	public slots:
 
+		void slot_rangeChanged(const QCPRange &newRange);//изменение размеров
 
 	};
 	///--------------------------------------------------------------------------------------

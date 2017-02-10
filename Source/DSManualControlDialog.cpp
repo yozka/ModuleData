@@ -103,7 +103,7 @@ void AManualControlDialog :: show(const QWeakPointer<AManualControl> &dataSource
 ///--------------------------------------------------------------------------------------
 void AManualControlDialog :: createUI(QWidget *form)
 {
-	int width = 300;
+	int width = 400;
 	int height = 200;
 
 	form->setMinimumSize(QSize(width, height));

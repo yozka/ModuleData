@@ -371,6 +371,8 @@ void AChart :: refreshWidgets()
 	auto dataSource = currentDataSource();
 	mChartWidget->setNameDataSource(dataSource.isNull() ? "[none]" : dataSource->title());
 
+	//mChartWidget->
+
 }
 ///--------------------------------------------------------------------------------------
 

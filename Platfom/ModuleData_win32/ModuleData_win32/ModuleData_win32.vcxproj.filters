@@ -79,6 +79,12 @@
     <Filter Include="Source\DataSource\Items\ManualControl\Widget">
       <UniqueIdentifier>{337af80e-8bf7-4580-a430-44ac9551a7c5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Chart\ChartWidget\Mark">
+      <UniqueIdentifier>{2960d300-32d6-4c6e-bd68-157237a87da2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Chart\ChartWidget\TimeTicker">
+      <UniqueIdentifier>{2cca7259-f364-4d92-aa51-69a1e2c6dbdd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -213,14 +219,17 @@
     <ClCompile Include="GeneratedFiles\Release\moc_DSManualControlDialog.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Source\Mark.cpp">
-      <Filter>Source\Chart\ChartWidget</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_Mark.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_Mark.cpp">
       <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Mark.cpp">
+      <Filter>Source\Chart\ChartWidget\Mark</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\TimeTicker.cpp">
+      <Filter>Source\Chart\ChartWidget\TimeTicker</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -267,7 +276,7 @@
       <Filter>Source\DataSource\Items\ManualControl\Widget</Filter>
     </CustomBuild>
     <CustomBuild Include="..\..\..\Source\Mark.h">
-      <Filter>Source\Chart\ChartWidget</Filter>
+      <Filter>Source\Chart\ChartWidget\Mark</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -296,6 +305,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Source\CollectionProxy.h">
       <Filter>Source\DataProxy\CollectionProxy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\TimeTicker.h">
+      <Filter>Source\Chart\ChartWidget\TimeTicker</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
