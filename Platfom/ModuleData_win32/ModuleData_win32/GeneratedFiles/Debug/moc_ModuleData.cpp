@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_AModuleData_t {
-    QByteArrayData data[15];
-    char stringdata0[331];
+    QByteArrayData data[16];
+    char stringdata0[358];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -40,10 +40,11 @@ QT_MOC_LITERAL(7, 145, 29), // "on_actionChartPause_triggered"
 QT_MOC_LITERAL(8, 175, 28), // "on_actionChartStop_triggered"
 QT_MOC_LITERAL(9, 204, 34), // "on_actionRandomGenerator_trig..."
 QT_MOC_LITERAL(10, 239, 32), // "on_actionManualControl_triggered"
-QT_MOC_LITERAL(11, 272, 22), // "slot_refreshDataSource"
-QT_MOC_LITERAL(12, 295, 19), // "slot_menuDataSource"
-QT_MOC_LITERAL(13, 315, 8), // "QAction*"
-QT_MOC_LITERAL(14, 324, 6) // "action"
+QT_MOC_LITERAL(11, 272, 26), // "on_actionComPort_triggered"
+QT_MOC_LITERAL(12, 299, 22), // "slot_refreshDataSource"
+QT_MOC_LITERAL(13, 322, 19), // "slot_menuDataSource"
+QT_MOC_LITERAL(14, 342, 8), // "QAction*"
+QT_MOC_LITERAL(15, 351, 6) // "action"
 
     },
     "AModuleData\0on_actionMarking_triggered\0"
@@ -54,6 +55,7 @@ QT_MOC_LITERAL(14, 324, 6) // "action"
     "on_actionChartStop_triggered\0"
     "on_actionRandomGenerator_triggered\0"
     "on_actionManualControl_triggered\0"
+    "on_actionComPort_triggered\0"
     "slot_refreshDataSource\0slot_menuDataSource\0"
     "QAction*\0action"
 };
@@ -65,7 +67,7 @@ static const uint qt_meta_data_AModuleData[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      11,   14, // methods
+      12,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -73,17 +75,18 @@ static const uint qt_meta_data_AModuleData[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   69,    2, 0x08 /* Private */,
-       3,    0,   70,    2, 0x08 /* Private */,
-       4,    0,   71,    2, 0x08 /* Private */,
-       5,    0,   72,    2, 0x08 /* Private */,
-       6,    0,   73,    2, 0x08 /* Private */,
-       7,    0,   74,    2, 0x08 /* Private */,
-       8,    0,   75,    2, 0x08 /* Private */,
-       9,    0,   76,    2, 0x08 /* Private */,
-      10,    0,   77,    2, 0x08 /* Private */,
-      11,    0,   78,    2, 0x08 /* Private */,
-      12,    1,   79,    2, 0x08 /* Private */,
+       1,    0,   74,    2, 0x08 /* Private */,
+       3,    0,   75,    2, 0x08 /* Private */,
+       4,    0,   76,    2, 0x08 /* Private */,
+       5,    0,   77,    2, 0x08 /* Private */,
+       6,    0,   78,    2, 0x08 /* Private */,
+       7,    0,   79,    2, 0x08 /* Private */,
+       8,    0,   80,    2, 0x08 /* Private */,
+       9,    0,   81,    2, 0x08 /* Private */,
+      10,    0,   82,    2, 0x08 /* Private */,
+      11,    0,   83,    2, 0x08 /* Private */,
+      12,    0,   84,    2, 0x08 /* Private */,
+      13,    1,   85,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -96,7 +99,8 @@ static const uint qt_meta_data_AModuleData[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 13,   14,
+    QMetaType::Void,
+    QMetaType::Void, 0x80000000 | 14,   15,
 
        0        // eod
 };
@@ -116,20 +120,10 @@ void AModuleData::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
         case 6: _t->on_actionChartStop_triggered(); break;
         case 7: _t->on_actionRandomGenerator_triggered(); break;
         case 8: _t->on_actionManualControl_triggered(); break;
-        case 9: _t->slot_refreshDataSource(); break;
-        case 10: _t->slot_menuDataSource((*reinterpret_cast< QAction*(*)>(_a[1]))); break;
+        case 9: _t->on_actionComPort_triggered(); break;
+        case 10: _t->slot_refreshDataSource(); break;
+        case 11: _t->slot_menuDataSource((*reinterpret_cast< QAction*(*)>(_a[1]))); break;
         default: ;
-        }
-    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        switch (_id) {
-        default: *reinterpret_cast<int*>(_a[0]) = -1; break;
-        case 10:
-            switch (*reinterpret_cast<int*>(_a[1])) {
-            default: *reinterpret_cast<int*>(_a[0]) = -1; break;
-            case 0:
-                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QAction* >(); break;
-            }
-            break;
         }
     }
 }
@@ -159,13 +153,13 @@ int AModuleData::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 11)
+        if (_id < 12)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 11;
+        _id -= 12;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 11)
-            qt_static_metacall(this, _c, _id, _a);
-        _id -= 11;
+        if (_id < 12)
+            *reinterpret_cast<int*>(_a[0]) = -1;
+        _id -= 12;
     }
     return _id;
 }

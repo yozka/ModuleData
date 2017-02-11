@@ -79,11 +79,11 @@
     <Filter Include="Source\DataSource\Items\ManualControl\Widget">
       <UniqueIdentifier>{337af80e-8bf7-4580-a430-44ac9551a7c5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Chart\ChartWidget\Mark">
-      <UniqueIdentifier>{2960d300-32d6-4c6e-bd68-157237a87da2}</UniqueIdentifier>
+    <Filter Include="Source\DataSource\Items\ComPort\Widget">
+      <UniqueIdentifier>{5eecabad-22d5-4ec0-92a7-282d243d392a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Chart\ChartWidget\TimeTicker">
-      <UniqueIdentifier>{2cca7259-f364-4d92-aa51-69a1e2c6dbdd}</UniqueIdentifier>
+    <Filter Include="Source\Utils\SerialPort">
+      <UniqueIdentifier>{aced4128-dde7-415e-96b7-6fbed3655c9e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -231,6 +231,24 @@
     <ClCompile Include="..\..\..\Source\TimeTicker.cpp">
       <Filter>Source\Chart\ChartWidget\TimeTicker</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\DSComPortDialog.cpp">
+      <Filter>Source\DataSource\Items\ComPort\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_DSComPortDialog.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_DSComPortDialog.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\SerialPort.cpp">
+      <Filter>Source\Utils\SerialPort</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_SerialPort.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_SerialPort.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\..\Source\ModuleData.h">
@@ -277,6 +295,12 @@
     </CustomBuild>
     <CustomBuild Include="..\..\..\Source\Mark.h">
       <Filter>Source\Chart\ChartWidget\Mark</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\Source\DSComPortDialog.h">
+      <Filter>Source\DataSource\Items\ComPort\Widget</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\Source\SerialPort.h">
+      <Filter>Source\Utils\SerialPort</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

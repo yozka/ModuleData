@@ -115,7 +115,11 @@ void AModuleData :: on_actionMarking_triggered()
 void AModuleData :: on_actionChartNew_triggered()
 {
 	//источник данных
-	auto data = DataSource::PRandomGenerator::create();
+	//auto data = DataSource::PRandomGenerator::create();
+	auto data = DataSource::PComPort::create();
+	data->setPortInfo(QSerialPortInfo::availablePorts()[0]);
+
+
 	mData->append(data);
 
 	
@@ -295,7 +299,7 @@ void AModuleData :: slot_refreshDataSource()
 	auto mnCreate = menu->addMenu("Create");
 	mnCreate->addAction("Random generator...", this, SLOT(on_actionRandomGenerator_triggered()));
 	mnCreate->addAction("Manual control...", this, SLOT(on_actionManualControl_triggered()));
-	mnCreate->addAction("Com port...", this, SLOT(on_actionRandomGenerator_triggered()));
+	mnCreate->addAction("Com port...", this, SLOT(on_actionComPort_triggered()));
 	///
 	menu->addSeparator();
 
@@ -429,6 +433,29 @@ void AModuleData :: on_actionRandomGenerator_triggered()
 void AModuleData :: on_actionManualControl_triggered()
 {
 	auto data = DataSource::PManualControl::create();
+	mData->append(data);
+	data->show();
+}
+///--------------------------------------------------------------------------------------
+	
+
+
+
+
+   
+
+
+
+
+ ///=====================================================================================
+///
+/// добавление компорта
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AModuleData :: on_actionComPort_triggered()
+{
+	auto data = DataSource::PComPort::create();
 	mData->append(data);
 	data->show();
 }
