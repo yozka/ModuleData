@@ -115,20 +115,16 @@ void AModuleData :: on_actionMarking_triggered()
 void AModuleData :: on_actionChartNew_triggered()
 {
 	//источник данных
-	//auto data = DataSource::PRandomGenerator::create();
+	auto data = DataSource::PRandomGenerator::create();
+	
+	/*
 	auto data = DataSource::PComPort::create();
 	auto ports = QSerialPortInfo::availablePorts();
-	qDebug() << "Ports enumeration:" << "\n"; 
-	for (int i=0; i < ports.size(); i++) 
-	{ 
-		qDebug() << " * Name: " << ports.at(i).portName();
-	}
-
 	if (!ports.isEmpty())
 	{
 		data->setPortInfo(ports[0]);
 	}
-
+	*/
 	mData->append(data);
 
 	

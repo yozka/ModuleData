@@ -5,6 +5,7 @@
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
 #include <QScrollBar>
+#include <QCheckBox>
 
 #include "qcustomplot-source\qcustomplot.h"
 #include "MarkingContainer.h"
@@ -52,9 +53,14 @@ namespace Chart
 
 		Marking::PWMarkingContainer	mMarking; //закладки
 
-		int mMaxTime; //время максимальное
-		QScrollBar	*mScrollTime; //время шкала
+		double	mZoomFactor;
+		bool	mAutoTrackerEnabled; //флаг, что размеры меняет автотрекер
+		int		mMaxTime; //время максимальное
+		bool	mTimeValueChanged; //временное положение было изменено
+
+		QSlider		*mScrollTime; //время шкала
 		QTreeWidget *mTreeMarkings; //искользуемые метки
+		QCheckBox	*mAutoTracker;	//автоматическй проматывать график
 
 		QCustomPlot *mPlot;			//диаграмма
 		QCustomPlot *mPlotTimer;	//временная шкала

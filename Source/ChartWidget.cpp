@@ -34,7 +34,9 @@ AChartWidget :: AChartWidget ()
 	mTreeMarkings(NULL),
 	mPlot(NULL),
 	mPlotTimer(NULL),
-	mPlotGraph(NULL)
+	mPlotGraph(NULL),
+	mAutoTrackerEnabled(false),
+	mZoomFactor(0)
 {
 	createUI(this);
 
@@ -170,19 +172,23 @@ QWidget*  AChartWidget :: createCharts()
 	label->setFixedHeight(20);
 	layout->addWidget(label);
 
-	mScrollTime = new QScrollBar(content);
-	mScrollTime->setOrientation(Qt::Horizontal);
-	mScrollTime->setFixedHeight(50);
-
-	mScrollTime->setMaximum(1000);
-    mScrollTime->setPageStep(300);
-    mScrollTime->setValue(100);
-
-	layout->addWidget(mScrollTime);
+	mAutoTracker = new QCheckBox(content);
+	mAutoTracker->setText("Auto tracker");
+	layout->addWidget(mAutoTracker);
 
 
 	mPlot = new QCustomPlot(content);
 	layout->addWidget(mPlot);
+
+
+	mScrollTime = new QSlider(content);
+	mScrollTime->setOrientation(Qt::Horizontal);
+	mScrollTime->setFixedHeight(20);
+
+
+
+	layout->addWidget(mScrollTime);
+
 
 	connect(mPlot->xAxis, SIGNAL(rangeChanged(const QCPRange &)), this, SLOT(slot_rangeChanged(const QCPRange &)));
 
@@ -206,26 +212,13 @@ QWidget*  AChartWidget :: createCharts()
 ///--------------------------------------------------------------------------------------
 void AChartWidget :: slot_rangeChanged(const QCPRange &newRange)
 {
-	int lower = newRange.lower;
-	int upper = newRange.upper;
-
-	if (lower < 0)
+	if (!mAutoTrackerEnabled)
 	{
-		lower = 0;
+		//размеры изменяет не автотрекер, поменяли фактор зумирования
+		mZoomFactor = newRange.size();
+		mAutoTracker->setChecked(false); //отключили автотрекер. иоо рамеры поменяли не автоматом
 	}
-	if (upper > mMaxTime)
-	{
-		upper = mMaxTime;
-	}
-
-
-	int size = upper - lower;
-	int center = lower + size * 0.5f;
-
-	mScrollTime->setMaximum(mMaxTime);
-    //mScrollTime->setValue(center);
-	mScrollTime->setSliderPosition(center);
-	mScrollTime->setPageStep(size * 2);
+	mScrollTime->setValue(newRange.center());
 }
 ///--------------------------------------------------------------------------------------
 
@@ -288,6 +281,13 @@ void AChartWidget :: reset()
 	mTreeMarkings->clear();
 	mPlotGraph->setData(QVector<qreal>(), QVector<qreal>());
 	mPlotGraphMark->setData(QVector<qreal>(), QVector<qreal>());
+
+	mZoomFactor = 17000;
+	mAutoTrackerEnabled = true;
+	mPlot->xAxis->setRange(0, mZoomFactor, Qt::AlignLeft);
+	mAutoTrackerEnabled = false;
+	mAutoTracker->setChecked(true);
+
 	mPlot->rescaleAxes();
 	mPlot->replot();
 }
@@ -410,22 +410,32 @@ void AChartWidget :: append(const double time, const double data)
 	if (max > mMaxTime)
 	{
 		mMaxTime = max;
+		mScrollTime->setMaximum(mMaxTime);
 	}
+	mTimeValueChanged = false;
 
-
-	//mPlot->rescaleAxes();
+	
 	mPlot->yAxis->rescale();
 
-	const double size = 17000;
-	double start = time - size;
-	if (start < 0)
+	if (mAutoTracker->isChecked())
 	{
-		start = 0;
+		const double size = mZoomFactor;
+		double start = time - size;
+		if (start < 0)
+		{
+			start = 0;
+		}
+		mAutoTrackerEnabled = true;
+		mPlot->xAxis->setRange(start, size * 1.1f, Qt::AlignLeft);
+		mAutoTrackerEnabled = false;
 	}
 
-	mPlot->xAxis->setRange(start, size * 1.1f, Qt::AlignLeft);
-
 	mPlot->replot();
+
+	if (!mTimeValueChanged)
+	{
+		mScrollTime->setValue();
+	}
 }
 ///--------------------------------------------------------------------------------------
 
