@@ -2,7 +2,9 @@
 #include <QObject>
 #include <QSharedPointer>
 #include <QWeakPointer>
-#include "Marking.h"
+#include "Mark.h"
+
+#include "qcustomplot-source\qcustomplot.h"
 ///--------------------------------------------------------------------------------------
 
 
@@ -12,6 +14,8 @@ namespace Chart
 	///--------------------------------------------------------------------------------------
 
 
+	
+	
 
 
 
@@ -27,34 +31,25 @@ namespace Chart
 	/// 
 	/// 
 	///--------------------------------------------------------------------------------------
-	class AMark
-			: 
-				public QObject
+	class AMarkPlot
 	{
-		Q_OBJECT
 	public:
 
-		AMark(const Marking::PWMarking &marking);
-		AMark(const double time, const double value, const Marking::PWMarking &marking);
-		virtual ~AMark();
+		AMarkPlot();
+		virtual ~AMarkPlot();
 
-		Marking::PWMarking marking() const; //возвратим указатель на метку 
+		
+		void createLabel(const PMark &mark, QCustomPlot *plot);
 
-
-		QString description() const; //возратим описание
-		QString timeToString() const; //время
-		double	time() const; //время
-		QString valueToString() const; //значение
-		double  value() const; //значение
-
-		bool isRoot() const; //возвратим, это корневая ссылка или нет
+		void destroy();
 
 	private:
-		bool	mRoot; //корневой узел
-		double	mTime; //время в милисикундах
-		double	mValue;
+		
+		QCPItemText *mTextLabel;
+		QCPItemLine *mArrow;
+		//QCPItemCurve *mArrow;
 
-		Marking::PWMarking mMarking;
+
 	};
 	///--------------------------------------------------------------------------------------
 
@@ -63,7 +58,7 @@ namespace Chart
 
 		
 	///--------------------------------------------------------------------------------------
-	typedef QSharedPointer<AMark> PMark;
+	typedef QSharedPointer<AMarkPlot> PMarkPlot;
 	///--------------------------------------------------------------------------------------
 
 

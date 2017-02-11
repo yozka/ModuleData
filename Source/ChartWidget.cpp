@@ -1,4 +1,4 @@
-#include "ChartWidget.h"
+п»ї#include "ChartWidget.h"
 #include "TimeTicker.h"
 
 #include <QGroupBox>
@@ -31,17 +31,24 @@ using namespace Chart;
 ///--------------------------------------------------------------------------------------
 AChartWidget :: AChartWidget ()
 	:
-	mTreeMarkings(NULL),
-	mPlot(NULL),
-	mPlotTimer(NULL),
-	mPlotGraph(NULL),
+	mTreeMarkings(nullptr),
+	mPlot(nullptr),
+	mPlotGraph(nullptr),
+	mPlotGraphMark(nullptr),
+	mAutoTracker(nullptr),
+	mScrollTime(nullptr),
+	mScrollTimeLabel(nullptr),
 	mAutoTrackerEnabled(false),
-	mZoomFactor(0)
+	mZoomFactor(0),
+	mTimeValueChanged(false),
+	mRangeSetSkip(false),
+	mTimeValueSkip(false)
 {
 	createUI(this);
+	
+	mMarkLabel = PMarkPlot::create();
 
-
-	//тестовые значения
+	//С‚РµСЃС‚РѕРІС‹Рµ Р·РЅР°С‡РµРЅРёСЏ
 	initPlot();
 	reset();
 }
@@ -62,7 +69,6 @@ AChartWidget :: AChartWidget ()
 AChartWidget :: ~AChartWidget ()
 {
 	clear();
-
 }
 ///--------------------------------------------------------------------------------------
 
@@ -75,7 +81,7 @@ AChartWidget :: ~AChartWidget ()
 
  ///=====================================================================================
 ///
-/// создание виджета 
+/// СЃРѕР·РґР°РЅРёРµ РІРёРґР¶РµС‚Р° 
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
@@ -85,17 +91,17 @@ void AChartWidget :: createUI(QWidget *parentWidget)
 	contentLayout->setContentsMargins(6, 6, 6, 6);
 	
 
-	//закладки
+	//Р·Р°РєР»Р°РґРєРё
 	auto *markingWidget = createMarking();
 	contentLayout->addWidget(markingWidget);
 
 
-	//диаграма
+	//РґРёР°РіСЂР°РјР°
 	auto *chartsWidget = createCharts();
 	contentLayout->addWidget(chartsWidget);
 
 
-	//разделитель
+	//СЂР°Р·РґРµР»РёС‚РµР»СЊ
 	auto splitter = new QSplitter(Qt::Horizontal, parentWidget);
 	splitter->addWidget(markingWidget);
 	splitter->addWidget(chartsWidget);
@@ -117,7 +123,7 @@ void AChartWidget :: createUI(QWidget *parentWidget)
 
  ///=====================================================================================
 ///
-/// создание заголовка
+/// СЃРѕР·РґР°РЅРёРµ Р·Р°РіРѕР»РѕРІРєР°
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
@@ -143,6 +149,8 @@ QWidget*  AChartWidget :: createMarking()
 	
 	mainLayout->addWidget(mTreeMarkings);
 
+	connect(mTreeMarkings, &QTreeWidget::currentItemChanged, this, &AChartWidget::slot_treeChanged);
+
 
 	return mainWidget;
 }
@@ -157,13 +165,13 @@ QWidget*  AChartWidget :: createMarking()
 
  ///=====================================================================================
 ///
-/// создание диаграмм
+/// СЃРѕР·РґР°РЅРёРµ РґРёР°РіСЂР°РјРј
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
 QWidget*  AChartWidget :: createCharts()
 {
-	//контент диаграммы
+	//РєРѕРЅС‚РµРЅС‚ РґРёР°РіСЂР°РјРјС‹
 	auto *content = new QWidget();
 	auto *layout = new QVBoxLayout(content);
 
@@ -176,9 +184,21 @@ QWidget*  AChartWidget :: createCharts()
 	mAutoTracker->setText("Auto tracker");
 	layout->addWidget(mAutoTracker);
 
-
+	///
 	mPlot = new QCustomPlot(content);
 	layout->addWidget(mPlot);
+	///
+
+	auto *line = new QFrame(content);
+    line->setObjectName(QStringLiteral("line"));
+    line->setFrameShape(QFrame::HLine);
+    line->setFrameShadow(QFrame::Sunken);
+	layout->addWidget(line);
+
+	mScrollTimeLabel = new QLabel(content);
+	mScrollTimeLabel->setText("Time:");
+	mScrollTimeLabel->setFixedHeight(20);
+	layout->addWidget(mScrollTimeLabel);
 
 
 	mScrollTime = new QSlider(content);
@@ -192,21 +212,25 @@ QWidget*  AChartWidget :: createCharts()
 
 	connect(mPlot->xAxis, SIGNAL(rangeChanged(const QCPRange &)), this, SLOT(slot_rangeChanged(const QCPRange &)));
 
-	
 
+	connect(mScrollTime, &QSlider::valueChanged, this, &AChartWidget::slot_timeChanged);
 
+//	bool bo = connect(mPlot, SIGNAL(plottableClick(QCPAbstractPlottable*,int,QMouseEvent*)), this, SLOT(slot_graphClicked(QCPAbstractPlottable*,int)));
 
 	return content;
 }
 ///--------------------------------------------------------------------------------------
 
 
-
+void AChartWidget :: slot_graphClicked(QCPAbstractPlottable *plottable, int dataIndex)
+{
+	int i = 0;
+}
 
 
  ///=====================================================================================
 ///
-/// изменение размеров
+/// РёР·РјРµРЅРµРЅРёРµ СЂР°Р·РјРµСЂРѕРІ
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
@@ -214,11 +238,47 @@ void AChartWidget :: slot_rangeChanged(const QCPRange &newRange)
 {
 	if (!mAutoTrackerEnabled)
 	{
-		//размеры изменяет не автотрекер, поменяли фактор зумирования
+		//СЂР°Р·РјРµСЂС‹ РёР·РјРµРЅСЏРµС‚ РЅРµ Р°РІС‚РѕС‚СЂРµРєРµСЂ, РїРѕРјРµРЅСЏР»Рё С„Р°РєС‚РѕСЂ Р·СѓРјРёСЂРѕРІР°РЅРёСЏ
 		mZoomFactor = newRange.size();
-		mAutoTracker->setChecked(false); //отключили автотрекер. иоо рамеры поменяли не автоматом
+		mAutoTracker->setChecked(false); //РѕС‚РєР»СЋС‡РёР»Рё Р°РІС‚РѕС‚СЂРµРєРµСЂ. РёРѕРѕ СЂР°РјРµСЂС‹ РїРѕРјРµРЅСЏР»Рё РЅРµ Р°РІС‚РѕРјР°С‚РѕРј
 	}
-	mScrollTime->setValue(newRange.center());
+
+	if (!mTimeValueSkip)
+	{
+		mRangeSetSkip = true;
+		mScrollTime->setValue(newRange.center());
+		mRangeSetSkip = false;
+	}
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+ ///=====================================================================================
+///
+/// РёР·РјРµРЅРµРЅРёРµ РІСЂРµРјРµРЅРё
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AChartWidget :: slot_timeChanged(const int value)
+{
+	if (!mAutoTrackerEnabled)
+	{
+		mAutoTracker->setChecked(false); //РѕС‚РєР»СЋС‡РёР»Рё Р°РІС‚РѕС‚СЂРµРєРµСЂ. РёРѕРѕ СЂР°РјРµСЂС‹ РїРѕРјРµРЅСЏР»Рё РЅРµ Р°РІС‚РѕРјР°С‚РѕРј
+	}
+	mTimeValueChanged = true;
+
+	if (!mRangeSetSkip)
+	{
+		mTimeValueSkip = true;
+		mPlot->xAxis->setRange(value - (int)(mZoomFactor * 0.5f), mZoomFactor, Qt::AlignLeft);
+		mTimeValueSkip = false;
+		mPlot->replot();
+	}
+
+	refreshTimeLabel();
 }
 ///--------------------------------------------------------------------------------------
 
@@ -229,7 +289,32 @@ void AChartWidget :: slot_rangeChanged(const QCPRange &newRange)
 
  ///=====================================================================================
 ///
-/// установка действующих закладок
+/// РѕР±РЅРѕРІР»РµРЅРёРµ РјРµС‚РєРё
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AChartWidget :: refreshTimeLabel()
+{
+	int value = mScrollTime->value();
+	if (value == mMaxTime)
+	{
+		mScrollTimeLabel->setText("Current time: " + ATimeTicker::timeToString(value));
+	}
+	else
+	{
+		mScrollTimeLabel->setText("Current time: " + ATimeTicker::timeToString(value) + " / " + ATimeTicker::timeToString(mMaxTime));
+	}
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+
+ ///=====================================================================================
+///
+/// СѓСЃС‚Р°РЅРѕРІРєР° РґРµР№СЃС‚РІСѓСЋС‰РёС… Р·Р°РєР»Р°РґРѕРє
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
@@ -247,7 +332,7 @@ void AChartWidget :: setMarking(const Marking::PWMarkingContainer &marking)
 
  ///=====================================================================================
 ///
-/// очистка всех зависемостей
+/// РѕС‡РёСЃС‚РєР° РІСЃРµС… Р·Р°РІРёСЃРµРјРѕСЃС‚РµР№
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
@@ -265,12 +350,15 @@ void AChartWidget :: clear()
 
  ///=====================================================================================
 ///
-/// удалить все данные
+/// СѓРґР°Р»РёС‚СЊ РІСЃРµ РґР°РЅРЅС‹Рµ
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
 void AChartWidget :: reset()
 {
+	mMarkLabel->destroy();
+
+	mRangeSetSkip = true;
 	mMaxTime = 0;
 	mScrollTime->setMaximum(0);
     mScrollTime->setValue(0);
@@ -282,7 +370,7 @@ void AChartWidget :: reset()
 	mPlotGraph->setData(QVector<qreal>(), QVector<qreal>());
 	mPlotGraphMark->setData(QVector<qreal>(), QVector<qreal>());
 
-	mZoomFactor = 17000;
+	mZoomFactor = 6000;
 	mAutoTrackerEnabled = true;
 	mPlot->xAxis->setRange(0, mZoomFactor, Qt::AlignLeft);
 	mAutoTrackerEnabled = false;
@@ -300,7 +388,7 @@ void AChartWidget :: reset()
 
  ///=====================================================================================
 ///
-/// создание диаграмм
+/// СЃРѕР·РґР°РЅРёРµ РґРёР°РіСЂР°РјРј
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
@@ -309,18 +397,19 @@ void AChartWidget ::  initPlot()
 	auto customPlot = mPlot;
 
 
-	//интерактив
+	//РёРЅС‚РµСЂР°РєС‚РёРІ
 	customPlot->setInteraction(QCP::iRangeZoom, true);
     customPlot->setInteraction(QCP::iRangeDrag, true);
     customPlot->axisRect()->setRangeDrag(Qt::Horizontal);
     customPlot->axisRect()->setRangeZoom(Qt::Horizontal);
-   
+
+	customPlot->setInteraction(QCP::iSelectPlottables, true);
 
 	QSharedPointer<ATimeTicker> timeTicker(new ATimeTicker);
 	customPlot->xAxis->setTicker(timeTicker);
 
 
-    //шрифт по осям
+    //С€СЂРёС„С‚ РїРѕ РѕСЃСЏРј
     customPlot->xAxis->setTickLabelFont(QFont(QFont().family(), 8));
     customPlot->yAxis->setTickLabelFont(QFont(QFont().family(), 8));
  
@@ -335,15 +424,16 @@ void AChartWidget ::  initPlot()
 
 
 	customPlot->yAxis->setTickLabelColor(QColor(Qt::darkGreen)); 
-    customPlot->legend->setVisible(true);   //Включаем Легенду графика
-    // Устанавливаем Легенду в левый верхний угол графика
+    customPlot->legend->setVisible(true);   //Р’РєР»СЋС‡Р°РµРј Р›РµРіРµРЅРґСѓ РіСЂР°С„РёРєР°
+    // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј Р›РµРіРµРЅРґСѓ РІ Р»РµРІС‹Р№ РІРµСЂС…РЅРёР№ СѓРіРѕР» РіСЂР°С„РёРєР°
     customPlot->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft | Qt::AlignTop);
  
 
 
-    //график с данными
+    //РіСЂР°С„РёРє СЃ РґР°РЅРЅС‹РјРё
+	QColor color(66, 134, 244, 200);
     QPen penData;
-	penData.setColor(QColor(30, 40, 255, 150));
+	penData.setColor(color);
 	penData.setWidthF(10);
 	
 	mPlotGraph = customPlot->addGraph(customPlot->xAxis, customPlot->yAxis);
@@ -351,26 +441,32 @@ void AChartWidget ::  initPlot()
     mPlotGraph->setPen(penData);
     mPlotGraph->setAntialiased(true);
     mPlotGraph->setLineStyle(QCPGraph::lsImpulse); 
+	mPlotGraph->setSelectable(QCP::stNone);
 	//
 
 
 	QPen penMark;
-	penMark.setColor(QColor(200, 0, 0, 255));
-	penMark.setWidthF(5);
+	penMark.setColor(QColor(255, 181, 50, 250));
+
 
 	mPlotGraphMark = customPlot->addGraph(customPlot->xAxis, customPlot->yAxis);
 	mPlotGraphMark->setName("Marking");
 	mPlotGraphMark->setPen(penMark);
     mPlotGraphMark->setLineStyle(QCPGraph::lsNone); 
-	mPlotGraphMark->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 10));
+	mPlotGraphMark->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 15));
+
+	mPlotGraphMark->setSelectable(QCP::stDataRange);
+
+	//bool bo = connect(mPlotGraphMark,	SIGNAL(selectionChanged(const QCPDataSelection &)), this, SLOT(slot_selectionChanged(const QCPDataSelection)));
+
+	bool bo = connect(customPlot, SIGNAL(plottableClick(QCPAbstractPlottable*,int,QMouseEvent*)), this, SLOT(slot_graphClicked(QCPAbstractPlottable*,int)));
+	
+   // connect(customPlot->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(slotRangeChanged(QCPRange)));
 
 
-    connect(customPlot->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(slotRangeChanged(QCPRange)));
 
-
-
-	customPlot->rescaleAxes();      // Масштабируем график по данным
-    customPlot->replot();           // Отрисовываем график
+	customPlot->rescaleAxes();      // РњР°СЃС€С‚Р°Р±РёСЂСѓРµРј РіСЂР°С„РёРє РїРѕ РґР°РЅРЅС‹Рј
+    customPlot->replot();           // РћС‚СЂРёСЃРѕРІС‹РІР°РµРј РіСЂР°С„РёРє
 }
 ///--------------------------------------------------------------------------------------
 
@@ -381,7 +477,7 @@ void AChartWidget ::  initPlot()
 
  ///=====================================================================================
 ///
-/// добавить данные в виджеты
+/// РґРѕР±Р°РІРёС‚СЊ РґР°РЅРЅС‹Рµ РІ РІРёРґР¶РµС‚С‹
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
@@ -391,7 +487,7 @@ void AChartWidget :: append(const double time, const double data)
 	mPlotGraph->addData(time, data);
 
 
-	//добавим маркеты
+	//РґРѕР±Р°РІРёРј РјР°СЂРєРµС‚С‹
 	if (mMarking.isNull())
 	{
 		return;
@@ -402,10 +498,18 @@ void AChartWidget :: append(const double time, const double data)
 		auto mark = PMark(new AMark(time, data, marking)); 
 		appendMark(mark);
 
-		//добавим к шкале
+		//РґРѕР±Р°РІРёРј Рє С€РєР°Р»Рµ
 		mPlotGraphMark->addData(time, data);
-	}
 
+		//РґРѕР±Р°РІРёРј Р»Р°Р±РµР» Р°РІС‚РѕРјР°С‚РѕРј
+		if (mAutoTracker->isChecked())
+		{
+			mMarkLabel->createLabel(mark, mPlot);
+		}
+	}
+	//--------------------------------------------------
+
+	//РІСЂРµРјСЏ
 	int max = time;
 	if (max > mMaxTime)
 	{
@@ -413,10 +517,10 @@ void AChartWidget :: append(const double time, const double data)
 		mScrollTime->setMaximum(mMaxTime);
 	}
 	mTimeValueChanged = false;
-
+	//
 	
+	//РіСЂР°С„РёРє
 	mPlot->yAxis->rescale();
-
 	if (mAutoTracker->isChecked())
 	{
 		const double size = mZoomFactor;
@@ -427,15 +531,25 @@ void AChartWidget :: append(const double time, const double data)
 		}
 		mAutoTrackerEnabled = true;
 		mPlot->xAxis->setRange(start, size * 1.1f, Qt::AlignLeft);
+		if (!mTimeValueChanged)
+		{
+			mRangeSetSkip = true;
+			int timeVal = time - mZoomFactor * 0.5f;
+			if (timeVal < 0)
+			{
+				timeVal = time;
+			}
+			mScrollTime->setValue(timeVal);
+			mRangeSetSkip = false;
+		}
 		mAutoTrackerEnabled = false;
 	}
-
+	else
+	{
+		refreshTimeLabel();
+	}
 	mPlot->replot();
 
-	if (!mTimeValueChanged)
-	{
-		mScrollTime->setValue();
-	}
 }
 ///--------------------------------------------------------------------------------------
 
@@ -445,33 +559,33 @@ void AChartWidget :: append(const double time, const double data)
 
  ///=====================================================================================
 ///
-/// //добавить закладки
+/// //РґРѕР±Р°РІРёС‚СЊ Р·Р°РєР»Р°РґРєРё
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
 void AChartWidget :: appendMark(const PMark &mark)
 {
 
-	//добавляем закладкку в дерево
+	//РґРѕР±Р°РІР»СЏРµРј Р·Р°РєР»Р°РґРєРєСѓ РІ РґРµСЂРµРІРѕ
 	auto *top = findItemMark(mark->marking());
 	
 
 	if (top == nullptr)
 	{
-		//создадим закладку, ибо ее нет
+		//СЃРѕР·РґР°РґРёРј Р·Р°РєР»Р°РґРєСѓ, РёР±Рѕ РµРµ РЅРµС‚
 		top = new QTreeWidgetItem(mTreeMarkings);
-		top->setData(0, Qt::UserRole, qVariantFromValue<PMark>(mark));
+		top->setData(0, Qt::UserRole, qVariantFromValue<PMark>(PMark(new AMark(mark->marking()))));
 		top->setText(0, mark->description());
 
 		mTreeMarkings->insertTopLevelItem(0, top);
 	}
 
 
-	//добавим  к закладке данные
+	//РґРѕР±Р°РІРёРј  Рє Р·Р°РєР»Р°РґРєРµ РґР°РЅРЅС‹Рµ
 	QStringList captions;
 	captions << QString();
-	captions << mark->time();
-	captions << mark->value();
+	captions << mark->timeToString();
+	captions << mark->valueToString();
 	auto *item = new QTreeWidgetItem(captions);
 	item->setData(0, Qt::UserRole, qVariantFromValue<PMark>(mark));
 
@@ -486,7 +600,7 @@ void AChartWidget :: appendMark(const PMark &mark)
 
  ///=====================================================================================
 ///
-/// поиск закладок
+/// РїРѕРёСЃРє Р·Р°РєР»Р°РґРѕРє
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
@@ -518,7 +632,61 @@ QTreeWidgetItem* AChartWidget :: findItemMark(const Marking::PWMarking &marking)
 
  ///=====================================================================================
 ///
-/// установим текущее название источника
+/// РёР·РјРµРЅРёР»Рё С‚РµРєСѓС‰СѓСЋ РІС‹Р±РѕСЂ СЌР»РµРјРµРЅС‚Р° РІ РґРµСЂРµРІРµ РјРµС‚РѕРє
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AChartWidget :: slot_treeChanged(QTreeWidgetItem * current, QTreeWidgetItem * previous)
+{
+	if (current == nullptr)
+	{
+		showMark(PMark());
+		return;
+	}
+	const auto markVariant = current->data(0, Qt::UserRole);
+	const auto mark = qSharedPointerFromVariant<AMark>(markVariant);
+	if (mark.isNull() || mark->isRoot())
+	{
+		showMark(PMark());
+		return;
+	}
+	showMark(mark);
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+ ///=====================================================================================
+///
+/// РїРѕРєР°Р·Р°С‚СЊ Р·Р°РєР»Р°РґРєСѓ РЅР° РіСЂР°С„РёРєРµ Рё РґСЂСѓРіРёС… РєРѕРЅС‚СЂРѕР»Р°С…
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AChartWidget :: showMark(const PMark &mark)
+{
+	mMarkLabel->destroy();
+	if (mark.isNull())
+	{
+		//СѓР±СЂР°С‚СЊ РЅР°РґРїРёСЃРё
+		return;
+	}
+	mAutoTracker->setChecked(false);
+	mScrollTime->setValue(mark->time());
+	mMarkLabel->createLabel(mark, mPlot);
+	
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+
+ ///=====================================================================================
+///
+/// СѓСЃС‚Р°РЅРѕРІРёРј С‚РµРєСѓС‰РµРµ РЅР°Р·РІР°РЅРёРµ РёСЃС‚РѕС‡РЅРёРєР°
 /// 
 /// 
 ///--------------------------------------------------------------------------------------

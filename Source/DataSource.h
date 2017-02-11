@@ -27,7 +27,7 @@ namespace DataSource
 		const int min			= -200;
 		const int max			= 200;
 
-		const int interval		= 300;
+		const int interval		= 100; //300
 		const int intervalMin	= 100;
 		const int intervalMax	= 10000;
 	}

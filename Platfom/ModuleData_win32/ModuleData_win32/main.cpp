@@ -10,3 +10,7 @@ int main(int argc, char *argv[])
 	w.show();
 	return a.exec();
 }
+
+
+//QString newName = QInputDialog::getText(this, "QCustomPlot example", "New graph name:", QLineEdit::Normal, plItem->plottable()->name(), &ok);
+   

@@ -1,4 +1,4 @@
-#pragma once;
+﻿#pragma once;
 #include <QTime>
 #include "qcustomplot-source\qcustomplot.h"
 
@@ -7,7 +7,7 @@ class ATimeTicker : public QCPAxisTicker
 public:
   ATimeTicker();
   
- 
+	static QString timeToString(const int tick);
   
 protected:
   
@@ -20,7 +20,7 @@ protected:
   //virtual QVector<double> createTickVector(double tickStep, const QCPRange &range) Q_DECL_OVERRIDE;
 
 private:
-	QTime mZeroTime;
+	static QTime mZeroTime;
 
 };
 

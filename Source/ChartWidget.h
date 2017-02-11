@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include <QWidget>
 #include <QString>
 #include <QLabel>
@@ -10,6 +10,7 @@
 #include "qcustomplot-source\qcustomplot.h"
 #include "MarkingContainer.h"
 #include "Mark.h"
+#include "MarkPlot.h"
 ///--------------------------------------------------------------------------------------
 
 namespace Chart
@@ -26,7 +27,7 @@ namespace Chart
 
 	 ///=====================================================================================
 	///
-	/// Источник данных
+	/// РСЃС‚РѕС‡РЅРёРє РґР°РЅРЅС‹С…
 	/// 
 	/// 
 	///--------------------------------------------------------------------------------------
@@ -40,50 +41,61 @@ namespace Chart
 		AChartWidget();
 		virtual ~AChartWidget();
 
-		void clear(); //очистка всех зависемостей
-		void setMarking(const Marking::PWMarkingContainer &marking); //установка действующих закладок
+		void clear(); //РѕС‡РёСЃС‚РєР° РІСЃРµС… Р·Р°РІРёСЃРµРјРѕСЃС‚РµР№
+		void setMarking(const Marking::PWMarkingContainer &marking); //СѓСЃС‚Р°РЅРѕРІРєР° РґРµР№СЃС‚РІСѓСЋС‰РёС… Р·Р°РєР»Р°РґРѕРє
 
 
-		void append(const double time, const double data); //добавить данные в виджеты
-		void reset(); //удалить все данные
+		void append(const double time, const double data); //РґРѕР±Р°РІРёС‚СЊ РґР°РЅРЅС‹Рµ РІ РІРёРґР¶РµС‚С‹
+		void reset(); //СѓРґР°Р»РёС‚СЊ РІСЃРµ РґР°РЅРЅС‹Рµ
 
-		void setNameDataSource(const QString &caption); //установим текущее название источника
+		void setNameDataSource(const QString &caption); //СѓСЃС‚Р°РЅРѕРІРёРј С‚РµРєСѓС‰РµРµ РЅР°Р·РІР°РЅРёРµ РёСЃС‚РѕС‡РЅРёРєР°
 
 	private:
 
-		Marking::PWMarkingContainer	mMarking; //закладки
+		Marking::PWMarkingContainer	mMarking; //Р·Р°РєР»Р°РґРєРё
 
-		double	mZoomFactor;
-		bool	mAutoTrackerEnabled; //флаг, что размеры меняет автотрекер
-		int		mMaxTime; //время максимальное
-		bool	mTimeValueChanged; //временное положение было изменено
+		double	mZoomFactor;			//РєРѕР»РёС‡РµСЃС‚РІРѕ РїРѕРјРµС‰Р°РµРјС‹С… РґР°РЅРЅС‹С… РЅР° РіСЂР°С„РёРєРµ
+		bool	mAutoTrackerEnabled;	//С„Р»Р°Рі, С‡С‚Рѕ СЂР°Р·РјРµСЂС‹ РјРµРЅСЏРµС‚ Р°РІС‚РѕС‚СЂРµРєРµСЂ
+		int		mMaxTime;				//РІСЂРµРјСЏ РјР°РєСЃРёРјР°Р»СЊРЅРѕРµ
+		bool	mTimeValueChanged;		//РІСЂРµРјРµРЅРЅРѕРµ РїРѕР»РѕР¶РµРЅРёРµ Р±С‹Р»Рѕ РёР·РјРµРЅРµРЅРѕ
+		bool	mRangeSetSkip;			//РїСЂРѕРїСѓСЃРє РёР·РјРµРЅРµРЅРёСЏ РѕР±Р»Р°СЃС‚Рё РїСЂРѕСЃРјРѕС‚СЂР° Сѓ РіСЂР°С„РёРєР°
+		bool	mTimeValueSkip;			//РїСЂРѕРїСѓСЃРє РёР·РјРµРЅРЅРёСЏ РІСЂРµРјРµРЅРіРѕ С€РєР°Р»С‹
 
-		QSlider		*mScrollTime; //время шкала
-		QTreeWidget *mTreeMarkings; //искользуемые метки
-		QCheckBox	*mAutoTracker;	//автоматическй проматывать график
+		//РІРёРґР¶РµС‚С‹
+		QTreeWidget *mTreeMarkings;		//РґРµСЂРµРІРѕ РёСЃРєРѕР»СЊР·СѓРµРјС‹Рµ РјРµС‚РєРё
 
-		QCustomPlot *mPlot;			//диаграмма
-		QCustomPlot *mPlotTimer;	//временная шкала
+		QCheckBox	*mAutoTracker;		//Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєР№ РїСЂРѕРјР°С‚С‹РІР°С‚СЊ РіСЂР°С„РёРє
+		QSlider		*mScrollTime;		//РІСЂРµРјСЏ С€РєР°Р»Р°
+		QLabel		*mScrollTimeLabel;	//РІСЂРµРјСЏ С‚РµРєСЃС‚
 
-		QCPGraph *mPlotGraph;	//основные данные
-		QCPGraph *mPlotGraphMark;	//закладки
+		QCustomPlot *mPlot;				//РґРёР°РіСЂР°РјРјР°
+		QCPGraph	*mPlotGraph;		//РѕСЃРЅРѕРІРЅС‹Рµ РґР°РЅРЅС‹Рµ
+		QCPGraph	*mPlotGraphMark;	//Р·Р°РєР»Р°РґРєРё
 
-		void createUI(QWidget *parentWidget); //создание виджета 
+		//С‚РµРєСѓС‰Р°СЏ РїРѕРґСЃРІРµС‡РµРЅРЅР°СЏ РјРµС‚РєР°
+		PMarkPlot	mMarkLabel;			//РјРµС‚РєР° РЅР° РіСЂР°С„РёРєРµ
+
+		void createUI(QWidget *parentWidget); //СЃРѕР·РґР°РЅРёРµ РІРёРґР¶РµС‚Р° 
 
 
-		QWidget* createMarking(); //создание закладок виджета
-		QWidget* createCharts(); //создание диаграмм
+		QWidget* createMarking(); //СЃРѕР·РґР°РЅРёРµ Р·Р°РєР»Р°РґРѕРє РІРёРґР¶РµС‚Р°
+		QWidget* createCharts(); //СЃРѕР·РґР°РЅРёРµ РґРёР°РіСЂР°РјРј
 
 		void initPlot();
 
 
-		void appendMark(const PMark &mark); //добавить закладки
-		QTreeWidgetItem* findItemMark(const Marking::PWMarking &marking) const; //поиск закладки  
+		void appendMark(const PMark &mark); //РґРѕР±Р°РІРёС‚СЊ Р·Р°РєР»Р°РґРєРё
+		QTreeWidgetItem* findItemMark(const Marking::PWMarking &marking) const; //РїРѕРёСЃРє Р·Р°РєР»Р°РґРєРё  
+
+		void showMark(const PMark &mark); //РїРѕРєР°Р·Р°С‚СЊ Р·Р°РєР»Р°РґРєСѓ РЅР° РіСЂР°С„РёРєРµ Рё РґСЂСѓРіРёС… РєРѕРЅС‚СЂРѕР»Р°С…
+		void refreshTimeLabel(); //РѕР±РЅРѕРІР»РµРЅРёРµ РјРµС‚РѕРє
 
 	public slots:
 
-		void slot_rangeChanged(const QCPRange &newRange);//изменение размеров
-
+		void slot_rangeChanged(const QCPRange &newRange);//РёР·РјРµРЅРµРЅРёРµ СЂР°Р·РјРµСЂРѕРІ
+		void slot_timeChanged(const int value); //РёР·РјРµРЅРµРЅРёРµ РІСЂРµРјРµРЅРё
+		void slot_treeChanged(QTreeWidgetItem * current, QTreeWidgetItem * previous); //РёР·РјРµРЅРёР»Рё С‚РµРєСѓС‰СѓСЋ РІС‹Р±РѕСЂ СЌР»РµРјРµРЅС‚Р° РІ РґРµСЂРµРІРµ РјРµС‚РѕРє
+		void slot_graphClicked(QCPAbstractPlottable *plottable, int dataIndex);
 	};
 	///--------------------------------------------------------------------------------------
 
