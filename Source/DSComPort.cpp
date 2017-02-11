@@ -172,6 +172,7 @@ void AComPort :: onDisconnect()
 ///--------------------------------------------------------------------------------------
 bool AComPort :: onOpen()
 {
+	mLastError = QString();
 	if (mPort.isNull() || mPort->isActive())
 	{
 		if (!mPort.isNull())
@@ -181,6 +182,7 @@ bool AComPort :: onOpen()
 
 		mPort = Utils::PSerialPort::create();
 		connect(mPort.data(), &Utils::ASerialPort::signal_readLine, this, &AComPort::slot_readData);
+		connect(mPort.data(), &Utils::ASerialPort::signal_error, this, &AComPort::slot_error);
 	}
 
 	mBeginMs = QDateTime::currentMSecsSinceEpoch();
@@ -254,6 +256,21 @@ void AComPort :: slot_readData(QString text)
 
 
 
+
+
+ ///=====================================================================================
+///
+/// ошибка
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AComPort :: slot_error(QString error)
+{
+	mLastError += "\r" + error;
+	show();
+	close();
+}
+///--------------------------------------------------------------------------------------
 
 
 

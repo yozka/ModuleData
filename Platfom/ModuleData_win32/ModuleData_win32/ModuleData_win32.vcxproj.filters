@@ -85,6 +85,9 @@
     <Filter Include="Source\Utils\SerialPort">
       <UniqueIdentifier>{aced4128-dde7-415e-96b7-6fbed3655c9e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Chart\ChartWidget\TimeTicker">
+      <UniqueIdentifier>{e77f7ce9-5e5d-4511-940a-f80b713cbbfd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -225,12 +228,6 @@
     <ClCompile Include="GeneratedFiles\Release\moc_Mark.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Source\Mark.cpp">
-      <Filter>Source\Chart\ChartWidget\Mark</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Source\TimeTicker.cpp">
-      <Filter>Source\Chart\ChartWidget\TimeTicker</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Source\DSComPortDialog.cpp">
       <Filter>Source\DataSource\Items\ComPort\Widget</Filter>
     </ClCompile>
@@ -248,6 +245,12 @@
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_SerialPort.cpp">
       <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Mark.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\TimeTicker.cpp">
+      <Filter>Source\Chart\ChartWidget\TimeTicker</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -293,14 +296,14 @@
     <CustomBuild Include="..\..\..\Source\DSManualControlDialog.h">
       <Filter>Source\DataSource\Items\ManualControl\Widget</Filter>
     </CustomBuild>
-    <CustomBuild Include="..\..\..\Source\Mark.h">
-      <Filter>Source\Chart\ChartWidget\Mark</Filter>
-    </CustomBuild>
     <CustomBuild Include="..\..\..\Source\DSComPortDialog.h">
       <Filter>Source\DataSource\Items\ComPort\Widget</Filter>
     </CustomBuild>
     <CustomBuild Include="..\..\..\Source\SerialPort.h">
       <Filter>Source\Utils\SerialPort</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\Source\Mark.h">
+      <Filter>Generated Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

@@ -135,12 +135,18 @@ void ASerialPort :: open(const QSerialPortInfo &portInfo)
 void ASerialPort :: slot_run()
 {
 	auto *port = new QSerialPort(mPortInfo);
-	const bool open = port->open(QIODevice::ReadWrite);
+	const bool open = port->open(QIODevice::ReadOnly);
+	if (!open)
+	{
+		auto error = port->errorString();
+		emit signal_error(error);
+	}
+
+
+	connect(port, SIGNAL(error(QSerialPort::SerialPortError)), this, SLOT(slot_error(QSerialPort::SerialPortError)));
+
 	mStopping = !open;
-
-	QByteArray buffer;
 	QString data;
-
 	while (!mStopping)
 	{
 		if (!port->waitForReadyRead(1000))
@@ -167,7 +173,7 @@ void ASerialPort :: slot_run()
 				emit signal_readLine(text);
 			}
 		}
-
+		
 		data = dataCmd[count];
 
 
@@ -189,16 +195,16 @@ void ASerialPort :: slot_run()
 
  ///=====================================================================================
 ///
-/// изменение данных
+/// ошибка данных
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-/*
-void ASerialPort :: slot_change(const AMarking* marking)
+void ASerialPort :: slot_error(QSerialPort::SerialPortError serialPortError)
 {
-	emit signal_change();
+	QString er = "Error port";
+	emit signal_error(er);
 }
-*/
+
 ///--------------------------------------------------------------------------------------
 
 

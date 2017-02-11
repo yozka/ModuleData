@@ -44,7 +44,7 @@ namespace Utils
 	signals:
 	
 		void signal_readLine(QString data); //пришли данные
-
+		void signal_error(QString error); //ошибки
 
 	private:
 
@@ -62,6 +62,7 @@ namespace Utils
 	private slots:
 
 		void slot_run();//выполнение потока
+		void slot_error(QSerialPort::SerialPortError serialPortError);//ошибка
 	};
 	///--------------------------------------------------------------------------------------
 

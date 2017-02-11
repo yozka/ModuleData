@@ -65,12 +65,13 @@ namespace DataSource
 
 		QSerialPortInfo mPortInfo;
 		Utils::PSerialPort mPort;
+		QString mLastError;
 
 		qint64	mBeginMs; //время, начальный отчет
 		int		mLastTime; //последие значения времени в милисикундах
 
 		void	slot_readData(QString text); //обновление таймера
-
+		void	slot_error(QString error); //ошибка
 
 		QSharedPointer<AComPortDialog> mWidget;
 
