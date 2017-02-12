@@ -58,6 +58,7 @@ namespace Chart
 		void		play();		//запуск сбора данных
 		void		pause();	//пауза для сбора данных
 		void		stop();		//остановка для сбора данных
+		bool		isRun() const;	//проверка, запущенно или нет
 
 		void		reset();	//удаление сброс всех данных
 		void		refreshWidgets(); //обновим информацию у виджетах
@@ -90,6 +91,10 @@ namespace Chart
 
 		void append(const double time, const double data); //добавить данные в виджеты
 
+
+	signals:
+
+		void signal_change(); //данные поменялись
 
 	private slots:
 

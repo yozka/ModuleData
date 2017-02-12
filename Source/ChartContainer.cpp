@@ -103,6 +103,8 @@ void AChartContainer :: append(const PChart &chart)
 	}
 
 	mCharts.append(chart);
+	connect(chart.data(), &AChart::signal_change, this, &AChartContainer::slot_change);
+
 	emit signal_change();
 }
 ///--------------------------------------------------------------------------------------
@@ -146,7 +148,7 @@ void AChartContainer :: remove(const PChart &chart)
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void AChartContainer :: slot_change(const AChart* chart)
+void AChartContainer :: slot_change()
 {
 	emit signal_change();
 }

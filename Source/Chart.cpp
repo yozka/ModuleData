@@ -74,7 +74,8 @@ AChart :: ~AChart ()
 ///--------------------------------------------------------------------------------------
 QString AChart :: title() const
 {
-	return "Chart mn - " + QString::number(mNumber);
+	QString sRun = mRun ? " [RUN]" : QString();
+	return "Chart mn - " + QString::number(mNumber) + sRun;
 }
 ///--------------------------------------------------------------------------------------
 
@@ -190,6 +191,8 @@ void AChart :: play()
 
 	mRun = streamData->command_dataOpen();
 	refreshWidgets();
+	
+	emit signal_change();
 }
 ///--------------------------------------------------------------------------------------
 
@@ -212,6 +215,7 @@ void AChart :: pause()
 	streamData->command_dataClose();
 	mRun = false;
 	refreshWidgets();
+	emit signal_change();
 }
 ///--------------------------------------------------------------------------------------
 
@@ -235,6 +239,7 @@ void AChart :: stop()
 
 	//очистка всех буферов данных
 	reset();
+	emit signal_change();
 }
 ///--------------------------------------------------------------------------------------
 
@@ -301,6 +306,7 @@ void AChart :: command_connect(IInterface_receiv *obj)
 	QString title = data->title();
 
 	refreshWidgets();
+	emit signal_change();
 }
 ///--------------------------------------------------------------------------------------
 
@@ -318,6 +324,7 @@ void AChart :: command_disconnect()
 {
 	pause();
 	refreshWidgets();
+	emit signal_change();
 }
 ///--------------------------------------------------------------------------------------
 
@@ -346,6 +353,7 @@ void AChart :: reset()
 		mChartWidget->reset();
 	}
 	refreshWidgets();
+	emit signal_change();
 }
 ///--------------------------------------------------------------------------------------
 
@@ -370,7 +378,7 @@ void AChart :: refreshWidgets()
 
 	auto dataSource = currentDataSource();
 	mChartWidget->setNameDataSource(dataSource.isNull() ? "[none]" : dataSource->title());
-
+	mChartWidget->setRun(mRun);
 	//mChartWidget->
 
 }
@@ -425,4 +433,20 @@ DataSource::PDataSource AChart :: currentDataSource() const
 		return source->sharedFromThis();
 	}
 	return DataSource::PDataSource();
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+ ///=====================================================================================
+///
+/// проверка, запущенно или нет
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+bool AChart :: isRun() const
+{
+	return mRun;
 }

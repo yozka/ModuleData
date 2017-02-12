@@ -42,7 +42,7 @@ namespace Chart
 		PChartContainer mCharts;	//список диаграм
 		QTabWidget*		mTabs;		//табулятор
 
-
+		int indexTabs(const PChart &chartCheck) const; //возвратим индекс вкладки
 	};
 	///--------------------------------------------------------------------------------------
 

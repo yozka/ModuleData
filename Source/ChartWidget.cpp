@@ -38,11 +38,14 @@ AChartWidget :: AChartWidget ()
 	mAutoTracker(nullptr),
 	mScrollTime(nullptr),
 	mScrollTimeLabel(nullptr),
+	mStatusLabel(nullptr),
 	mAutoTrackerEnabled(false),
 	mZoomFactor(0),
 	mTimeValueChanged(false),
 	mRangeSetSkip(false),
-	mTimeValueSkip(false)
+	mTimeValueSkip(false),
+	mRun(false)
+
 {
 	createUI(this);
 	
@@ -175,10 +178,11 @@ QWidget*  AChartWidget :: createCharts()
 	auto *content = new QWidget();
 	auto *layout = new QVBoxLayout(content);
 
-	auto *label = new QLabel(content);
-	label->setText("test");
-	label->setFixedHeight(20);
-	layout->addWidget(label);
+	mStatusLabel = new QLabel(content);
+	mStatusLabel->setText("Charts");
+	mStatusLabel->setFixedHeight(40);
+	mStatusLabel->setFont(QFont(QFont().family(), 16));
+	layout->addWidget(mStatusLabel);
 
 	mAutoTracker = new QCheckBox(content);
 	mAutoTracker->setText("Auto tracker");
@@ -304,6 +308,10 @@ void AChartWidget :: refreshTimeLabel()
 	{
 		mScrollTimeLabel->setText("Current time: " + ATimeTicker::timeToString(value) + " / " + ATimeTicker::timeToString(mMaxTime));
 	}
+
+	//устновим названия статуса
+	QString sStatus = (mRun ? "Run " : "") + ATimeTicker::timeToString(mMaxTime);
+	mStatusLabel->setText(sStatus);
 }
 ///--------------------------------------------------------------------------------------
 
@@ -694,4 +702,22 @@ void AChartWidget :: setNameDataSource(const QString &caption)
 {
 	mPlotGraph->setName(caption);
 	mPlot->replot();
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+
+ ///=====================================================================================
+///
+/// установка, запущен источник или нет
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AChartWidget :: setRun(const bool enabled)
+{
+	mRun = enabled;
+	refreshTimeLabel();
 }

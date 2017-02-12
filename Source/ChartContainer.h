@@ -54,7 +54,7 @@ namespace Chart
 
 	private slots:
 
-		void slot_change(const AChart* chart); //изменение данных
+		void slot_change(); //изменение данных
 	};
 	///--------------------------------------------------------------------------------------
 

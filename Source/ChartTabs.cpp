@@ -69,6 +69,10 @@ void AChartTabs :: syncWidget()
 	{
 		const auto tab = mTabs->widget(i);
 		const auto prop = tab->property("chart");
+		if (!prop.isValid())
+		{
+			continue;
+		}
 		const auto chart = qSharedPointerFromVariant<AChart>(prop);
 		if (mCharts->isContains(chart))
 		{
@@ -85,9 +89,12 @@ void AChartTabs :: syncWidget()
 	for (int i = 0; i < mCharts->count(); i++)
 	{
 		auto chart = mCharts->item(i);
-		if (isContaintTabs(chart))
+		const int index = indexTabs(chart);
+		if (index >= 0)
 		{
 			//вкладка уже такая есть
+			//обновим у нее заголовок
+			mTabs->setTabText(index, chart->title());
 			continue;
 		}
 
@@ -122,6 +129,11 @@ bool AChartTabs :: isContaintTabs(const PChart &chartCheck) const
 	{
 		const auto tab = mTabs->widget(i);
 		const auto prop = tab->property("chart");
+		if (!prop.isValid())
+		{
+			continue;
+		}
+
 		const auto chart = qSharedPointerFromVariant<AChart>(prop);
 		if (chart == chartCheck)
 		{
@@ -154,6 +166,10 @@ PChart AChartTabs :: currentChart() const
 		return PChart();
 	}
 	const auto prop = tab->property("chart");
+	if (!prop.isValid())
+	{
+		return PChart();
+	}
 	const auto chart = qSharedPointerFromVariant<AChart>(prop);
 	return chart;
 }
@@ -186,3 +202,41 @@ void AChartTabs :: setCurrentChart(const PChart &chart)
 		}
 	}
 }
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+ ///=====================================================================================
+///
+/// возвратим индекс вкладки
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+int AChartTabs :: indexTabs(const PChart &chartCheck) const
+{
+	for (int i = 0; i < mTabs->count(); i++)
+	{
+		const auto tab = mTabs->widget(i);
+		const auto prop = tab->property("chart");
+		if (!prop.isValid())
+		{
+			continue;
+		}
+
+		const auto chart = qSharedPointerFromVariant<AChart>(prop);
+		if (chart == chartCheck)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+///--------------------------------------------------------------------------------------
+
+
+
+

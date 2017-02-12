@@ -53,6 +53,20 @@ AModuleData :: AModuleData(QWidget *parent)
 
 	mChart = Chart::PChartContainer::create();
 	connect(mChart.data(), &Chart::AChartContainer::signal_change, this, &AModuleData::slot_refreshChart);
+	connect(ui.tabWidget, &QTabWidget::currentChanged, this, &AModuleData::slot_tabCurrentChanged);
+
+
+	//создадим туллбар
+	ui.mainToolBar->addAction(ui.actionChartPlay);
+	ui.mainToolBar->addAction(ui.actionChartPause);
+	ui.mainToolBar->addAction(ui.actionChartStop);
+	ui.mainToolBar->addSeparator();
+	ui.mainToolBar->addAction(ui.actionChartData);
+
+	mDataSourceLink = new QComboBox(ui.mainToolBar);
+	mDataSourceLink->setMinimumWidth(200);
+	ui.mainToolBar->addWidget(mDataSourceLink);
+	        QObject::connect(comboBox, SIGNAL(currentIndexChanged(int)), Form, SLOT(close()));
 
 	slot_refreshDataSource();
 	slot_refreshChart();
@@ -265,8 +279,77 @@ void AModuleData :: on_actionChartStop_triggered()
 
 
 
+ ///=====================================================================================
+///
+/// покажем источник данных
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AModuleData :: on_actionChartData_triggered()
+{
+	Chart::AChartTabs chartTabs(mChart, ui.tabWidget);
+	auto chart = chartTabs.currentChart();
+	if (chart.isNull())
+	{
+		return;
+	}
+
+	auto data = chart->currentDataSource();
+	if (!data.isNull())
+	{
+		data->show();
+	}
+}
+///--------------------------------------------------------------------------------------
 
 
+
+
+ ///=====================================================================================
+///
+/// обновим действия
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AModuleData :: updateActions()
+{
+	mDataSourceLink->clear();
+	Chart::AChartTabs chartTabs(mChart, ui.tabWidget);
+	auto chart = chartTabs.currentChart();
+	if (chart.isNull())
+	{
+		//нету текуще выбранной диаграмы, заблокируем часть меню
+		ui.actionChartPlay	->setEnabled(false);
+		ui.actionChartPause	->setEnabled(false);
+		ui.actionChartStop	->setEnabled(false);
+		ui.actionChartClose	->setEnabled(false);
+		ui.actionChartData	->setEnabled(false);
+		mDataSourceLink		->setEnabled(false);
+		return;
+	}
+
+	const bool run = chart->isRun();
+	ui.actionChartPlay	->setEnabled(!run);
+	ui.actionChartPause	->setEnabled(run);
+	ui.actionChartStop	->setEnabled(run);
+
+	ui.actionChartClose	->setEnabled(true);
+	ui.actionChartData	->setEnabled(true);
+	
+	//источник данных
+	mDataSourceLink->setEnabled(true);
+	if (!mData.isNull())
+	{
+		QStringList list;
+		const int count = mData->count();
+		for (int i = 0; i < count; i++)
+		{
+			list.append(mData->item(i)->title());
+		}
+		mDataSourceLink->insertItems(0, list);
+	}
+}
+///--------------------------------------------------------------------------------------
 
 
 
@@ -281,9 +364,25 @@ void AModuleData :: slot_refreshChart()
 {
 	Chart::AChartTabs chartTabs(mChart, ui.tabWidget);
 	chartTabs.syncWidget();
+	updateActions();
 }
 ///--------------------------------------------------------------------------------------
 
+
+
+
+
+ ///=====================================================================================
+///
+/// сменили текущий табулятор
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AModuleData :: slot_tabCurrentChanged(int index)
+{
+	updateActions();
+}
+///--------------------------------------------------------------------------------------
 
 
 
@@ -299,12 +398,6 @@ void AModuleData :: slot_refreshDataSource()
 {
 	ui.menuData->clear();
 	auto menu = ui.menuData;
-
-	/*
-	 QIcon icon2;
-        icon2.addFile(QStringLiteral(":/Icons/Icons/playback_play.png"), QSize(), QIcon::Normal, QIcon::Off);
-        actionChartPlay->setIcon(icon2);
-		*/
 
 	//create
 	auto mnCreate = menu->addMenu(QIcon(":/Icons/Icons/sq_plus.png"), "Create");
@@ -338,7 +431,7 @@ void AModuleData :: slot_refreshDataSource()
 
 
 
-
+	updateActions();
 }
 ///--------------------------------------------------------------------------------------
 

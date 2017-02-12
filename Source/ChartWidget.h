@@ -49,10 +49,12 @@ namespace Chart
 		void reset(); //удалить все данные
 
 		void setNameDataSource(const QString &caption); //установим текущее название источника
+		void setRun(const bool enabled); //установка, запущен источник или нет
 
 	private:
 
 		Marking::PWMarkingContainer	mMarking; //закладки
+		bool	mRun;					//флаг, запущена или нет
 
 		double	mZoomFactor;			//количество помещаемых данных на графике
 		bool	mAutoTrackerEnabled;	//флаг, что размеры меняет автотрекер
@@ -67,6 +69,7 @@ namespace Chart
 		QCheckBox	*mAutoTracker;		//автоматическй проматывать график
 		QSlider		*mScrollTime;		//время шкала
 		QLabel		*mScrollTimeLabel;	//время текст
+		QLabel		*mStatusLabel;		//текущея информация по запуску
 
 		QCustomPlot *mPlot;				//диаграмма
 		QCPGraph	*mPlotGraph;		//основные данные

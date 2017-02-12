@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <QMainWindow>
+#include <QComboBox>
 #include "ui_ModuleData.h"
 ///--------------------------------------------------------------------------------------
 
@@ -40,9 +41,11 @@ private:
 	Marking::PMarkingContainer			mMarkings;		//метки
 	Marking::PMarkingEditorDialog		mMarkingEditor; //редактор меток
 
-	DataSource::PDataSourceContainer	mData;			//данны которые приходят извне
-	Chart::PChartContainer				mChart;			//диаграмы
+	DataSource::PDataSourceContainer	mData;			 //данны которые приходят извне
+	Chart::PChartContainer				mChart;			 //диаграмы
+	QComboBox*							mDataSourceLink; //комббобокс для выбора источника данных
 
+	void updateActions(); //обновим действия
 private slots:
 
 	//CHART
@@ -50,10 +53,12 @@ private slots:
 	void on_actionChartNew_triggered();		//добавление новой диаграмы
 	void on_actionChartClose_triggered();	//закрытие диаграммы
 	void slot_refreshChart();				//обновление диаграм, появилась удалилась диаграма
+	void slot_tabCurrentChanged(int index); //сменили текущий табулятор
 
 	void on_actionChartPlay_triggered();	//запуск сбор данных
 	void on_actionChartPause_triggered();	//приастановка сбора данных
 	void on_actionChartStop_triggered();	//оастновка сбора данных
+	void on_actionChartData_triggered();				//покажем источник данных
 
 	//DATA
 	void on_actionRandomGenerator_triggered(); //добавление генератора случайных чисел
