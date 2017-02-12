@@ -34,14 +34,8 @@ AComPortDialog :: AComPortDialog ()
 {
 	setParent(AModuleData::main());
 	setWindowFlags(Qt::Dialog);
-	///setWindowFlags(Qt::Window);
-	
-	//setAttribute(Qt::WA_DeleteOnClose, true);
 	setAttribute(Qt::WA_Resized, false);
 	createUI(this);
-
-	setMinimumSize(QSize(293, 132));
-    setMaximumSize(QSize(293, 132));
 }
 ///--------------------------------------------------------------------------------------
 
@@ -82,9 +76,9 @@ void AComPortDialog :: show(const QWeakPointer<AComPort> &dataSource)
 {
 	mDataSource = dataSource;
 	
-	
-	auto ports = QSerialPortInfo::availablePorts();
+	mPorts = QSerialPortInfo::availablePorts();
 
+	
 	raise();
 	activateWindow();
 	refresh();
@@ -108,10 +102,16 @@ void AComPortDialog :: show(const QWeakPointer<AComPort> &dataSource)
 ///--------------------------------------------------------------------------------------
 void AComPortDialog :: createUI(QWidget *form)
 {
-    form->resize(293, 132);
+	int width = 350;
+	int height = 200;
+	form->setMinimumSize(QSize(width, height));
+    form->setMaximumSize(QSize(width, height));
+    form->resize(width, height);
+
+
 	auto butHide = new QPushButton(form);
     butHide->setText(QApplication::translate("random", "Hide", 0));
-	butHide->setGeometry(QRect(210, 100, 75, 23));
+	butHide->setGeometry(QRect(width - 82, height - 30, 75, 23));
 
   
 
@@ -121,7 +121,7 @@ void AComPortDialog :: createUI(QWidget *form)
     label->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
 
     label = new QLabel(form);
-	label->setText(QApplication::translate("random", "Interval:", 0));
+	label->setText(QApplication::translate("random", "Ports:", 0));
     label->setGeometry(QRect(20, 50, 91, 16));
     label->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
     
@@ -136,11 +136,11 @@ void AComPortDialog :: createUI(QWidget *form)
     mCount = new QLabel(form);
     mCount->setGeometry(QRect(120, 80, 171, 16));
 
-	mInterval = new QLineEdit(form);
-    mInterval->setGeometry(QRect(120, 50, 161, 20));
+	mBoxPort = new QComboBox(form);
+    mBoxPort->setGeometry(QRect(120, 50, 161, 20));
 
 	//
-	connect(mInterval,	&QLineEdit::textEdited, this, &AComPortDialog::slot_editInterval);
+	connect(mBoxPort, SIGNAL(currentIndexChanged(int)), this, SLOT(slot_portChanged(int)));
 	connect(butHide,	&QPushButton::clicked, this, &QDialog::close);
 	//
 
@@ -168,8 +168,11 @@ void AComPortDialog :: refresh()
 		setWindowTitle("Broken");
 		mStatus->setText("-");
 		mCount->setText("-");
-		mInterval->setText("-");
-		mInterval->setEnabled(false);
+		
+		mBoxPort->blockSignals(true);
+		mBoxPort->clear();
+		mBoxPort->setEnabled(false);
+		mBoxPort->blockSignals(false);
 		return;
 	}
 
@@ -183,12 +186,30 @@ void AComPortDialog :: refresh()
 		time = time.addMSecs(data->lastTimeMS());
 		status = QString("RUN - ") + time.toString("HH:mm:ss:zzz");
 	}
-	mInterval->setEnabled(!run);
+
 
 	setWindowTitle(data->title());
 	mStatus->setText(status);
 	mCount->setText(QString::number(data->streamData->count()));
-	//mInterval->setText(data->);
+	
+
+	//комбобокс портов
+	mBoxPort->blockSignals(true);
+	mBoxPort->clear();
+	mBoxPort->setEnabled(!run);
+
+	
+	QStringList list;
+	for(auto item = mPorts.cbegin(); item != mPorts.cend(); ++item)
+	{
+		auto port = *item;
+		list.append(port.portName());
+	}
+
+	mBoxPort->insertItems(0, list);
+
+	mBoxPort->blockSignals(false);
+
 }
 ///--------------------------------------------------------------------------------------
 
@@ -205,7 +226,7 @@ void AComPortDialog :: refresh()
 /// 
 /// 
 ///--------------------------------------------------------------------------------------
-void AComPortDialog :: slot_editInterval(const QString &text)
+void AComPortDialog :: slot_portChanged(int index)
 {
 	if (!mDataSource.isNull())
 	{

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'ModuleData.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.5.0)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.5.1)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,15 +12,15 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'ModuleData.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.5.0. It"
+#error "This file was generated using the moc from 5.5.1. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_AModuleData_t {
-    QByteArrayData data[19];
-    char stringdata0[416];
+    QByteArrayData data[20];
+    char stringdata0[443];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -47,7 +47,8 @@ QT_MOC_LITERAL(14, 330, 26), // "on_actionComPort_triggered"
 QT_MOC_LITERAL(15, 357, 22), // "slot_refreshDataSource"
 QT_MOC_LITERAL(16, 380, 19), // "slot_menuDataSource"
 QT_MOC_LITERAL(17, 400, 8), // "QAction*"
-QT_MOC_LITERAL(18, 409, 6) // "action"
+QT_MOC_LITERAL(18, 409, 6), // "action"
+QT_MOC_LITERAL(19, 416, 26) // "slot_dataSourceLinkChanged"
 
     },
     "AModuleData\0on_actionMarking_triggered\0"
@@ -62,7 +63,7 @@ QT_MOC_LITERAL(18, 409, 6) // "action"
     "on_actionManualControl_triggered\0"
     "on_actionComPort_triggered\0"
     "slot_refreshDataSource\0slot_menuDataSource\0"
-    "QAction*\0action"
+    "QAction*\0action\0slot_dataSourceLinkChanged"
 };
 #undef QT_MOC_LITERAL
 
@@ -72,7 +73,7 @@ static const uint qt_meta_data_AModuleData[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      14,   14, // methods
+      15,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -80,20 +81,21 @@ static const uint qt_meta_data_AModuleData[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   84,    2, 0x08 /* Private */,
-       3,    0,   85,    2, 0x08 /* Private */,
-       4,    0,   86,    2, 0x08 /* Private */,
-       5,    0,   87,    2, 0x08 /* Private */,
-       6,    1,   88,    2, 0x08 /* Private */,
-       8,    0,   91,    2, 0x08 /* Private */,
-       9,    0,   92,    2, 0x08 /* Private */,
-      10,    0,   93,    2, 0x08 /* Private */,
-      11,    0,   94,    2, 0x08 /* Private */,
-      12,    0,   95,    2, 0x08 /* Private */,
-      13,    0,   96,    2, 0x08 /* Private */,
-      14,    0,   97,    2, 0x08 /* Private */,
-      15,    0,   98,    2, 0x08 /* Private */,
-      16,    1,   99,    2, 0x08 /* Private */,
+       1,    0,   89,    2, 0x08 /* Private */,
+       3,    0,   90,    2, 0x08 /* Private */,
+       4,    0,   91,    2, 0x08 /* Private */,
+       5,    0,   92,    2, 0x08 /* Private */,
+       6,    1,   93,    2, 0x08 /* Private */,
+       8,    0,   96,    2, 0x08 /* Private */,
+       9,    0,   97,    2, 0x08 /* Private */,
+      10,    0,   98,    2, 0x08 /* Private */,
+      11,    0,   99,    2, 0x08 /* Private */,
+      12,    0,  100,    2, 0x08 /* Private */,
+      13,    0,  101,    2, 0x08 /* Private */,
+      14,    0,  102,    2, 0x08 /* Private */,
+      15,    0,  103,    2, 0x08 /* Private */,
+      16,    1,  104,    2, 0x08 /* Private */,
+      19,    1,  107,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -110,6 +112,7 @@ static const uint qt_meta_data_AModuleData[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, 0x80000000 | 17,   18,
+    QMetaType::Void, QMetaType::Int,    7,
 
        0        // eod
 };
@@ -134,18 +137,8 @@ void AModuleData::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
         case 11: _t->on_actionComPort_triggered(); break;
         case 12: _t->slot_refreshDataSource(); break;
         case 13: _t->slot_menuDataSource((*reinterpret_cast< QAction*(*)>(_a[1]))); break;
+        case 14: _t->slot_dataSourceLinkChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         default: ;
-        }
-    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        switch (_id) {
-        default: *reinterpret_cast<int*>(_a[0]) = -1; break;
-        case 13:
-            switch (*reinterpret_cast<int*>(_a[1])) {
-            default: *reinterpret_cast<int*>(_a[0]) = -1; break;
-            case 0:
-                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QAction* >(); break;
-            }
-            break;
         }
     }
 }
@@ -175,13 +168,13 @@ int AModuleData::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 14)
+        if (_id < 15)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 14;
+        _id -= 15;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 14)
-            qt_static_metacall(this, _c, _id, _a);
-        _id -= 14;
+        if (_id < 15)
+            *reinterpret_cast<int*>(_a[0]) = -1;
+        _id -= 15;
     }
     return _id;
 }

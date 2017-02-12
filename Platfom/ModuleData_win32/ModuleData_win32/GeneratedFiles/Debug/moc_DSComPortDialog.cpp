@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'DSComPortDialog.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.5.0)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.5.1)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,7 +12,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'DSComPortDialog.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.5.0. It"
+#error "This file was generated using the moc from 5.5.1. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -30,13 +30,13 @@ struct qt_meta_stringdata_DataSource__AComPortDialog_t {
 static const qt_meta_stringdata_DataSource__AComPortDialog_t qt_meta_stringdata_DataSource__AComPortDialog = {
     {
 QT_MOC_LITERAL(0, 0, 26), // "DataSource::AComPortDialog"
-QT_MOC_LITERAL(1, 27, 17), // "slot_editInterval"
-QT_MOC_LITERAL(2, 45, 0), // ""
-QT_MOC_LITERAL(3, 46, 4) // "text"
+QT_MOC_LITERAL(1, 27, 16), // "slot_portChanged"
+QT_MOC_LITERAL(2, 44, 0), // ""
+QT_MOC_LITERAL(3, 45, 5) // "index"
 
     },
-    "DataSource::AComPortDialog\0slot_editInterval\0"
-    "\0text"
+    "DataSource::AComPortDialog\0slot_portChanged\0"
+    "\0index"
 };
 #undef QT_MOC_LITERAL
 
@@ -57,7 +57,7 @@ static const uint qt_meta_data_DataSource__AComPortDialog[] = {
        1,    1,   19,    2, 0x08 /* Private */,
 
  // slots: parameters
-    QMetaType::Void, QMetaType::QString,    3,
+    QMetaType::Void, QMetaType::Int,    3,
 
        0        // eod
 };
@@ -68,7 +68,7 @@ void DataSource::AComPortDialog::qt_static_metacall(QObject *_o, QMetaObject::Ca
         AComPortDialog *_t = static_cast<AComPortDialog *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->slot_editInterval((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 0: _t->slot_portChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         default: ;
         }
     }

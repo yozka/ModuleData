@@ -39,8 +39,7 @@ ARandomGeneratorDialog :: ARandomGeneratorDialog ()
 	setAttribute(Qt::WA_Resized, false);
 	createUI(this);
 
-	setMinimumSize(QSize(293, 132));
-    setMaximumSize(QSize(293, 132));
+
 }
 ///--------------------------------------------------------------------------------------
 
@@ -104,10 +103,15 @@ void ARandomGeneratorDialog :: show(const QWeakPointer<ARandomGenerator> &dataSo
 ///--------------------------------------------------------------------------------------
 void ARandomGeneratorDialog :: createUI(QWidget *form)
 {
-    form->resize(293, 132);
+    int width = 350;
+	int height = 132;
+	setMinimumSize(QSize(width, height));
+    setMaximumSize(QSize(width, height));
+	
+	form->resize(width, height);
 	auto butHide = new QPushButton(form);
     butHide->setText(QApplication::translate("random", "Hide", 0));
-	butHide->setGeometry(QRect(210, 100, 75, 23));
+	butHide->setGeometry(QRect(width - 82, height - 30, 75, 23));
 
   
 

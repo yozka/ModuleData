@@ -66,6 +66,7 @@ private slots:
 	void on_actionComPort_triggered(); //добавление компорта
 	void slot_refreshDataSource(); //обновление источника данных
 	void slot_menuDataSource(QAction *action); //обработка меню
+	void slot_dataSourceLinkChanged(int index); //изменение выбора в источнике данных
 };
 
 

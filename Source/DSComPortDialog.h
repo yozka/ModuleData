@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QLabel>
 #include <QLineEdit>
+#include <QComboBox>
 
 
 
@@ -48,15 +49,18 @@ namespace DataSource
 	private:
 
 		QWeakPointer<AComPort>	mDataSource;	//данные
-		QLabel*				mStatus;		//статуст генератора
-		QLabel*				mCount;			//количество подцепленных приемников
-		QLineEdit*			mInterval;		//интервал
+		QLabel*					mStatus;		//статуст генератора
+		QLabel*					mCount;			//количество подцепленных приемников
+		QComboBox*				mBoxPort;		//порты
+
+
+		QList<QSerialPortInfo> mPorts;		//активные порты
 
 		void createUI(QWidget *form);//создание диалога
 
 	private slots:
 
-		void slot_editInterval(const QString &text); //завершили редактировать интервал данных
+		void slot_portChanged(int index); //завершили редактировать интервал данных
 	};
 	///--------------------------------------------------------------------------------------
 

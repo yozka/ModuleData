@@ -66,7 +66,7 @@ AModuleData :: AModuleData(QWidget *parent)
 	mDataSourceLink = new QComboBox(ui.mainToolBar);
 	mDataSourceLink->setMinimumWidth(200);
 	ui.mainToolBar->addWidget(mDataSourceLink);
-	        QObject::connect(comboBox, SIGNAL(currentIndexChanged(int)), Form, SLOT(close()));
+	connect(mDataSourceLink, SIGNAL(currentIndexChanged(int)), this, SLOT(slot_dataSourceLinkChanged(int)));
 
 	slot_refreshDataSource();
 	slot_refreshChart();
@@ -313,7 +313,10 @@ void AModuleData :: on_actionChartData_triggered()
 ///--------------------------------------------------------------------------------------
 void AModuleData :: updateActions()
 {
+	mDataSourceLink->blockSignals(true);
 	mDataSourceLink->clear();
+	mDataSourceLink->blockSignals(false);
+
 	Chart::AChartTabs chartTabs(mChart, ui.tabWidget);
 	auto chart = chartTabs.currentChart();
 	if (chart.isNull())
@@ -340,16 +343,66 @@ void AModuleData :: updateActions()
 	mDataSourceLink->setEnabled(true);
 	if (!mData.isNull())
 	{
+		int index = -1;
+		const auto currentData = chart->currentDataSource();
 		QStringList list;
 		const int count = mData->count();
 		for (int i = 0; i < count; i++)
 		{
-			list.append(mData->item(i)->title());
+			const auto data = mData->item(i);
+			list.append(data->title());
+			if (data == currentData)
+			{
+				index = i;
+			}
 		}
+		mDataSourceLink->blockSignals(true);
 		mDataSourceLink->insertItems(0, list);
+		mDataSourceLink->setCurrentIndex(index);
+		mDataSourceLink->blockSignals(false);
 	}
 }
 ///--------------------------------------------------------------------------------------
+
+
+
+
+
+ ///=====================================================================================
+///
+/// изменение выбора в источнике данных
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AModuleData :: slot_dataSourceLinkChanged(int index)
+{
+	Chart::AChartTabs chartTabs(mChart, ui.tabWidget);
+	auto chart = chartTabs.currentChart();
+	if (chart.isNull())
+	{
+		return;
+	}
+
+	auto data = mData->item(index);
+	if (data.isNull())
+	{
+		updateActions();
+		return;
+	}
+
+	if (data == chart->currentDataSource())
+	{
+		return;
+	}
+
+	chart->streamData->disconnectAll();
+	auto proxy = DataProxy::PDataProxy::create();
+	data->streamData->connect(proxy);
+	chart->streamData->connect(proxy);
+}
+///--------------------------------------------------------------------------------------
+
+
 
 
 
