@@ -52,6 +52,7 @@ namespace DataSource
 
 		int lastTimeMS() const; //возвратим последнее время
 
+		QStringList lastError() const; //последняя ошибка
 	protected:
 		
 		bool onOpen() override;		//открытие данных
@@ -63,9 +64,9 @@ namespace DataSource
 
 		int		mNumber; //номер генератора
 
-		QSerialPortInfo mPortInfo;
-		Utils::PSerialPort mPort;
-		QString mLastError;
+		QSerialPortInfo		mPortInfo;
+		Utils::PSerialPort	mPort;
+		QStringList			mLastError;
 
 		qint64	mBeginMs; //время, начальный отчет
 		int		mLastTime; //последие значения времени в милисикундах

@@ -237,6 +237,29 @@ bool ACollectionProxy :: command_dataSend(const QVariant &value)
 
 
 
+ ///=====================================================================================
+///
+/// ошибка в потоке данных
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void ACollectionProxy :: command_dataError(const QString &error)
+{
+	for (auto item = mDataProxy.cbegin(); item != mDataProxy.cend(); ++item)
+	{
+		auto dataProxy = *item;
+		if (dataProxy.isNull())
+		{
+			continue;
+		}
+		dataProxy->command_dataError(error);
+	}
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
 
 
 

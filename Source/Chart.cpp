@@ -33,7 +33,9 @@ AChart :: AChart ()
 	mRun(false),
 	mChartWidget(nullptr),
 	mZeroTime(0),
-	mInitTime(false)
+	mInitTime(false),
+	mTimer(nullptr),
+	mBeginMs(0)
 	
 	
 
@@ -41,6 +43,8 @@ AChart :: AChart ()
 	gNumberChart++;
 	mNumber = gNumberChart;
 
+	mTimer = new QTimer(this);
+	connect(mTimer, &QTimer::timeout, this, &AChart::updateTime);
 }
 ///--------------------------------------------------------------------------------------
 
@@ -57,6 +61,7 @@ AChart :: AChart ()
 AChart :: ~AChart ()
 {
 	clear();
+	delete mTimer;
 }
 ///--------------------------------------------------------------------------------------
 
@@ -182,6 +187,9 @@ void AChart :: play()
 		return;
 	}
 	mRun = true;
+
+	mBeginMs = QDateTime::currentMSecsSinceEpoch();
+	mTimer->start(100);
 
 	const int reservSize = 1000 * 60 * 60; 
 	mContentTime.reserve(reservSize);
@@ -332,6 +340,24 @@ void AChart :: command_disconnect()
 
 
 
+
+ ///=====================================================================================
+///
+/// произошла ошибка
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AChart :: command_dataError (const QString &error)
+{
+	pause();
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+
  ///=====================================================================================
 ///
 /// удаление сброс всех данных
@@ -449,4 +475,31 @@ DataSource::PDataSource AChart :: currentDataSource() const
 bool AChart :: isRun() const
 {
 	return mRun;
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+ ///=====================================================================================
+///
+/// время обновления
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AChart :: updateTime()
+{
+	if (!mRun)
+	{
+		mTimer->stop();
+		return;
+	}
+
+	const int timeMs = QDateTime::currentMSecsSinceEpoch() - mBeginMs;
+	if (mChartWidget == nullptr)
+	{
+		return;
+	}
+	mChartWidget->setTimeRun(timeMs);
 }

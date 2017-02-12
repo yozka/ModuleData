@@ -46,6 +46,7 @@ namespace DataProxy
 		bool command_dataOpen();	//команда начало сбора данных
 		bool command_dataClose();   //команда конец сбора данных
 		bool command_dataSend(const QVariant &value);  //передача данных
+		void command_dataError(const QString &error);  //передача ошибки
 
 		QWeakPointer<ACollectionProxy> first() const; //первый источник данных
 		QWeakPointer<ACollectionProxy> second() const; //второй источник данных

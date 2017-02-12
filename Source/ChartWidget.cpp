@@ -44,7 +44,8 @@ AChartWidget :: AChartWidget ()
 	mTimeValueChanged(false),
 	mRangeSetSkip(false),
 	mTimeValueSkip(false),
-	mRun(false)
+	mRun(false),
+	mTimeRun(0)
 
 {
 	createUI(this);
@@ -310,7 +311,21 @@ void AChartWidget :: refreshTimeLabel()
 	}
 
 	//устновим названия статуса
-	QString sStatus = (mRun ? "Run " : "") + ATimeTicker::timeToString(mMaxTime);
+	int time1 = mMaxTime;
+	int time2 = mTimeRun;
+	
+	/*
+	const int ellps = 10000;
+	if ((time1 / ellps) == (time2 / ellps))
+	{
+		time2 = time1;
+	}
+	*/
+
+	QString sStatus = (mRun ? "Run " : "");
+	
+	//sStatus += ATimeTicker::timeToString(time1) + " / " + ATimeTicker::timeToString(time2);
+	sStatus += ATimeTicker::timeToString(time2);
 	mStatusLabel->setText(sStatus);
 }
 ///--------------------------------------------------------------------------------------
@@ -721,3 +736,21 @@ void AChartWidget :: setRun(const bool enabled)
 	mRun = enabled;
 	refreshTimeLabel();
 }
+///--------------------------------------------------------------------------------------
+
+
+
+
+
+ ///=====================================================================================
+///
+/// устновка текущего времи запуска
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AChartWidget :: setTimeRun(const int timeMS)
+{
+	mTimeRun = timeMS;
+	refreshTimeLabel();
+}
+

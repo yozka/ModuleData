@@ -50,11 +50,13 @@ namespace Chart
 
 		void setNameDataSource(const QString &caption); //установим текущее название источника
 		void setRun(const bool enabled); //установка, запущен источник или нет
+		void setTimeRun(const int timeMS); //устновка текущего времи запуска
 
 	private:
 
 		Marking::PWMarkingContainer	mMarking; //закладки
 		bool	mRun;					//флаг, запущена или нет
+		int		mTimeRun;				//общее время запуска
 
 		double	mZoomFactor;			//количество помещаемых данных на графике
 		bool	mAutoTrackerEnabled;	//флаг, что размеры меняет автотрекер

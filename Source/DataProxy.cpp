@@ -242,6 +242,30 @@ bool ADataProxy :: command_dataSend(const QVariant &value)
 
 
 
+ ///=====================================================================================
+///
+/// передача ошибки
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void ADataProxy :: command_dataError(const QString &error)
+{
+	if (!mSourceFirst.isNull())
+	{
+		mSourceFirst.data()->parent()->command_dataError(error);
+	}
+
+	if (!mSourceSecond.isNull())
+	{
+		mSourceSecond.data()->parent()->command_dataError(error);
+	}
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+
 
 
  ///=====================================================================================

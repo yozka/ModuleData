@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <QList>
 #include <QVector>
+#include <QTimer>
 
 #include "MarkingContainer.h"
 #include "CollectionProxy.h"
@@ -73,7 +74,7 @@ namespace Chart
 		bool command_dataReceive	(const QVariant &value) override;  //прием данных
 		void command_connect		(IInterface_receiv *obj) override; //законнектился
 		void command_disconnect		() override; //расконнектились
-
+		void command_dataError		(const QString &error) override;	//произошла ошибка
 	private:
 
 		int mNumber; //тестовый номер диаграмы
@@ -88,6 +89,8 @@ namespace Chart
 		QVector<double> mContentTime; //время
 		QVector<double> mContentData; //данные
 
+		QTimer*	mTimer;		//таймер общего времени
+		qint64	mBeginMs;	//время, начальный отчет
 
 		void append(const double time, const double data); //добавить данные в виджеты
 
@@ -100,6 +103,7 @@ namespace Chart
 
 
 		void slot_destroyedWidget(QObject *obj); //удаление виджета
+		void updateTime(); //время обновления
 	};
 	///--------------------------------------------------------------------------------------
 

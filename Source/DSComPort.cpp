@@ -88,7 +88,7 @@ AComPort :: ~AComPort ()
 QString AComPort :: title() const
 {
 	QString name = "NONE";
-	if (mPortInfo.isValid())
+	if (!mPortInfo.isNull())
 	{
 		name = mPortInfo.portName();
 	}
@@ -118,8 +118,6 @@ void AComPort :: show()
 
 	auto _this = qSharedPointerCast<AComPort>(sharedFromThis());
 	mWidget->show(_this);
-	//mWidget->show(PRandomGenerator());
-
 }
 ///--------------------------------------------------------------------------------------
 
@@ -172,7 +170,7 @@ void AComPort :: onDisconnect()
 ///--------------------------------------------------------------------------------------
 bool AComPort :: onOpen()
 {
-	mLastError = QString();
+	mLastError.clear();
 	if (mPort.isNull() || mPort->isActive())
 	{
 		if (!mPort.isNull())
@@ -266,11 +264,30 @@ void AComPort :: slot_readData(QString text)
 ///--------------------------------------------------------------------------------------
 void AComPort :: slot_error(QString error)
 {
-	mLastError += "\r" + error;
+	mLastError.append(error);
 	show();
-	close();
+	streamData->command_dataError(error);
 }
 ///--------------------------------------------------------------------------------------
+
+
+
+
+
+
+ ///=====================================================================================
+///
+/// последняя ошибка
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+QStringList AComPort :: lastError() const
+{
+	return mLastError;
+}
+///--------------------------------------------------------------------------------------
+
+
 
 
 
@@ -300,6 +317,7 @@ QSerialPortInfo AComPort :: portInfo() const
 void AComPort :: setPortInfo(const QSerialPortInfo &info)
 {
 	mPortInfo = info;
+	refreshWidget();
 }
 ///--------------------------------------------------------------------------------------
 

@@ -103,7 +103,7 @@ void AComPortDialog :: show(const QWeakPointer<AComPort> &dataSource)
 void AComPortDialog :: createUI(QWidget *form)
 {
 	int width = 350;
-	int height = 200;
+	int height = 223;
 	form->setMinimumSize(QSize(width, height));
     form->setMaximumSize(QSize(width, height));
     form->resize(width, height);
@@ -139,6 +139,11 @@ void AComPortDialog :: createUI(QWidget *form)
 	mBoxPort = new QComboBox(form);
     mBoxPort->setGeometry(QRect(120, 50, 161, 20));
 
+
+	mError = new QTextEdit(form);
+	mError->setGeometry(QRect(7, 105, width - 14, 80));
+    mError->setReadOnly(true);
+
 	//
 	connect(mBoxPort, SIGNAL(currentIndexChanged(int)), this, SLOT(slot_portChanged(int)));
 	connect(butHide,	&QPushButton::clicked, this, &QDialog::close);
@@ -173,6 +178,8 @@ void AComPortDialog :: refresh()
 		mBoxPort->clear();
 		mBoxPort->setEnabled(false);
 		mBoxPort->blockSignals(false);
+
+		mError->setPlainText("");
 		return;
 	}
 
@@ -198,18 +205,24 @@ void AComPortDialog :: refresh()
 	mBoxPort->clear();
 	mBoxPort->setEnabled(!run);
 
-	
+	const auto currentPort = data->portInfo();
+	int index = -1;
 	QStringList list;
-	for(auto item = mPorts.cbegin(); item != mPorts.cend(); ++item)
+	for(int i = 0; i < mPorts.count(); i++)
 	{
-		auto port = *item;
+		const auto port = mPorts[i];
 		list.append(port.portName());
+		if (currentPort.portName() == port.portName())
+		{
+			index = i;
+		}
 	}
 
 	mBoxPort->insertItems(0, list);
-
+	mBoxPort->setCurrentIndex(index);
 	mBoxPort->blockSignals(false);
 
+	mError->setPlainText(data->lastError().join("\n"));
 }
 ///--------------------------------------------------------------------------------------
 
@@ -228,8 +241,11 @@ void AComPortDialog :: refresh()
 ///--------------------------------------------------------------------------------------
 void AComPortDialog :: slot_portChanged(int index)
 {
-	if (!mDataSource.isNull())
+	if (!mDataSource.isNull() && index >= 0)
 	{
-		//mDataSource.data()->setInterval(text.toInt());
+		mBoxPort->blockSignals(true);
+		const auto port = mPorts[index];
+		mDataSource.data()->setPortInfo(port);
+		mBoxPort->blockSignals(false);
 	}
 }

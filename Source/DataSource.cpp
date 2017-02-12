@@ -104,7 +104,8 @@ bool ADataSource :: command_dataOpen()
 {
 	if (!mActive)
 	{
-		mActive = onOpen();
+		mActive = true;
+		onOpen();
 	}
 
 	if (mActive)

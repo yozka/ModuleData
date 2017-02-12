@@ -5,6 +5,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QComboBox>
+#include <QTextEdit>
 
 
 
@@ -52,7 +53,7 @@ namespace DataSource
 		QLabel*					mStatus;		//статуст генератора
 		QLabel*					mCount;			//количество подцепленных приемников
 		QComboBox*				mBoxPort;		//порты
-
+		QTextEdit*				mError;			//список последней ошибки
 
 		QList<QSerialPortInfo> mPorts;		//активные порты
 

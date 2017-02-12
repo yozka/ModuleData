@@ -78,6 +78,7 @@ namespace DataSource
 		bool command_dataReceive	(const QVariant &value) override{ return false;};  //прием данных
 		void command_connect		(IInterface_receiv *obj) override; //законнектился
 		void command_disconnect		() override; //расконнектились
+		void command_dataError		(const QString &error) override{};	//произошла ошибка
 
 
 		virtual bool onOpen()		{return false;};	//открытие данных
