@@ -35,7 +35,7 @@ namespace DataSource
 			: 
 				public ADataSource
 	{
-
+		Q_OBJECT
 
 	public:
 		AComPort();
@@ -65,19 +65,28 @@ namespace DataSource
 		int		mNumber; //номер генератора
 
 		QSerialPortInfo		mPortInfo;
-		Utils::PSerialPort	mPort;
+		//Utils::PSerialPort	mPort;
+		QSerialPort*		mSerial;
+
 		QStringList			mLastError;
 
 		qint64	mBeginMs; //время, начальный отчет
 		int		mLastTime; //последие значения времени в милисикундах
 
-		void	slot_readData(QString text); //обновление таймера
 		void	slot_error(QString error); //ошибка
 
 		QSharedPointer<AComPortDialog> mWidget;
 
 
 		void refreshWidget();//обновим виджет
+
+
+	
+	private slots:
+		void	slot_readData(QString text); //обновление таймера
+		void	slot_readDataNativ(); //чтение данных
+		void	slot_errorNativ(QSerialPort::SerialPortError serialPortError);//ошибка
+
 	};
 	///--------------------------------------------------------------------------------------
 

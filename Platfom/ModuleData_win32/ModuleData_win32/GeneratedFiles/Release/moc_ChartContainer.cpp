@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_Chart__AChartContainer_t {
-    QByteArrayData data[6];
-    char stringdata0[70];
+    QByteArrayData data[4];
+    char stringdata0[50];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -32,13 +32,11 @@ static const qt_meta_stringdata_Chart__AChartContainer_t qt_meta_stringdata_Char
 QT_MOC_LITERAL(0, 0, 22), // "Chart::AChartContainer"
 QT_MOC_LITERAL(1, 23, 13), // "signal_change"
 QT_MOC_LITERAL(2, 37, 0), // ""
-QT_MOC_LITERAL(3, 38, 11), // "slot_change"
-QT_MOC_LITERAL(4, 50, 13), // "const AChart*"
-QT_MOC_LITERAL(5, 64, 5) // "chart"
+QT_MOC_LITERAL(3, 38, 11) // "slot_change"
 
     },
     "Chart::AChartContainer\0signal_change\0"
-    "\0slot_change\0const AChart*\0chart"
+    "\0slot_change"
 };
 #undef QT_MOC_LITERAL
 
@@ -59,13 +57,13 @@ static const uint qt_meta_data_Chart__AChartContainer[] = {
        1,    0,   24,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       3,    1,   25,    2, 0x08 /* Private */,
+       3,    0,   25,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void,
 
  // slots: parameters
-    QMetaType::Void, 0x80000000 | 4,    5,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -77,7 +75,7 @@ void Chart::AChartContainer::qt_static_metacall(QObject *_o, QMetaObject::Call _
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->signal_change(); break;
-        case 1: _t->slot_change((*reinterpret_cast< const AChart*(*)>(_a[1]))); break;
+        case 1: _t->slot_change(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -90,6 +88,7 @@ void Chart::AChartContainer::qt_static_metacall(QObject *_o, QMetaObject::Call _
             }
         }
     }
+    Q_UNUSED(_a);
 }
 
 const QMetaObject Chart::AChartContainer::staticMetaObject = {

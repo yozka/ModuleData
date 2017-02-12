@@ -39,6 +39,12 @@ AComPort :: AComPort ()
 {
 	gNumberComPort++;
 	mNumber = gNumberComPort;
+
+	mSerial = new QSerialPort(this);
+
+	connect(mSerial, SIGNAL(readyRead()), this, SLOT(slot_readDataNativ()));
+	connect(mSerial, SIGNAL(error(QSerialPort::SerialPortError)), this, SLOT(slot_errorNativ(QSerialPort::SerialPortError)));
+
 }
 ///--------------------------------------------------------------------------------------
 
@@ -58,15 +64,19 @@ AComPort :: ~AComPort ()
 {
 	clear();
 
+	/*
 	if (!mPort.isNull())
 	{
 		mPort->close();
 	}
+	*/
 
 	if (!mWidget.isNull())
 	{
 		mWidget->close();
 	}
+
+	delete mSerial;
 }
 ///--------------------------------------------------------------------------------------
 
@@ -171,6 +181,8 @@ void AComPort :: onDisconnect()
 bool AComPort :: onOpen()
 {
 	mLastError.clear();
+
+	/*
 	if (mPort.isNull() || mPort->isActive())
 	{
 		if (!mPort.isNull())
@@ -182,13 +194,23 @@ bool AComPort :: onOpen()
 		connect(mPort.data(), &Utils::ASerialPort::signal_readLine, this, &AComPort::slot_readData);
 		connect(mPort.data(), &Utils::ASerialPort::signal_error, this, &AComPort::slot_error);
 	}
+	*/
+
+	if (mSerial->isOpen())
+	{
+        mSerial->close();
+	}
+	mSerial->setPort(mPortInfo);
+	bool ok = mSerial->open(QIODevice::ReadWrite);
+
+
 
 	mBeginMs = QDateTime::currentMSecsSinceEpoch();
 	mLastTime = 0;
 
-	mPort->open(mPortInfo);
+	//mPort->open(mPortInfo);
 	refreshWidget();
-	return true;
+	return ok;
 }
 ///--------------------------------------------------------------------------------------
 
@@ -207,10 +229,17 @@ bool AComPort :: onOpen()
 ///--------------------------------------------------------------------------------------
 bool AComPort :: onClose()
 {
+	/*
 	if (!mPort.isNull())
 	{
 		mPort->close();
 	}
+	*/
+	if (mSerial->isOpen())
+	{
+        mSerial->close();
+	}
+
 
 	mLastTime = 0;
 	refreshWidget();
@@ -240,6 +269,11 @@ void AComPort :: slot_readData(QString text)
 		return;
 	}
 
+	if (val < settings::min || val > settings::max)
+	{
+		return;
+	}
+
 	const int timeMs = QDateTime::currentMSecsSinceEpoch() - mBeginMs;
 	mLastTime = timeMs;
 
@@ -247,10 +281,35 @@ void AComPort :: slot_readData(QString text)
 	data.append(timeMs);
 	data.append(val);
 	streamData->command_dataSend(QVariant::fromValue<QList<int>>(data));
-	
-	refreshWidget();
+
 }
 ///--------------------------------------------------------------------------------------
+
+
+
+
+
+
+ ///=====================================================================================
+///
+/// чтение данных
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AComPort :: slot_readDataNativ()
+{
+	QByteArray data = mSerial->readAll();
+	QString dataCmd = QString::fromLocal8Bit(data);
+	QStringList list = dataCmd.split("\r\n");
+
+	if (!list.empty())
+	{
+		slot_readData(list[0]);
+	}
+}
+///--------------------------------------------------------------------------------------
+
+
 
 
 
@@ -267,6 +326,23 @@ void AComPort :: slot_error(QString error)
 	mLastError.append(error);
 	show();
 	streamData->command_dataError(error);
+		
+	refreshWidget();
+}
+///--------------------------------------------------------------------------------------
+
+
+
+
+ ///=====================================================================================
+///
+/// ошибка данных
+/// 
+/// 
+///--------------------------------------------------------------------------------------
+void AComPort :: slot_errorNativ(QSerialPort::SerialPortError serialPortError)
+{
+	slot_error(mSerial->errorString());
 }
 ///--------------------------------------------------------------------------------------
 

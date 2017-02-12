@@ -277,6 +277,7 @@ bool AChart :: command_dataReceive(const QVariant &value)
 	const double dTime = ds[0];
 	const double dData = ds[1];
 
+
 	if (mInitTime)
 	{
 		mZeroTime = dTime;

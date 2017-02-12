@@ -261,6 +261,12 @@
     <ClCompile Include="..\..\..\Source\MarkPlot.cpp">
       <Filter>Source\Chart\ChartWidget\MarkPlot</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_DSComPort.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_DSComPort.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\..\Source\ModuleData.h">
@@ -317,6 +323,9 @@
     <CustomBuild Include="..\..\..\Source\MarkPlot.h">
       <Filter>Source\Chart\ChartWidget\MarkPlot</Filter>
     </CustomBuild>
+    <CustomBuild Include="..\..\..\Source\DSComPort.h">
+      <Filter>Source\DataSource\Items\ComPort</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ModuleData_win32.rc">
@@ -332,9 +341,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Source\DSManualControl.h">
       <Filter>Source\DataSource\Items\ManualControl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Source\DSComPort.h">
-      <Filter>Source\DataSource\Items\ComPort</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Source\ChartTabs.h">
       <Filter>Source\Chart\ChartTabs</Filter>

@@ -146,7 +146,6 @@ void ASerialPort :: slot_run()
 	connect(port, SIGNAL(error(QSerialPort::SerialPortError)), this, SLOT(slot_error(QSerialPort::SerialPortError)));
 
 	mStopping = !open;
-	QString data;
 	while (!mStopping)
 	{
 		if (!port->waitForReadyRead(1000))
@@ -155,28 +154,8 @@ void ASerialPort :: slot_run()
 		}
 		QByteArray requestData = port->readLine();
 		//----
-		QString buf = QString::fromLocal8Bit(requestData);
-		data += buf;
-		QStringList dataCmd = data.split("\r");
-		const int count = dataCmd.count() - 1;
-		if (count <= 0)
-		{
-			continue;
-		}
-
-		//отошлем данные
-		for (int i = 0; i < count; i++)
-		{
-			auto text = dataCmd[i];
-			if (!text.isEmpty())
-			{
-				emit signal_readLine(text);
-			}
-		}
-		
-		data = dataCmd[count];
-
-
+		QString dataCmd = QString::fromLocal8Bit(requestData);
+		emit signal_readLine(dataCmd);
 	}
 	port->close();
 	delete port;
