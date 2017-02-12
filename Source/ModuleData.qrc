@@ -1,4 +1,13 @@
 <RCC>
-    <qresource prefix="AModuleData">
+    <qresource prefix="/Icons">
+        <file>Icons/bookmark.png</file>
+        <file>Icons/chart_bar.png</file>
+        <file>Icons/db.png</file>
+        <file>Icons/link.png</file>
+        <file>Icons/playback_pause.png</file>
+        <file>Icons/playback_play.png</file>
+        <file>Icons/playback_stop.png</file>
+        <file>Icons/sq_minus.png</file>
+        <file>Icons/sq_plus.png</file>
     </qresource>
 </RCC>

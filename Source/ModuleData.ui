@@ -97,6 +97,10 @@
    </property>
   </action>
   <action name="actionMarking">
+   <property name="icon">
+    <iconset resource="ModuleData.qrc">
+     <normaloff>:/Icons/Icons/bookmark.png</normaloff>:/Icons/Icons/bookmark.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;Marking…</string>
    </property>
@@ -122,6 +126,10 @@
    </property>
   </action>
   <action name="actionChartNew">
+   <property name="icon">
+    <iconset resource="ModuleData.qrc">
+     <normaloff>:/Icons/Icons/chart_bar.png</normaloff>:/Icons/Icons/chart_bar.png</iconset>
+   </property>
    <property name="text">
     <string>New</string>
    </property>
@@ -137,16 +145,28 @@
    </property>
   </action>
   <action name="actionChartPlay">
+   <property name="icon">
+    <iconset resource="ModuleData.qrc">
+     <normaloff>:/Icons/Icons/playback_play.png</normaloff>:/Icons/Icons/playback_play.png</iconset>
+   </property>
    <property name="text">
     <string>Play</string>
    </property>
   </action>
   <action name="actionChartPause">
+   <property name="icon">
+    <iconset resource="ModuleData.qrc">
+     <normaloff>:/Icons/Icons/playback_pause.png</normaloff>:/Icons/Icons/playback_pause.png</iconset>
+   </property>
    <property name="text">
     <string>Pause</string>
    </property>
   </action>
   <action name="actionChartStop">
+   <property name="icon">
+    <iconset resource="ModuleData.qrc">
+     <normaloff>:/Icons/Icons/playback_stop.png</normaloff>:/Icons/Icons/playback_stop.png</iconset>
+   </property>
    <property name="text">
     <string>Stop</string>
    </property>

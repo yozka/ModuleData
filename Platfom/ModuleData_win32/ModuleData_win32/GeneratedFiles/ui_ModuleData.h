@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'ModuleData.ui'
 **
-** Created by: Qt User Interface Compiler version 5.5.0
+** Created by: Qt User Interface Compiler version 5.5.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -62,6 +62,9 @@ public:
         actionExit->setObjectName(QStringLiteral("actionExit"));
         actionMarking = new QAction(AModuleDataClass);
         actionMarking->setObjectName(QStringLiteral("actionMarking"));
+        QIcon icon;
+        icon.addFile(QStringLiteral(":/Icons/Icons/bookmark.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionMarking->setIcon(icon);
         actionRandomGenerator = new QAction(AModuleDataClass);
         actionRandomGenerator->setObjectName(QStringLiteral("actionRandomGenerator"));
         actionManualControl = new QAction(AModuleDataClass);
@@ -72,16 +75,28 @@ public:
         actionDataView->setObjectName(QStringLiteral("actionDataView"));
         actionChartNew = new QAction(AModuleDataClass);
         actionChartNew->setObjectName(QStringLiteral("actionChartNew"));
+        QIcon icon1;
+        icon1.addFile(QStringLiteral(":/Icons/Icons/chart_bar.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionChartNew->setIcon(icon1);
         actionDelete = new QAction(AModuleDataClass);
         actionDelete->setObjectName(QStringLiteral("actionDelete"));
         actionChartClose = new QAction(AModuleDataClass);
         actionChartClose->setObjectName(QStringLiteral("actionChartClose"));
         actionChartPlay = new QAction(AModuleDataClass);
         actionChartPlay->setObjectName(QStringLiteral("actionChartPlay"));
+        QIcon icon2;
+        icon2.addFile(QStringLiteral(":/Icons/Icons/playback_play.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionChartPlay->setIcon(icon2);
         actionChartPause = new QAction(AModuleDataClass);
         actionChartPause->setObjectName(QStringLiteral("actionChartPause"));
+        QIcon icon3;
+        icon3.addFile(QStringLiteral(":/Icons/Icons/playback_pause.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionChartPause->setIcon(icon3);
         actionChartStop = new QAction(AModuleDataClass);
         actionChartStop->setObjectName(QStringLiteral("actionChartStop"));
+        QIcon icon4;
+        icon4.addFile(QStringLiteral(":/Icons/Icons/playback_stop.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionChartStop->setIcon(icon4);
         actionDataDelete = new QAction(AModuleDataClass);
         actionDataDelete->setObjectName(QStringLiteral("actionDataDelete"));
         actionDataSelect = new QAction(AModuleDataClass);

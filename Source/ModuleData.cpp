@@ -300,8 +300,14 @@ void AModuleData :: slot_refreshDataSource()
 	ui.menuData->clear();
 	auto menu = ui.menuData;
 
+	/*
+	 QIcon icon2;
+        icon2.addFile(QStringLiteral(":/Icons/Icons/playback_play.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionChartPlay->setIcon(icon2);
+		*/
+
 	//create
-	auto mnCreate = menu->addMenu("Create");
+	auto mnCreate = menu->addMenu(QIcon(":/Icons/Icons/sq_plus.png"), "Create");
 	mnCreate->addAction("Random generator...", this, SLOT(on_actionRandomGenerator_triggered()));
 	mnCreate->addAction("Manual control...", this, SLOT(on_actionManualControl_triggered()));
 	mnCreate->addAction("Com port...", this, SLOT(on_actionComPort_triggered()));
@@ -314,10 +320,10 @@ void AModuleData :: slot_refreshDataSource()
 	{
 		auto item = mData->item(i);
 		auto mnData = menu->addMenu(item->title());
-		mnData->addAction("Show...",	item.data(), SLOT(slot_show()));
-		auto actSelect = mnData->addAction("Install");
+		mnData->addAction(QIcon(":/Icons/Icons/db.png"), "Show...",	item.data(), SLOT(slot_show()));
+		auto actSelect = mnData->addAction(QIcon(":/Icons/Icons/link.png"), "Install");
 		mnData->addSeparator();
-		auto actDelete = mnData->addAction("Delete");
+		auto actDelete = mnData->addAction(QIcon(":/Icons/Icons/sq_minus.png"), "Delete");
 		
 		actSelect->setProperty("ID",	i);
 		actSelect->setProperty("TYPE",	1);
