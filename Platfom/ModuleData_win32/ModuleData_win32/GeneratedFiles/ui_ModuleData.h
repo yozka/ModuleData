@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'ModuleData.ui'
 **
-** Created by: Qt User Interface Compiler version 5.5.1
+** Created by: Qt User Interface Compiler version 5.8.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -166,26 +166,26 @@ public:
 
     void retranslateUi(QMainWindow *AModuleDataClass)
     {
-        AModuleDataClass->setWindowTitle(QApplication::translate("AModuleDataClass", "AModuleData", 0));
-        actionExit->setText(QApplication::translate("AModuleDataClass", "&Exit", 0));
-        actionMarking->setText(QApplication::translate("AModuleDataClass", "&Marking\342\200\246", 0));
-        actionRandomGenerator->setText(QApplication::translate("AModuleDataClass", "Random generator\342\200\246", 0));
-        actionManualControl->setText(QApplication::translate("AModuleDataClass", "Manual control\342\200\246", 0));
-        actionComPort->setText(QApplication::translate("AModuleDataClass", "Com port\342\200\246", 0));
-        actionDataView->setText(QApplication::translate("AModuleDataClass", "View", 0));
-        actionChartNew->setText(QApplication::translate("AModuleDataClass", "New", 0));
-        actionDelete->setText(QApplication::translate("AModuleDataClass", "Delete", 0));
-        actionChartClose->setText(QApplication::translate("AModuleDataClass", "Close\342\200\246", 0));
-        actionChartPlay->setText(QApplication::translate("AModuleDataClass", "Play", 0));
-        actionChartPause->setText(QApplication::translate("AModuleDataClass", "Pause", 0));
-        actionChartStop->setText(QApplication::translate("AModuleDataClass", "Stop", 0));
-        actionDataDelete->setText(QApplication::translate("AModuleDataClass", "Delete", 0));
-        actionDataSelect->setText(QApplication::translate("AModuleDataClass", "Select", 0));
-        actionChartData->setText(QApplication::translate("AModuleDataClass", "Data...", 0));
-        menuFile->setTitle(QApplication::translate("AModuleDataClass", "FILE", 0));
-        menuChart->setTitle(QApplication::translate("AModuleDataClass", "CHART", 0));
-        menuWindows->setTitle(QApplication::translate("AModuleDataClass", "WINDOWS", 0));
-        menuData->setTitle(QApplication::translate("AModuleDataClass", "DATA", 0));
+        AModuleDataClass->setWindowTitle(QApplication::translate("AModuleDataClass", "AModuleData", Q_NULLPTR));
+        actionExit->setText(QApplication::translate("AModuleDataClass", "&Exit", Q_NULLPTR));
+        actionMarking->setText(QApplication::translate("AModuleDataClass", "&Marking\342\200\246", Q_NULLPTR));
+        actionRandomGenerator->setText(QApplication::translate("AModuleDataClass", "Random generator\342\200\246", Q_NULLPTR));
+        actionManualControl->setText(QApplication::translate("AModuleDataClass", "Manual control\342\200\246", Q_NULLPTR));
+        actionComPort->setText(QApplication::translate("AModuleDataClass", "Com port\342\200\246", Q_NULLPTR));
+        actionDataView->setText(QApplication::translate("AModuleDataClass", "View", Q_NULLPTR));
+        actionChartNew->setText(QApplication::translate("AModuleDataClass", "New", Q_NULLPTR));
+        actionDelete->setText(QApplication::translate("AModuleDataClass", "Delete", Q_NULLPTR));
+        actionChartClose->setText(QApplication::translate("AModuleDataClass", "Close\342\200\246", Q_NULLPTR));
+        actionChartPlay->setText(QApplication::translate("AModuleDataClass", "Play", Q_NULLPTR));
+        actionChartPause->setText(QApplication::translate("AModuleDataClass", "Pause", Q_NULLPTR));
+        actionChartStop->setText(QApplication::translate("AModuleDataClass", "Stop", Q_NULLPTR));
+        actionDataDelete->setText(QApplication::translate("AModuleDataClass", "Delete", Q_NULLPTR));
+        actionDataSelect->setText(QApplication::translate("AModuleDataClass", "Select", Q_NULLPTR));
+        actionChartData->setText(QApplication::translate("AModuleDataClass", "Data...", Q_NULLPTR));
+        menuFile->setTitle(QApplication::translate("AModuleDataClass", "FILE", Q_NULLPTR));
+        menuChart->setTitle(QApplication::translate("AModuleDataClass", "CHART", Q_NULLPTR));
+        menuWindows->setTitle(QApplication::translate("AModuleDataClass", "WINDOWS", Q_NULLPTR));
+        menuData->setTitle(QApplication::translate("AModuleDataClass", "DATA", Q_NULLPTR));
     } // retranslateUi
 
 };
